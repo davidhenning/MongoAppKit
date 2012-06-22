@@ -3,8 +3,7 @@
     "type": "library",
     "description": "MonogDB abstraction layer",
     "keywords": ["mongo","mongodb"],
-    "homepage": "http://github.com/Seldaek/monolog",
-    "license": "MIT",
+    "homepage": "https://github.com/MadCatme/mongoappkit",
     "authors": [
         {
             "name": "David Henning",
