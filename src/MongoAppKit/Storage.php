@@ -64,14 +64,12 @@ class Storage extends Base {
         $sMongoUser = $oConfig->getProperty('MongoUser');
         $sMongoPassword = $oConfig->getProperty('MongoPassword');
 
-        $sHost = "mongodb://{$sMongoServer}:{$iMongoPort}";
+        $sMongoIdentification = (!empty($sMongoUser) && !empty($sMongoPassword)) ? "{$sMongoUser}:{$sMongoPassword}@" : '';
+
+        $sHost = "mongodb://{$sMongoIdentification}{$sMongoServer}:{$iMongoPort}";
         $this->_oMongo = new \Mongo($sHost);
 
-        $this->_oDatabase = $this->_oMongo->selectDB($oConfig->getProperty('MongoDatabase'));
-
-        if(!empty($sMongoUser) && !empty($sMongoPassword)) {
-            $this->_oDatabase->authenticate($sMongoUser, $sMongoPassword);
-        }        
+        $this->_oDatabase = $this->_oMongo->selectDB($oConfig->getProperty('MongoDatabase'));      
     }
 
     /**
