@@ -12,7 +12,8 @@
 
 namespace MongoAppKit\Documents;
 
-use MongoAppKit\Lists\IterateableList,
+use MongoAppKit\Config,
+    MongoAppKit\Lists\IterateableList,
     MongoAppKit\Encryption;
 
 class Document extends IterateableList {
@@ -23,6 +24,13 @@ class Document extends IterateableList {
      */
 
     protected $_oDatabase = null;
+
+    /**
+     * Config object
+     * @var Config
+     */
+
+    protected $_oConfig = null;
 
     /**
      * MongoCollection object
@@ -47,6 +55,26 @@ class Document extends IterateableList {
     }
 
     /**
+     * Set MongoDB object
+     *
+     * @param MongoDB $oDatabase
+     */
+
+    public function setDatabase(\MongoDB $oDatabase) {
+        $this->_oDatabase = $oDatabase;
+    }
+
+    /**
+     * Set Config object
+     *
+     * @param Config $oConfig
+     */
+
+    public function setConfig(Config $oConfig) {
+        $this->_oConfig = $oConfig;
+    }
+
+    /**
      * Select MongoDB collection
      *
      * @param string $sCollectionName
@@ -68,7 +96,7 @@ class Document extends IterateableList {
      */
 
     protected function _loadCollectionConfig($sCollectionName) {
-        $aPropertyConfig = $this->getConfig()->getProperty('Fields');
+        $aPropertyConfig = $this->_oConfig->getProperty('Fields');
 
         if(isset($aPropertyConfig[$sCollectionName]) && count($aPropertyConfig[$sCollectionName]) > 0) {
             $this->_aCollectionConfig = $aPropertyConfig[$sCollectionName];
@@ -131,7 +159,7 @@ class Document extends IterateableList {
 
             // encrypt field data
             if(isset($aFieldConfig['encrypt'])) {
-                $value = Encryption::getInstance()->encrypt($value, $this->getConfig()->getProperty('EncryptionKey'));
+                $value = Encryption::getInstance()->encrypt($value, $this->_oConfig->getProperty('EncryptionKey'));
             }
 
             // set php type
@@ -230,7 +258,7 @@ class Document extends IterateableList {
         }
 
         if(isset($this->_aCollectionConfig[$sKey]['encrypt'])) {
-            $value = Encryption::getInstance()->decrypt($value, $this->getConfig()->getProperty('EncryptionKey'));
+            $value = Encryption::getInstance()->decrypt($value, $this->_oConfig->getProperty('EncryptionKey'));
         }
 
         return $value;
