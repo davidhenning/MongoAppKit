@@ -47,14 +47,6 @@ class Document extends IterateableList {
     protected $_aCollectionConfig = array();
 
     /**
-     * Access database, sets current Collection, loads config data for collection and loads document data if an document id is given
-     */
-
-    public function __construct() {
-        $this->_oDatabase = $this->getStorage()->getDatabase();
-    }
-
-    /**
      * Set MongoDB object
      *
      * @param MongoDB $oDatabase

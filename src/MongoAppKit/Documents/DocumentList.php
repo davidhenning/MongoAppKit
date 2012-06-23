@@ -12,7 +12,8 @@
 
 namespace MongoAppKit\Documents;
 
-use MongoAppKit\Lists\IterateableList;
+use MongoAppKit\Config,
+    MongoAppKit\Lists\IterateableList;
 
 class DocumentList extends IterateableList {
 
@@ -22,6 +23,13 @@ class DocumentList extends IterateableList {
      */
 
     protected $_oDatabase = null;
+
+    /**
+     * Config object
+     * @var Config
+     */
+
+    protected $_oConfig = null;
 
     /**
      * Collection name
@@ -85,6 +93,26 @@ class DocumentList extends IterateableList {
     }
 
     /**
+     * Set MongoDB object
+     *
+     * @param MongoDB $oDatabase
+     */
+
+    public function setDatabase(\MongoDB $oDatabase) {
+        $this->_oDatabase = $oDatabase;
+    }
+
+    /**
+     * Set Config object
+     *
+     * @param Config $oConfig
+     */
+
+    public function setConfig(Config $oConfig) {
+        $this->_oConfig = $oConfig;
+    }
+
+    /**
      * Set custom sorting
      *
      * @param string $sField
@@ -124,6 +152,9 @@ class DocumentList extends IterateableList {
         if(!$oDocumentObject instanceof Document) {
             throw new \InvalidArgumentException("Expecting instance of Document");
         }
+
+        $oDocumentObject->setDatabase($this->_oDatabase);
+        $oDocumentObject->setConfig($this->_oConfig);
 
         $this->_oDocumentBaseObject = $oDocumentObject;
     }
