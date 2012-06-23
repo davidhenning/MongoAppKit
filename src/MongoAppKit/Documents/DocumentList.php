@@ -81,18 +81,6 @@ class DocumentList extends IterateableList {
     protected $_sCustomSortOrder = null;
 
     /**
-     * Get MongoDB object and selects MongoDB collection
-     */
-
-    public function __construct() {
-        $this->_oDatabase = $this->getStorage()->getDatabase();
-        
-        if($this->_sCollectionName !== null) {
-            $this->_oCollection = $this->_oDatabase->selectCollection($this->_sCollectionName);
-        }
-    }
-
-    /**
      * Set MongoDB object
      *
      * @param MongoDB $oDatabase
@@ -100,6 +88,10 @@ class DocumentList extends IterateableList {
 
     public function setDatabase(\MongoDB $oDatabase) {
         $this->_oDatabase = $oDatabase;
+
+        if($this->_sCollectionName !== null) {
+            $this->_oCollection = $this->_oDatabase->selectCollection($this->_sCollectionName);
+        }
     }
 
     /**
