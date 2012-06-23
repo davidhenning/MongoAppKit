@@ -12,6 +12,8 @@
 
 namespace MongoAppKit;
 
+use MongoAppKit\Config;
+
 class Storage extends Base {
 
     /**
@@ -56,16 +58,16 @@ class Storage extends Base {
      * @param Config
      */
 
-    private function __construct() {
-        $sMongoServer = $this->getConfig()->getProperty('MongoServer');
-        $iMongoPort = $this->getConfig()->getProperty('MongoPort');
-        $sMongoUser = $this->getConfig()->getProperty('MongoUser');
-        $sMongoPassword = $this->getConfig()->getProperty('MongoPassword');
+    private function __construct(Config $oConfig) {
+        $sMongoServer = $oConfig->getProperty('MongoServer');
+        $iMongoPort = $oConfig->getProperty('MongoPort');
+        $sMongoUser = $oConfig->getProperty('MongoUser');
+        $sMongoPassword = $oConfig->getProperty('MongoPassword');
 
         $sHost = "mongodb://{$sMongoServer}:{$iMongoPort}";
         $this->_oMongo = new \Mongo($sHost);
 
-        $this->_oDatabase = $this->_oMongo->selectDB($this->getConfig()->getProperty('MongoDatabase'));
+        $this->_oDatabase = $this->_oMongo->selectDB($oConfig->getProperty('MongoDatabase'));
 
         if(!empty($sMongoUser) && !empty($sMongoPassword)) {
             $this->_oDatabase->authenticate($sMongoUser, $sMongoPassword);
