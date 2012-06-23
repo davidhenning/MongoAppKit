@@ -44,9 +44,9 @@ class Storage extends Base {
      * @return Storage
      */
 
-    public static function getInstance() {
+    public static function getInstance(Config $oConfig) {
         if(self::$_oInstance === null) {
-            self::$_oInstance = new Storage();
+            self::$_oInstance = new Storage($oConfig);
         }
 
         return self::$_oInstance;
