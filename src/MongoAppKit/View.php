@@ -390,7 +390,7 @@ class View {
 
     protected function _renderTwig($oApp) {
         $oApp->register(new TwigServiceProvider(), array(
-            'twig.path' => getBasePath() ."/".$this->_oConfig->getProperty('AppName')."/Templates",
+            'twig.path' => getBasePath() ."/src/".$this->_oConfig->getProperty('AppName')."/Templates",
             'twig.options' => array(
               'cache' => getBasePath() .'/tmp',
               'auto_reload' => $this->_oConfig->getProperty('DebugMode')
