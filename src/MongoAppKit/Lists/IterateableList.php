@@ -12,9 +12,7 @@
 
 namespace MongoAppKit\Lists;
 
-use MongoAppKit\Base;
-
-class IterateableList extends Base implements \Countable, \IteratorAggregate, \ArrayAccess {
+class IterateableList implements \Countable, \IteratorAggregate, \ArrayAccess {
 
     /**
      * Stores properties

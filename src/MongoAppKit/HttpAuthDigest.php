@@ -15,7 +15,7 @@ namespace MongoAppKit;
 
 use MongoAppKit\Exceptions\HttpException;
 
-class HttpAuthDigest extends Base {
+class HttpAuthDigest {
 
     /**
      * Digest string from client

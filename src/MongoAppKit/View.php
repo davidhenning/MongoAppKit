@@ -14,7 +14,9 @@ namespace MongoAppKit;
 
 use Silex\Provider\TwigServiceProvider;
 
-class View extends Base {
+use Symfony\Component\HttpFoundation\Request;
+
+class View {
 
     /**
      * Name of the App built with MongoAppKit (used template path)
@@ -22,6 +24,20 @@ class View extends Base {
      */
     
     protected $_sAppName = '';
+
+    /**
+     * Config object
+     * @var Config
+     */
+
+    protected $_oConfig = null;
+
+    /**
+     * Request object
+     * @var Config
+     */
+
+    protected $_oRequest = null;
  
     /**
      * Name of the template to render
@@ -120,7 +136,10 @@ class View extends Base {
      * @param string $sId
      */
 
-    public function __construct($sId = null) {
+    public function __construct(Config $oConfig, Request $oRequest, $sId = null) {
+        $this->_oConfig = $oConfig;
+        $this->_oRequest = $oRequest;
+
         if($sId !== null) {
             $this->setId($sId);
         }
@@ -371,10 +390,10 @@ class View extends Base {
 
     protected function _renderTwig($oApp) {
         $oApp->register(new TwigServiceProvider(), array(
-            'twig.path' => getBasePath() ."/".$this->getConfig()->getProperty('AppName')."/Templates",
+            'twig.path' => getBasePath() ."/".$this->_oConfig->getProperty('AppName')."/Templates",
             'twig.options' => array(
               'cache' => getBasePath() .'/tmp',
-              'auto_reload' => $this->getConfig()->getProperty('DebugMode')
+              'auto_reload' => $this->_oConfig->getProperty('DebugMode')
             )
         ));
 

@@ -16,27 +16,6 @@ use MongoAppKit\Lists\IterateableList;
 
 class Config extends IterateableList {
 
-    /**
-     * Config object
-     * @var Config
-     */
-
-    private static $_oInstance = null;
-
-    /**
-     * Return instance of class Config
-     *
-     * @return Config
-     */
-
-    public static function getInstance() {
-        if(self::$_oInstance === null) {
-            self::$_oInstance = new Config();
-        }
-
-        return self::$_oInstance;
-    }
-
     public function addConfigFile($sFileName = null) {
         if(empty($sFileName)) {
             throw new \InvalidArgumentException("Empty config file name specified.");
@@ -74,13 +53,4 @@ class Config extends IterateableList {
 
         return $data;
     }
-
-    /**
-     * Prohibit cloning of the class object (Singleton pattern)
-     */
-
-    public function __clone() {
-        return null;
-    }
-
 }

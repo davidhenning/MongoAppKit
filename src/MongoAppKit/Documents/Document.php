@@ -52,6 +52,11 @@ class Document extends IterateableList {
      * @param MongoDB $oDatabase
      */
 
+    public function __construct(Config $oConfig) {
+        $this->setDatabase($oConfig->getProperty('storage')->getDatabase());
+        $this->setConfig($oConfig);
+    }
+
     public function setDatabase(\MongoDB $oDatabase) {
         $this->_oDatabase = $oDatabase;
     }

@@ -14,14 +14,7 @@ namespace MongoAppKit;
 
 use MongoAppKit\Config;
 
-class Storage extends Base {
-
-    /**
-     * Storage object
-     * @var Storage
-     */
-
-    private static $_oInstance = null;
+class Storage {
 
     /**
      * Mongo object
@@ -38,27 +31,12 @@ class Storage extends Base {
     protected $_oDatabase = null;
 
     /**
-     * Return instance of class Storage
-     *
-     * @param Config
-     * @return Storage
-     */
-
-    public static function getInstance(Config $oConfig) {
-        if(self::$_oInstance === null) {
-            self::$_oInstance = new Storage($oConfig);
-        }
-
-        return self::$_oInstance;
-    }
-
-    /**
      * Sets up MongoDB connection and selects the given database
      *
      * @param Config
      */
 
-    private function __construct(Config $oConfig) {
+    public function __construct(Config $oConfig) {
         $sMongoServer = $oConfig->getProperty('MongoServer');
         $iMongoPort = $oConfig->getProperty('MongoPort');
         $sMongoUser = $oConfig->getProperty('MongoUser');
@@ -70,14 +48,6 @@ class Storage extends Base {
         $this->_oMongo = new \Mongo($sHost);
 
         $this->_oDatabase = $this->_oMongo->selectDB($oConfig->getProperty('MongoDatabase'));      
-    }
-
-    /**
-     * Prohibit cloning of the class object (Singleton pattern)
-     */
-
-    public function __clone() {
-        return null;
     }
 
     /**
