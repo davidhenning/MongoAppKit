@@ -15,6 +15,9 @@ namespace MongoAppKit;
 
 use MongoAppKit\Exceptions\HttpException;
 
+use Symfony\Component\HttpFoundation\Request,
+    Symfony\Component\HttpFoundation\Response;
+
 class HttpAuthDigest {
 
     /**
@@ -52,12 +55,19 @@ class HttpAuthDigest {
 
     protected $_sOpaque = null;
 
-    public function __construct($sRealm, $sDigest) {
-        $this->_sRealm = $sRealm;
-        $this->_sDigest = $sDigest;
+    public function __construct(Request $oRequest, $sRealm) {
+        $sDigest = $oRequest->server->get('PHP_AUTH_DIGEST');
+        $sHttpAuth = $oRequest->server->get('REDIRECT_HTTP_AUTHORIZATION');
 
-        $sIp = (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR'];
-        $sOpaque = sha1($sRealm.$_SERVER['HTTP_USER_AGENT'].$sIp);
+        if(empty($sDigest) && !empty($sHttpAuth)) {
+            $sDigest = $sHttpAuth;
+        }
+       
+        $this->_sDigest = $sDigest;
+        $this->_sRealm = $sRealm;
+
+        $sIp = $oRequest->getClientIp();
+        $sOpaque = sha1($sRealm.$oRequest->server->get('HTTP_USER_AGENT').$sIp);
 
         $this->_sNonce = sha1(uniqid($sIp));
         $this->_sOpaque = $sOpaque;
@@ -97,11 +107,14 @@ class HttpAuthDigest {
 
     public function sendAuthenticationHeader($bForce = false) {
         if(empty($this->_sDigest) || $bForce === true) {
-            header("HTTP/1.1 401 Unauthorized");
-            $sDigest = 'WWW-Authenticate: Digest realm="' . $this->_sRealm . '",nonce="' . $this->_sNonce . '",qop="auth",opaque="' . $this->_sOpaque . '"';
-            header($sDigest);
-            exit();            
+            $header = array(
+                'WWW-Authenticate' => 'Digest realm="' . $this->_sRealm . '",nonce="' . $this->_sNonce . '",qop="auth",opaque="' . $this->_sOpaque . '"'
+            );
+
+            return new Response('Please authenticate', 401, $header);          
         }
+
+        return null;
     }
 
     public function getUserName() {
@@ -126,7 +139,9 @@ class HttpAuthDigest {
         $sValidRepsonse = md5(implode(':', $aValidRepsonse));
 
         if(($sValidRepsonse === $this->_aDigest["response"]) === false) {
-            throw new HttpException('Unauthorized', 401);
+            $e = new HttpException('Unauthorized', 401);
+            $e->setCallingObject($this);
+            throw $e;
         }
     }
 }
