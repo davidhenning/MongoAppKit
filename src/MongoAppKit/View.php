@@ -12,7 +12,8 @@
 
 namespace MongoAppKit;
 
-use Silex\Provider\TwigServiceProvider;
+use Silex\Application,
+    Silex\Provider\TwigServiceProvider;
 
 use Symfony\Component\HttpFoundation\Request;
 
@@ -136,9 +137,9 @@ class View {
      * @param string $sId
      */
 
-    public function __construct(Config $oConfig, Request $oRequest, $sId = null) {
-        $this->_oConfig = $oConfig;
-        $this->_oRequest = $oRequest;
+    public function __construct(Application $oApp, $sId = null) {
+        $this->_oConfig = $oApp['config'];
+        $this->_oRequest = $oApp['request'];
 
         if($sId !== null) {
             $this->setId($sId);
