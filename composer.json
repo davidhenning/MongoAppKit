@@ -1,8 +1,8 @@
 {
     "name": "mongoappkit/mongoappkit",
     "type": "library",
-    "description": "MonogDB abstraction layer",
-    "keywords": ["mongo","mongodb"],
+    "description": "Object document mapper for MongoDB",
+    "keywords": ["mongo","mongodb", "ODM"],
     "homepage": "https://github.com/MadCatme/mongoappkit",
     "authors": [
         {
