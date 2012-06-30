@@ -39,6 +39,13 @@ class View {
      */
 
     protected $_oRequest = null;
+
+    /**
+     * Application object
+     * @var Config
+     */
+
+    protected $_oApp = null;
  
     /**
      * Name of the template to render
@@ -140,6 +147,7 @@ class View {
     public function __construct(Application $oApp, $sId = null) {
         $this->_oConfig = $oApp['config'];
         $this->_oRequest = $oApp['request'];
+        $this->_oApp = $oApp;
 
         if($sId !== null) {
             $this->setId($sId);
