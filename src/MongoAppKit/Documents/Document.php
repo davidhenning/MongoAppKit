@@ -16,6 +16,8 @@ use MongoAppKit\Config,
     MongoAppKit\Lists\IterateableList,
     MongoAppKit\Encryption;
 
+use Silex\Application;
+
 class Document extends IterateableList {
 
     /**
@@ -52,9 +54,9 @@ class Document extends IterateableList {
      * @param MongoDB $oDatabase
      */
 
-    public function __construct(Config $oConfig) {
-        $this->setDatabase($oConfig->getProperty('storage')->getDatabase());
-        $this->setConfig($oConfig);
+    public function __construct(Application $oApp) {
+        $this->setDatabase($oApp['storage']->getDatabase());
+        $this->setConfig($oApp['config']);
     }
 
     public function setDatabase(\MongoDB $oDatabase) {

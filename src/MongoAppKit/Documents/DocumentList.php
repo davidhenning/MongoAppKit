@@ -15,6 +15,8 @@ namespace MongoAppKit\Documents;
 use MongoAppKit\Config,
     MongoAppKit\Lists\IterateableList;
 
+use Silex\Application;
+
 class DocumentList extends IterateableList {
 
     /**
@@ -86,9 +88,9 @@ class DocumentList extends IterateableList {
      * @param MongoDB $oDatabase
      */
 
-    public function __construct(Config $oConfig) {
-        $this->setDatabase($oConfig->getProperty('storage')->getDatabase());
-        $this->setConfig($oConfig);
+    public function __construct(Application $oApp) {
+        $this->setDatabase($oApp['storage']->getDatabase());
+        $this->setConfig($oApp['config']);
     }
 
     /**
