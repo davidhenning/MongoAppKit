@@ -193,6 +193,16 @@ class View {
     }
 
     /**
+     * Get output method
+     *
+     * @return string
+     */
+
+    public function getOutputFormat() {
+        return $this->_sOutputFormat;
+    }
+
+    /**
      * Set output method
      *
      * @param string $sOutputFormat
