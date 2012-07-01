@@ -237,6 +237,26 @@ class View {
     }
 
     /**
+     * Get total documents
+     *
+     * @return integer
+     */
+
+    public function getTotalDocuments() {
+        return $this->_iTotalDocuments;
+    }
+
+    /**
+     * Set count of total documents
+     *
+     * @param integer $iDocuments
+     */
+
+    public function setTotalDocuments($iDocuments) {
+        $this->_iTotalDocuments = $iDocuments;
+    }
+
+    /**
      * Set count of skipped documents
      *
      * @param integer $iSkippedDocuments
