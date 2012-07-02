@@ -40,7 +40,7 @@ class Encryption {
      */
 
     public function __clone() {
-        return null;
+        throw new \Exception('One does not simply clone me!');
     }
 
 	public function encrypt($value, $key) {
