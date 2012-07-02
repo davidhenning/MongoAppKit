@@ -20,14 +20,12 @@ class Config extends IterateableList {
         if(empty($sFileName)) {
             throw new \InvalidArgumentException("Empty config file name specified.");
         }
-
-        $configFile = getBasePath().$sFileName;
-
-        if(!is_readable($configFile)) {
+        
+        if(!is_readable($sFileName)) {
             throw new \InvalidArgumentException("File {$sFileName} is not readable!");
         }
 
-        $configFileJsonData = file_get_contents($configFile);
+        $configFileJsonData = file_get_contents($sFileName);
         $configData = json_decode($configFileJsonData, true);
         $this->updateProperties($configData);
     }
