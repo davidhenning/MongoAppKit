@@ -102,4 +102,14 @@ class IterateableListTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertFalse(isset($list['foo']));
 	}
+
+	public function testUpdateProperties() {
+		$values = array('foo' => 'bar');
+		$list = new IterateableList();
+		$list->assign($values);
+		$newValues = array('bar' => 'foo');
+		$list->updateProperties($newValues);
+		$expected = array_merge($values, $newValues);
+		$this->assertEquals($expected, $list->getProperties());
+	}
 }
