@@ -14,4 +14,14 @@ class EncryptionTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals($value, $encryption->decrypt($encryptedValue, 'foobar'));
 	}
 
+	public function testClone() {
+		try {
+			$encryption = Encryption::getInstance();
+			$clone = clone $encryption;
+		} catch(\Exception $e) {
+			return;
+		}
+
+		$this->fail('Expected Exception was not thrown.');
+	}
 }
