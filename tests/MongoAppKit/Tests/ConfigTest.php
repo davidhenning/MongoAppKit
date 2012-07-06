@@ -9,15 +9,17 @@ class ConfigTest extends \PHPUnit_Framework_TestCase {
 	public function testBasePath() {
 		$config = new Config();
 		$basePath = realpath(__DIR__ . '/../../../');
+		$config->setBaseDir($basePath);
 
 		$this->assertEquals($basePath, $config->getBaseDir());
 	}
 
 	public function testConfPath() {
 		$config = new Config();
-		$basePath = realpath(__DIR__ . '/../../../conf/');
+		$basePath = realpath(__DIR__ . '/../../../');
+		$config->setBaseDir($basePath);
 
-		$this->assertEquals($basePath, $config->getConfDir());
+		$this->assertEquals(realpath($basePath . '/conf'), $config->getConfDir());
 	}
 
 	public function testSanitizeTrim() {
@@ -67,7 +69,9 @@ class ConfigTest extends \PHPUnit_Framework_TestCase {
 
 	public function testAddConfigFile() {
 		$config = new Config();
-		$values = array('foo' => 'bar');
+		$basePath = realpath(__DIR__ . '/../../../../');
+		$config->setBaseDir($basePath);
+		$values = array('foo' => 'bar', 'BaseDir' => $basePath);
 		$fileName = $config->getConfDir() . '/test.json';
 		file_put_contents($fileName, json_encode($values));
 
