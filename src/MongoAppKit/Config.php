@@ -30,8 +30,12 @@ class Config extends IterateableList {
         $this->updateProperties($configData);
     }
 
+    public function setBaseDir($sBaseDir) {
+        $this->setProperty('BaseDir', $sBaseDir);
+    }
+
     public function getBaseDir() {
-        return realpath(__DIR__ . '/../../');
+        return $this->getProperty('BaseDir');
     }
 
     public function getConfDir() {
