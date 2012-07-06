@@ -6,6 +6,20 @@ use MongoAppKit\Config;
 
 class ConfigTest extends \PHPUnit_Framework_TestCase {
 
+	public function testBasePath() {
+		$config = new Config();
+		$basePath = realpath(__DIR__ . '/../../../');
+
+		$this->assertEquals($basePath, $config->getBaseDir());
+	}
+
+	public function testConfPath() {
+		$config = new Config();
+		$basePath = realpath(__DIR__ . '/../../../conf/');
+
+		$this->assertEquals($basePath, $config->getConfDir());
+	}
+
 	public function testSanitizeTrim() {
 		$config = new Config();
 		$value = ' value ';
@@ -52,11 +66,12 @@ class ConfigTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddConfigFile() {
+		$config = new Config();
 		$values = array('foo' => 'bar');
-		$fileName = __DIR__ . '/test.json';
+		$fileName = $config->getConfDir() . '/test.json';
 		file_put_contents($fileName, json_encode($values));
 
-		$config = new Config();
+		
 		$config->addConfigFile($fileName);
 		unlink($fileName);
 
