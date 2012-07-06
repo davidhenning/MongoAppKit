@@ -428,10 +428,11 @@ class View {
      */
 
     protected function _renderTwig($oApp) {
+        $sBaseDir = $this->_oConfig->getBaseDir();
         $oApp->register(new TwigServiceProvider(), array(
-            'twig.path' => getBasePath() ."/src/".$this->_oConfig->getProperty('AppName')."/Templates",
+            'twig.path' => $sBaseDir ."/src/".$this->_oConfig->getProperty('AppName')."/Templates",
             'twig.options' => array(
-              'cache' => getBasePath() .'/tmp',
+              'cache' => $sBaseDir .'/tmp',
               'auto_reload' => $this->_oConfig->getProperty('DebugMode')
             )
         ));
