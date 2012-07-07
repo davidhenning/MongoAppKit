@@ -168,7 +168,7 @@ class View {
      * Set app name
      */
 
-    protected function _setAppName($sAppName) {
+    public function setAppName($sAppName) {
         $this->_sAppName = $sAppName;
     }    
 
@@ -256,6 +256,17 @@ class View {
         $this->_iTotalDocuments = $iDocuments;
     }
 
+
+    /**
+     * Get count of skipped documents
+     *
+     * @return integer
+     */
+
+    public function getSkippedDocuments() {
+        return $this->_iSkippedDocuments;
+    }
+
     /**
      * Set count of skipped documents
      *
@@ -273,7 +284,17 @@ class View {
      */
 
     public function getCurrentPage() {
-        return $this->_iSkippedDocuments / $this->getDocumentLimit() + 1;
+        return (int)$this->_iSkippedDocuments / $this->getDocumentLimit() + 1;
+    }
+
+    /**
+     * Get all additional GET parameters
+     *
+     * @return array
+     */
+
+    public function getAdditionalUrlParameters() {
+        return $this->_aAdditionalUrlParameters;
     }
 
     /**
@@ -298,7 +319,7 @@ class View {
             // compute total pages
             $iDocumentLimit = $this->getDocumentLimit();
             $iCurrentPage = $this->getCurrentPage();
-            $iPages = ceil($this->_iTotalDocuments / $iDocumentLimit);
+            $iPages = (int)ceil($this->_iTotalDocuments / $iDocumentLimit);
             
             if($iPages > 1) {
                 // init array of the pagination
