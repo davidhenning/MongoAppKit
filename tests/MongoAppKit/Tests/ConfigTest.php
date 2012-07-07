@@ -69,7 +69,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase {
 
 	public function testAddConfigFile() {
 		$config = new Config();
-		$basePath = realpath(__DIR__ . '/../../../../');
+		$basePath = realpath(__DIR__ . '/../../../');
 		$config->setBaseDir($basePath);
 		$values = array('foo' => 'bar', 'BaseDir' => $basePath);
 		$fileName = $config->getConfDir() . '/test.json';
