@@ -12,8 +12,7 @@
 
 namespace MongoAppKit;
 
-use Silex\Application,
-    Silex\Provider\TwigServiceProvider;
+use Silex\Application;
 
 use Symfony\Component\HttpFoundation\Request;
 
@@ -438,7 +437,7 @@ class View {
             return $this->_renderJSON($oApp);
         } elseif($this->_sOutputFormat == 'xml') {
             header('Content-type: text/xml');
-            $this->_renderXML();
+            return $this->_renderXML();
         } else {
             return $this->_renderTwig($oApp);
         }
@@ -449,15 +448,6 @@ class View {
      */
 
     protected function _renderTwig($oApp) {
-        $sBaseDir = $this->_oConfig->getBaseDir();
-        $oApp->register(new TwigServiceProvider(), array(
-            'twig.path' => $sBaseDir . "/views",
-            'twig.options' => array(
-              'cache' => $sBaseDir .'/tmp',
-              'auto_reload' => $this->_oConfig->getProperty('DebugMode')
-            )
-        ));
-
         return $oApp['twig']->render($this->_sTemplateName, $this->_aTemplateData);
     }
 
@@ -476,8 +466,8 @@ class View {
     protected function _renderXML() {
         $oDocument = new \SimpleXMLElement('<kickipedia></kickipedia>');
         $oHeader = $oDocument->addChild('header');
-        $oStatus = $oHeader->addChild('status', 200);
+        $oHeader->addChild('status', 200);
 
-        echo $oDocument->asXML();
+        return $oDocument->asXML();
     }
 }
