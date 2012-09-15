@@ -12,7 +12,7 @@
 
 namespace MongoAppKit;
 
-use Silex\Application;
+use Silex\Application as SilexApplication;
 
 use Symfony\Component\HttpFoundation\Request;
 
@@ -143,7 +143,7 @@ class View {
      * @param string $sId
      */
 
-    public function __construct(Application $oApp, $sId = null) {
+    public function __construct(SilexApplication $oApp, $sId = null) {
         $this->_oConfig = $oApp['config'];
         $this->_oRequest = $oApp['request'];
         $this->_oApp = $oApp;
@@ -430,7 +430,7 @@ class View {
      * Begin rendering the page in selected output format (HTML/TWIG, JSON, XML)
      */
 
-    public function render($oApp) {
+    public function render(SilexApplication $oApp) {
         if($this->_sOutputFormat == 'html') {
             return $this->_renderTwig($oApp);
         } elseif($this->_sOutputFormat == 'json') {
@@ -447,7 +447,7 @@ class View {
      * Load Twig Template Engine and render selected template with set data
      */
 
-    protected function _renderTwig($oApp) {
+    protected function _renderTwig(SilexApplication $oApp) {
         return $oApp['twig']->render($this->_sTemplateName, $this->_aTemplateData);
     }
 
@@ -455,7 +455,7 @@ class View {
      * Render JSON output
      */
 
-    protected function _renderJSON($oApp) {
+    protected function _renderJSON(SilexApplication $oApp) {
         return $oApp->json($this->_aTemplateData);
     }
 
