@@ -2,11 +2,10 @@
 
 namespace MongoAppKit\Tests;
 
-use MongoAppKit\Config,
+use MongoAppKit\Application,
+    MongoAppKit\Config,
 	MongoAppKit\Storage,
 	MongoAppKit\View;
-
-use Silex\Application;
 
 use Symfony\Component\HttpFoundation\Request,
     Symfony\Component\HttpFoundation\Response;
@@ -21,14 +20,10 @@ class ViewTest extends \PHPUnit_Framework_TestCase {
 		$config->setProperty('MongoPassword', null);
 		$config->setProperty('MongoDatabase', 'phpunit');
 		$config->setProperty('AppName', 'testcase');
-		
-		$storage = new Storage($config);
-		
-		$app = new Application();
-		$app['config'] = $config;
-		$app['storage'] = $storage;
+        $config->setProperty('BaseDir', '/');
+        $config->setProperty('DebugMode', true);
 
-		$this->_app = $app;
+		$this->_app = new Application($config);;
 	}
 
 	public function testSetId() {

@@ -5,14 +5,18 @@ namespace MongoAppKit;
 use Silex\Application as SilexApplication,
     Silex\Provider\TwigServiceProvider;
 
-use MongoAppKit\Config;
+use MongoAppKit\Config,
+    MongoAppKit\Provider\StorageServiceProvider;
 
 class Application extends SilexApplication {
 
     public function __construct(Config $oConfig) {
         parent::__construct();
 
+        $this['config'] = $oConfig;
+
         $sBaseDir = $oConfig->getBaseDir();
+
         $this->register(new TwigServiceProvider(), array(
             'twig.path' => $sBaseDir . "/views",
             'twig.options' => array(
@@ -21,5 +25,6 @@ class Application extends SilexApplication {
             )
         ));
 
+        $this->register(new StorageServiceProvider($oConfig));
     }
 }
