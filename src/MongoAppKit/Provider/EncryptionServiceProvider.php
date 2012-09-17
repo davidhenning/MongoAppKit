@@ -10,7 +10,7 @@ use MongoAppKit\Encryption;
 class StorageServiceProvider implements ServiceProviderInterface {
 
     public function register(Application $oApp) {
-        $app['storage'] = function () {
+        $app['encryption'] = function () {
             return new Encryption();
         };
     }
