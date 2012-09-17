@@ -13,12 +13,18 @@
 namespace MongoAppKit\Documents;
 
 use MongoAppKit\Config,
-    MongoAppKit\Lists\IterateableList,
-    MongoAppKit\Encryption;
+    MongoAppKit\Lists\IterateableList;
 
 use Silex\Application;
 
 class Document extends IterateableList {
+
+    /**
+     * MongoDB object
+     * @var Application
+     */
+
+    protected $_oApp = null;
 
     /**
      * MongoDB object
@@ -55,6 +61,7 @@ class Document extends IterateableList {
      */
 
     public function __construct(Application $oApp) {
+        $this->_oApp = $oApp;
         $this->setDatabase($oApp['storage']->getDatabase());
         $this->setConfig($oApp['config']);
     }
@@ -158,7 +165,7 @@ class Document extends IterateableList {
 
             // encrypt field data
             if(isset($aFieldConfig['encrypt'])) {
-                $value = Encryption::getInstance()->encrypt($value, $this->_oConfig->getProperty('EncryptionKey'));
+                $value = $this->_oApp['encryption']->encrypt($value, $this->_oConfig->getProperty('EncryptionKey'));
             }
 
             // set php type
@@ -257,7 +264,7 @@ class Document extends IterateableList {
         }
 
         if(isset($this->_aCollectionConfig[$sKey]['encrypt'])) {
-            $value = Encryption::getInstance()->decrypt($value, $this->_oConfig->getProperty('EncryptionKey'));
+            $value = $this->_oApp['encryption']->decrypt($value, $this->_oConfig->getProperty('EncryptionKey'));
         }
 
         return $value;
