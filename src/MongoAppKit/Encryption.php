@@ -4,43 +4,14 @@ namespace MongoAppKit;
 
 class Encryption {
 
-    /**
-     * Config object
-     * @var Config
-     */
-
-    private static $_oInstance = null;
-
-    /**
-     * Return instance of class Config
-     *
-     * @return Config
-     */
-
-    public static function getInstance() {
-        if(self::$_oInstance === null) {
-            self::$_oInstance = new Encryption();
-        }
-
-        return self::$_oInstance;
-    }
-
     protected $_oAes = null;
 
     /**
      * Constructor
      */
 
-    private function __construct() {
+    public function __construct() {
         $this->_oAes = new \Crypt_AES();
-    }
-
-    /**
-     * Prohibit cloning of the class object (Singleton pattern)
-     */
-
-    public function __clone() {
-        throw new \Exception('One does not simply clone me!');
     }
 
 	public function encrypt($value, $key) {
