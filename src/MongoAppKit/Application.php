@@ -6,7 +6,8 @@ use Silex\Application as SilexApplication,
     Silex\Provider\TwigServiceProvider;
 
 use MongoAppKit\Config,
-    MongoAppKit\Provider\StorageServiceProvider;
+    MongoAppKit\Provider\StorageServiceProvider,
+    MongoAppKit\Provider\EncryptionServiceProvider;
 
 class Application extends SilexApplication {
 
@@ -26,5 +27,6 @@ class Application extends SilexApplication {
         ));
 
         $this->register(new StorageServiceProvider($oConfig));
+        $this->register(new EncryptionServiceProvider());
     }
 }

@@ -7,7 +7,7 @@ use Silex\Application,
 
 use MongoAppKit\Encryption;
 
-class StorageServiceProvider implements ServiceProviderInterface {
+class EncryptionServiceProvider implements ServiceProviderInterface {
 
     public function register(Application $oApp) {
         $app['encryption'] = function () {
