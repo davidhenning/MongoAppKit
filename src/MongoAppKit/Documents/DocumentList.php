@@ -171,6 +171,8 @@ class DocumentList extends IterateableList {
     public function findAll() {       
         $oCursor = $this->_getDefaultCursor();
         $this->_setDocumentsFromCursor($oCursor);
+
+        return $this;
     }
 
     /**
@@ -191,7 +193,9 @@ class DocumentList extends IterateableList {
             $oCursor->skip($iSkip);
         }
 
-        $this->_setDocumentsFromCursor($oCursor);       
+        $this->_setDocumentsFromCursor($oCursor);
+
+        return $this;
     }
 
     /**
