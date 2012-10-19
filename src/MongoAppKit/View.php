@@ -23,133 +23,133 @@ class View {
      * @var string
      */
     
-    protected $_sAppName = '';
+    protected $_appName = '';
 
     /**
      * Config object
      * @var Config
      */
 
-    protected $_oConfig = null;
+    protected $_config = null;
 
     /**
      * Request object
      * @var Config
      */
 
-    protected $_oRequest = null;
+    protected $_request = null;
 
     /**
      * Application object
      * @var Config
      */
 
-    protected $_oApp = null;
+    protected $_app = null;
  
     /**
      * Name of the template to render
      * @var string
      */
 
-    protected $_sTemplateName = null;
+    protected $_templateName = null;
 
     /**
      * Template data for rendering
      * @var array
      */
 
-    protected $_aTemplateData = array();
+    protected $_templateData = array();
 
     /**
      * Id of the view related document
      * @var string
      */
 
-    protected $_sId = null;
+    protected $_id = null;
 
     /**
      * Documents per page
      * @var integer
      */
 
-    protected $_iDocumentLimit = null;
+    protected $_documentLimit = null;
 
     /**
      * Skipped documents
      * @var integer
      */
 
-    protected $_iSkippedDocuments = 0;
+    protected $_skippedDocuments = 0;
 
     /**
      * Current page
      * @var integer
      */
 
-    protected $_iCurrentPage = 1;
+    protected $_currentPage = 1;
 
     /**
      * Base path for generated urls
      * @var string
      */
 
-    protected $_sBaseUrl = '';
+    protected $_baseUrl = '';
 
     /**
      * Additional path for generated urls
      * @var string
      */
 
-    protected $_sPaginationAdditionalUrl = '';
+    protected $_paginationAdditionalUrl = '';
 
     /**
      * Additional get parameters for generated urls
      * @var array
      */
 
-    protected $_aAdditionalUrlParameters = array();
+    protected $_additionalUrlParameters = array();
 
     /**
      * Total count of documents for pagination
      * @var integer
      */
 
-    protected $_iTotalDocuments = 0;
+    protected $_totalDocuments = 0;
 
     /**
      * Pagination array
      * @var array
      */
 
-    protected $_aPagination = null;
+    protected $_pagination = null;
 
     /**
      * Current output format
      * @var string
      */
 
-    protected $_sOutputFormat = 'html';
+    protected $_outputFormat = 'html';
 
     /**
      * Allowed output format
      * @var string
      */
 
-    protected $_aAllowedOutputFormats = array('html', 'json', 'xml');
+    protected $_allowedOutputFormats = array('html', 'json', 'xml');
 
     /**
      * Set document id if given
      *
-     * @param string $sId
+     * @param string $id
      */
 
-    public function __construct(SilexApplication $oApp, $sId = null) {
-        $this->_oConfig = $oApp['config'];
-        $this->_oRequest = $oApp['request'];
-        $this->_oApp = $oApp;
+    public function __construct(SilexApplication $app, $id = null) {
+        $this->_config = $app['config'];
+        $this->_request = $app['request'];
+        $this->_app = $app;
 
-        if($sId !== null) {
-            $this->setId($sId);
+        if($id !== null) {
+            $this->setId($id);
         }
     }
 
@@ -160,15 +160,15 @@ class View {
      */
 
     public function getAppName() {
-        return $this->_sAppName;
+        return $this->_appName;
     }
 
     /**
      * Set app name
      */
 
-    public function setAppName($sAppName) {
-        $this->_sAppName = $sAppName;
+    public function setAppName($appName) {
+        $this->_appName = $appName;
     }    
 
     /**
@@ -178,17 +178,17 @@ class View {
      */
 
     public function getId() {
-        return $this->_sId;
+        return $this->_id;
     }
 
     /**
      * Set document id
      *
-     * @param string $sId
+     * @param string $id
      */
 
-    public function setId($sId) {
-        $this->_sId = $sId;
+    public function setId($id) {
+        $this->_id = $id;
     }
 
     /**
@@ -198,21 +198,21 @@ class View {
      */
 
     public function getOutputFormat() {
-        return $this->_sOutputFormat;
+        return $this->_outputFormat;
     }
 
     /**
      * Set output method
      *
-     * @param string $sOutputFormat
+     * @param string $outputFormat
      */
 
-    public function setOutputFormat($sOutputFormat) {
-        if(!in_array($sOutputFormat, $this->_aAllowedOutputFormats)) {
-            throw new \InvalidArgumentException("Output format '{$sOutputFormat}' is unkown.");
+    public function setOutputFormat($outputFormat) {
+        if(!in_array($outputFormat, $this->_allowedOutputFormats)) {
+            throw new \InvalidArgumentException("Output format '{$outputFormat}' is unkown.");
         }
 
-        $this->_sOutputFormat = $sOutputFormat;
+        $this->_outputFormat = $outputFormat;
     }
 
     /**
@@ -222,17 +222,17 @@ class View {
      */
 
     public function getDocumentLimit() {
-        return ($this->_iDocumentLimit !== null) ? $this->_iDocumentLimit : 100;
+        return ($this->_documentLimit !== null) ? $this->_documentLimit : 100;
     }
 
     /**
      * Set count of documents per page
      *
-     * @param integer $iDocumentLimit
+     * @param integer $documentLimit
      */
 
-    public function setDocumentLimit($iDocumentLimit) {
-        $this->_iDocumentLimit = $iDocumentLimit;
+    public function setDocumentLimit($documentLimit) {
+        $this->_documentLimit = $documentLimit;
     }
 
     /**
@@ -242,17 +242,17 @@ class View {
      */
 
     public function getTotalDocuments() {
-        return $this->_iTotalDocuments;
+        return $this->_totalDocuments;
     }
 
     /**
      * Set count of total documents
      *
-     * @param integer $iDocuments
+     * @param integer $documents
      */
 
-    public function setTotalDocuments($iDocuments) {
-        $this->_iTotalDocuments = $iDocuments;
+    public function setTotalDocuments($documents) {
+        $this->_totalDocuments = $documents;
     }
 
 
@@ -263,17 +263,17 @@ class View {
      */
 
     public function getSkippedDocuments() {
-        return $this->_iSkippedDocuments;
+        return $this->_skippedDocuments;
     }
 
     /**
      * Set count of skipped documents
      *
-     * @param integer $iSkippedDocuments
+     * @param integer $skippedDocuments
      */
 
-    public function setSkippedDocuments($iSkippedDocuments) {
-        $this->_iSkippedDocuments = $iSkippedDocuments;
+    public function setSkippedDocuments($skippedDocuments) {
+        $this->_skippedDocuments = $skippedDocuments;
     }
 
     /**
@@ -283,7 +283,7 @@ class View {
      */
 
     public function getCurrentPage() {
-        return (int)$this->_iSkippedDocuments / $this->getDocumentLimit() + 1;
+        return (int)$this->_skippedDocuments / $this->getDocumentLimit() + 1;
     }
 
     /**
@@ -293,18 +293,18 @@ class View {
      */
 
     public function getAdditionalUrlParameters() {
-        return $this->_aAdditionalUrlParameters;
+        return $this->_additionalUrlParameters;
     }
 
     /**
      * Add a get parameter to generated urls
      *
-     * @param string $sName
-     * @param string $sValue
+     * @param string $name
+     * @param string $value
      */
 
-    public function addAdditionalUrlParameter($sName, $sValue) {
-        $this->_aAdditionalUrlParameters[$sName] = $sValue;
+    public function addAdditionalUrlParameter($name, $value) {
+        $this->_additionalUrlParameters[$name] = $value;
     }
 
     /**
@@ -314,75 +314,75 @@ class View {
      */
 
     public function getPagination() {
-        if($this->_aPagination === null) {    
+        if($this->_pagination === null) {
             // compute total pages
-            $iDocumentLimit = $this->getDocumentLimit();
-            $iCurrentPage = $this->getCurrentPage();
-            $iPages = (int)ceil($this->_iTotalDocuments / $iDocumentLimit);
+            $documentLimit = $this->getDocumentLimit();
+            $currentPage = $this->getCurrentPage();
+            $pageCount = (int)ceil($this->_totalDocuments / $documentLimit);
             
-            if($iPages > 1) {
+            if($pageCount > 1) {
                 // init array of the pagination
-                $aPages = array(
+                $pages = array(
                     'pages' => array(),
-                    'currentPage' => $iCurrentPage,
-                    'documentsPerPage' => $iDocumentLimit,
-                    'totalPages' => $iPages
+                    'currentPage' => $currentPage,
+                    'documentsPerPage' => $documentLimit,
+                    'totalPages' => $pageCount
                 );
 
                 // set URL to previous page and first page
                 if($this->getCurrentPage() > 1) {
-                    $aPages['prevPageUrl'] = $this->_createPageUrl($iCurrentPage - 1, $iDocumentLimit);
-                    $aPages['firstPageUrl'] = $this->_createPageUrl(1, $iDocumentLimit);
+                    $pages['prevPageUrl'] = $this->_createPageUrl($currentPage - 1, $documentLimit);
+                    $pages['firstPageUrl'] = $this->_createPageUrl(1, $documentLimit);
                 } else {
-                    $aPages['prevPageUrl'] = false;
-                    $aPages['firstPageUrl'] = false;
+                    $pages['prevPageUrl'] = false;
+                    $pages['firstPageUrl'] = false;
                 }
 
                 // set URL to next page and last page
-                if($this->getCurrentPage() < $iPages) {
-                    $aPages['nextPageUrl'] = $this->_createPageUrl($iCurrentPage + 1, $iDocumentLimit);
-                    $aPages['lastPageUrl'] = $this->_createPageUrl($iPages, $iDocumentLimit);
+                if($this->getCurrentPage() < $pageCount) {
+                    $pages['nextPageUrl'] = $this->_createPageUrl($currentPage + 1, $documentLimit);
+                    $pages['lastPageUrl'] = $this->_createPageUrl($pageCount, $documentLimit);
                 } else {
-                    $aPages['nextPageUrl'] = false;
-                    $aPages['lastPageUrl'] = false;
+                    $pages['nextPageUrl'] = false;
+                    $pages['lastPageUrl'] = false;
                 }
 
-                $aPages['pages'] = $this->_getPages($iPages, $iDocumentLimit, $iCurrentPage); 
+                $pages['pages'] = $this->_getPages($pageCount, $documentLimit, $currentPage);
 
-                $this->_aPagination = $aPages;
+                $this->_pagination = $pages;
             }
         }
 
-        return $this->_aPagination;
+        return $this->_pagination;
     }
 
     /**
      * Get pages array with page numbers and urls
      *
-     * @param integer $iPages
-     * @param integer $iDocumentLimit
-     * @param integer $iCurrentPage
+     * @param integer $pages
+     * @param integer $documentLimit
+     * @param integer $currentPage
      * @return array
      */
 
-    protected function _getPages($iPages, $iDocumentLimit, $iCurrentPage) {
+    protected function _getPages($pages, $documentLimit, $currentPage) {
         $aPages = array();
 
-        if($iPages > 0) {
+        if($pages > 0) {
             
             // set pages with number, url and active state
-            for($i = 1; $i <= $iPages; $i++) {
-                $aPage = array(
+            for($i = 1; $i <= $pages; $i++) {
+                $page = array(
                     'nr' => $i,
-                    'url' => $this->_createPageUrl($i, $iDocumentLimit),
+                    'url' => $this->_createPageUrl($i, $documentLimit),
                     'active' => false
                 );
 
-                if($i === $iCurrentPage) {
-                    $aPage['active'] = true;
+                if($i === $currentPage) {
+                    $page['active'] = true;
                 } 
 
-                $aPages[] = $aPage;
+                $aPages[] = $page;
             }
         }
 
@@ -392,18 +392,18 @@ class View {
     /**
      * Get url with given parameters and permanently added parameters
      *
-     * @param array $aParams
-     * @param string $sBaseUrl
+     * @param array $params
+     * @param string $baseUrl
      * @return string
      */
 
-    protected function _createUrl($aParams, $sBaseUrl = null) {
-        $sBaseUrl = (!empty($sBaseUrl)) ? $sBaseUrl : $this->_sBaseUrl;
-        $sUrl = "{$sBaseUrl}.{$this->_sOutputFormat}";
-        $aParams = array_merge($this->_aAdditionalUrlParameters, $aParams);
+    protected function _createUrl($params, $baseUrl = null) {
+        $baseUrl = (!empty($baseUrl)) ? $baseUrl : $this->_baseUrl;
+        $sUrl = "{$baseUrl}.{$this->_outputFormat}";
+        $params = array_merge($this->_additionalUrlParameters, $params);
 
-        if(!empty($aParams)) {
-            $sUrl .= '?'.http_build_query($aParams);
+        if(!empty($params)) {
+            $sUrl .= '?'.http_build_query($params);
         }
 
         return $sUrl;
@@ -412,34 +412,34 @@ class View {
     /**
      * Get url for given page number and limit
      *
-     * @param integer $iPage
-     * @param integer $iLimit
+     * @param integer $page
+     * @param integer $limit
      * @return string
      */
 
-    protected function _createPageUrl($iPage, $iLimit) {
-        $aParams = array(
-            'skip' => (($iPage - 1) * $iLimit), 
-            'limit' => $iLimit
+    protected function _createPageUrl($page, $limit) {
+        $params = array(
+            'skip' => (($page - 1) * $limit),
+            'limit' => $limit
         );
 
-        return $this->_createUrl($aParams);
+        return $this->_createUrl($params);
     }
 
     /**
      * Begin rendering the page in selected output format (HTML/TWIG, JSON, XML)
      */
 
-    public function render(SilexApplication $oApp) {
-        if($this->_sOutputFormat == 'html') {
-            return $this->_renderTwig($oApp);
-        } elseif($this->_sOutputFormat == 'json') {
-            return $this->_renderJSON($oApp);
-        } elseif($this->_sOutputFormat == 'xml') {
+    public function render(SilexApplication $app) {
+        if($this->_outputFormat == 'html') {
+            return $this->_renderTwig($app);
+        } elseif($this->_outputFormat == 'json') {
+            return $this->_renderJSON($app);
+        } elseif($this->_outputFormat == 'xml') {
             header('Content-type: text/xml');
             return $this->_renderXML();
         } else {
-            return $this->_renderTwig($oApp);
+            return $this->_renderTwig($app);
         }
     }
 
@@ -447,16 +447,16 @@ class View {
      * Load Twig Template Engine and render selected template with set data
      */
 
-    protected function _renderTwig(SilexApplication $oApp) {
-        return $oApp['twig']->render($this->_sTemplateName, $this->_aTemplateData);
+    protected function _renderTwig(SilexApplication $app) {
+        return $app['twig']->render($this->_templateName, $this->_templateData);
     }
 
     /**
      * Render JSON output
      */
 
-    protected function _renderJSON(SilexApplication $oApp) {
-        return $oApp->json($this->_aTemplateData);
+    protected function _renderJSON(SilexApplication $app) {
+        return $app->json($this->_templateData);
     }
 
     /**
@@ -464,10 +464,10 @@ class View {
      */
 
     protected function _renderXML() {
-        $oDocument = new \SimpleXMLElement('<kickipedia></kickipedia>');
-        $oHeader = $oDocument->addChild('header');
-        $oHeader->addChild('status', 200);
+        $document = new \SimpleXMLElement('<kickipedia></kickipedia>');
+        $header = $document->addChild('header');
+        $header->addChild('status', 200);
 
-        return $oDocument->asXML();
+        return $document->asXML();
     }
 }
