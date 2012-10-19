@@ -9,13 +9,13 @@ use MongoAppKit\Storage;
 
 class StorageServiceProvider implements ServiceProviderInterface {
 
-    public function register(Application $oApp) {
-        $oApp['storage'] = function () use ($oApp) {
-            return new Storage($oApp['config']);
+    public function register(Application $app) {
+        $app['storage'] = function () use ($app) {
+            return new Storage($app['config']);
         };
     }
 
-    public function boot(Application $oApp) {
+    public function boot(Application $app) {
 
     }
 }
