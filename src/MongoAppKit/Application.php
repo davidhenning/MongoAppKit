@@ -11,22 +11,22 @@ use MongoAppKit\Config,
 
 class Application extends SilexApplication {
 
-    public function __construct(Config $oConfig) {
+    public function __construct(Config $config) {
         parent::__construct();
 
-        $this['config'] = $oConfig;
+        $this['config'] = $config;
 
-        $sBaseDir = $oConfig->getBaseDir();
+        $baseDir = $config->getBaseDir();
 
         $this->register(new TwigServiceProvider(), array(
-            'twig.path' => $sBaseDir . "/views",
+            'twig.path' => $baseDir . "/views",
             'twig.options' => array(
-                'cache' => $sBaseDir .'/tmp',
-                'auto_reload' => $oConfig->getProperty('DebugMode')
+                'cache' => $baseDir .'/tmp',
+                'auto_reload' => $config->getProperty('DebugMode')
             )
         ));
 
-        $this->register(new StorageServiceProvider($oConfig));
+        $this->register(new StorageServiceProvider($config));
         $this->register(new EncryptionServiceProvider());
     }
 }
