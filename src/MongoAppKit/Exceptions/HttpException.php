@@ -12,7 +12,7 @@ class HttpException extends Exception {
 		return $this->_oCallingObject;
 	}
 
-	public function setCallingObject($oObject) {
-		$this->_oCallingObject = $oObject;
+	public function setCallingObject($object) {
+		$this->_oCallingObject = $object;
 	}
 }
