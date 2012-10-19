@@ -21,14 +21,14 @@ class Storage {
      * @var Mongo
      */
 
-    protected $_oMongo = null;
+    protected $_mongo = null;
 
     /**
      * MongoDB object
      * @var MongoDB
      */
 
-    protected $_oDatabase = null;
+    protected $_database = null;
 
     /**
      * Sets up MongoDB connection and selects the given database
@@ -36,18 +36,18 @@ class Storage {
      * @param Config
      */
 
-    public function __construct(Config $oConfig) {
-        $sMongoServer = $oConfig->getProperty('MongoServer');
-        $iMongoPort = $oConfig->getProperty('MongoPort');
-        $sMongoUser = $oConfig->getProperty('MongoUser');
-        $sMongoPassword = $oConfig->getProperty('MongoPassword');
+    public function __construct(Config $config) {
+        $mongoServer = $config->getProperty('MongoServer');
+        $mongoPort = $config->getProperty('MongoPort');
+        $mongoUser = $config->getProperty('MongoUser');
+        $mongoPassword = $config->getProperty('MongoPassword');
 
-        $sMongoIdentification = (!empty($sMongoUser) && !empty($sMongoPassword)) ? "{$sMongoUser}:{$sMongoPassword}@" : '';
+        $mongoIdentification = (!empty($mongoUser) && !empty($mongoPassword)) ? "{$mongoUser}:{$mongoPassword}@" : '';
 
-        $sHost = "mongodb://{$sMongoIdentification}{$sMongoServer}:{$iMongoPort}";
-        $this->_oMongo = new \Mongo($sHost);
+        $host = "mongodb://{$mongoIdentification}{$mongoServer}:{$mongoPort}";
+        $this->_mongo = new \Mongo($host);
 
-        $this->_oDatabase = $this->_oMongo->selectDB($oConfig->getProperty('MongoDatabase'));      
+        $this->_database = $this->_mongo->selectDB($config->getProperty('MongoDatabase'));
     }
 
     /**
@@ -55,7 +55,7 @@ class Storage {
      */
 
     public function __destruct() {
-        $this->_oMongo->close();
+        $this->_mongo->close();
     }
 
     /**
@@ -65,6 +65,6 @@ class Storage {
      */
 
     public function getDatabase() {
-        return $this->_oDatabase;
+        return $this->_database;
     }
 }
