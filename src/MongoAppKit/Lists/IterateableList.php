@@ -19,28 +19,28 @@ class IterateableList implements \Countable, \IteratorAggregate, \ArrayAccess {
      * @var array
      */
 
-    protected $_aProperties = array();
+    protected $_properties = array();
 
     /**
      * Imports an array 
      *
-     * @param array $aProperties
+     * @param array $properties
      */
 
-    public function assign(array $aProperties) {
-        $this->_aProperties = $aProperties;
+    public function assign(array $properties) {
+        $this->_properties = $properties;
     }
 
     /**
      * Update properties with from given array
      *
-     * @param array $aProperties
+     * @param array $properties
      */
 
-    public function updateProperties($aProperties) {
-        if(!empty($aProperties)) {
-            foreach($aProperties as $sProperty => $value) {
-                $this->setProperty($sProperty, $value);
+    public function updateProperties($properties) {
+        if(!empty($properties)) {
+            foreach($properties as $property => $value) {
+                $this->setProperty($property, $value);
             }
         }
     }
@@ -48,17 +48,17 @@ class IterateableList implements \Countable, \IteratorAggregate, \ArrayAccess {
     /**
      * Returns value of given property name or throws an exception if the property does not exist 
      *
-     * @param string $sKey
+     * @param string $property
      * @return mixed
      * @throws OutOfBoundsException
      */
 
-    public function getProperty($sKey) {
-        if(array_key_exists($sKey, $this->_aProperties)) {
-            return $this->_aProperties[$sKey];
+    public function getProperty($property) {
+        if(array_key_exists($property, $this->_properties)) {
+            return $this->_properties[$property];
         }
         
-        throw new \OutOfBoundsException("Index '{$sKey}' does not exist");
+        throw new \OutOfBoundsException("Index '{$property}' does not exist");
     }
 
     /**
@@ -69,41 +69,41 @@ class IterateableList implements \Countable, \IteratorAggregate, \ArrayAccess {
 
     public function getProperties() {
         // get all property names
-        $aProperties = array_keys($this->_aProperties);
-        $aValues = array();
+        $properties = array_keys($this->_properties);
+        $values = array();
 
-        if(!empty($aProperties)) {
-            foreach($aProperties as $sProperty) {
-                $aValues[$sProperty] = $this->getProperty($sProperty);
+        if(!empty($properties)) {
+            foreach($properties as $property) {
+                $values[$property] = $this->getProperty($property);
             }
         }
 
-        return $aValues;
+        return $values;
     }
 
     /**
      * Sets a property and its value
      *
-     * @param string $sKey
+     * @param string $property
      * @param mixed $value
      */
 
-    public function setProperty($sKey, $value) {
-        $this->_aProperties[$sKey] = $value;
+    public function setProperty($property, $value) {
+        $this->_properties[$property] = $value;
     }
 
     /**
      * Removes a property
      *
-     * @param string $sKey
+     * @param string $property
      */
 
-    public function removeProperty($sKey) {
-        if(!array_key_exists($sKey, $this->_aProperties)) {
-            throw new \OutOfBoundsException("Index '{$sKey}' does not exist");
+    public function removeProperty($property) {
+        if(!array_key_exists($property, $this->_properties)) {
+            throw new \OutOfBoundsException("Index '{$property}' does not exist");
         }
 
-        unset($this->_aProperties[$sKey]);
+        unset($this->_properties[$property]);
     }
 
     /******************/
@@ -117,7 +117,7 @@ class IterateableList implements \Countable, \IteratorAggregate, \ArrayAccess {
      */
 
     public function count() {
-        return count($this->_aProperties);
+        return count($this->_properties);
     }
 
     /**
@@ -127,50 +127,50 @@ class IterateableList implements \Countable, \IteratorAggregate, \ArrayAccess {
      */
 
     public function getIterator() {
-        return new \ArrayIterator($this->_aProperties);
+        return new \ArrayIterator($this->_properties);
     }
 
     /**
      * Sets a property and its value
      *
-     * @param string $sKey
+     * @param string $property
      * @param mixed $value
      */
 
-    public function offsetSet($sKey, $value) {
-        $this->setProperty($sKey, $value);
+    public function offsetSet($property, $value) {
+        $this->setProperty($property, $value);
     }
 
     /**
      * Checks if given property name exists
      *
-     * @param string $sKey
+     * @param string $property
      * @return bool
      */
     
-    public function offsetExists($sKey) {
-        return isset($this->_aProperties[$sKey]);
+    public function offsetExists($property) {
+        return isset($this->_properties[$property]);
     }
 
     /**
      * Removes a property
      *
-     * @param string $sKey
+     * @param string $property
      */
     
-    public function offsetUnset($sKey) {
-        $this->removeProperty($sKey);
+    public function offsetUnset($property) {
+        $this->removeProperty($property);
     }
 
     /**
      * Returns value of given property name
      *
-     * @param string $sKey
+     * @param string $property
      * @return mixed
      */   
 
-    public function offsetGet($sKey) {
-        return $this->getProperty($sKey);
+    public function offsetGet($property) {
+        return $this->getProperty($property);
     }
     
 }
