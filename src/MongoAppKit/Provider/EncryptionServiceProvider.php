@@ -9,13 +9,13 @@ use MongoAppKit\Encryption;
 
 class EncryptionServiceProvider implements ServiceProviderInterface {
 
-    public function register(Application $oApp) {
-        $oApp['encryption'] = function () {
+    public function register(Application $app) {
+        $app['encryption'] = function () {
             return new Encryption();
         };
     }
 
-    public function boot(Application $oApp) {
+    public function boot(Application $app) {
 
     }
 }
