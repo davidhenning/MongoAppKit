@@ -24,35 +24,35 @@ class Document extends IterateableList {
      * @var Application
      */
 
-    protected $_oApp = null;
+    protected $_app = null;
 
     /**
      * MongoDB object
      * @var MongoDB
      */
 
-    protected $_oDatabase = null;
+    protected $_database = null;
 
     /**
      * Config object
      * @var Config
      */
 
-    protected $_oConfig = null;
+    protected $_config = null;
 
     /**
      * MongoCollection object
      * @var MongoCollection
      */
 
-    protected $_oCollection = null;
+    protected $_collection = null;
 
     /**
      * Config data for collection
      * @var array
      */
 
-    protected $_aCollectionConfig = array();
+    protected $_collectionConfig = array();
 
     /**
      * Set MongoDB object
@@ -60,64 +60,64 @@ class Document extends IterateableList {
      * @param MongoDB $oDatabase
      */
 
-    public function __construct(Application $oApp) {
-        $this->_oApp = $oApp;
-        $this->setDatabase($oApp['storage']->getDatabase());
-        $this->setConfig($oApp['config']);
+    public function __construct(Application $app) {
+        $this->_app = $app;
+        $this->setDatabase($app['storage']->getDatabase());
+        $this->setConfig($app['config']);
     }
 
-    public function setDatabase(\MongoDB $oDatabase) {
-        $this->_oDatabase = $oDatabase;
+    public function setDatabase(\MongoDB $database) {
+        $this->_database = $database;
     }
 
     /**
      * Set Config object
      *
-     * @param Config $oConfig
+     * @param Config $config
      */
 
-    public function setConfig(Config $oConfig) {
-        $this->_oConfig = $oConfig;
+    public function setConfig(Config $config) {
+        $this->_config = $config;
     }
 
     /**
      * Select MongoDB collection
      *
-     * @param string $sCollectionName
+     * @param string $collectionName
      */
 
-    public function setCollectionName($sCollectionName) {
-        if(empty($sCollectionName)) {
+    public function setCollectionName($collectionName) {
+        if(empty($collectionName)) {
             throw new \InvalidArgumentException('Collection name empty');
         }
 
-        $this->_oCollection = $this->_oDatabase->selectCollection($sCollectionName);
-        $this->_loadCollectionConfig($sCollectionName);
+        $this->_collection = $this->_database->selectCollection($collectionName);
+        $this->_loadCollectionConfig($collectionName);
     }
 
     /**
      * Load collection config from config object and stores it interally
      *
-     * @param string $sCollectionName
+     * @param string $collectionName
      */
 
-    protected function _loadCollectionConfig($sCollectionName) {
-        $aPropertyConfig = $this->_oConfig->getProperty('Fields');
+    protected function _loadCollectionConfig($collectionName) {
+        $propertyConfig = $this->_config->getProperty('Fields');
 
-        if(isset($aPropertyConfig[$sCollectionName]) && count($aPropertyConfig[$sCollectionName]) > 0) {
-            $this->_aCollectionConfig = $aPropertyConfig[$sCollectionName];
+        if(isset($propertyConfig[$collectionName]) && count($propertyConfig[$collectionName]) > 0) {
+            $this->_collectionConfig = $propertyConfig[$collectionName];
         }
     }
 
     /**
      * Check if given field name exists in config
      *
-     * @param string $sField
+     * @param string $field
      * @return bool
      */
 
-    public function fieldExists($sField) {
-        return in_array($sField, array_keys($this->_aCollectionConfig));
+    public function fieldExists($field) {
+        return in_array($field, array_keys($this->_collectionConfig));
     }
 
     /**
@@ -127,50 +127,50 @@ class Document extends IterateableList {
      */
 
     public function getPreparedProperties() {
-        $aPreparedProperties = array();
+        $preparedProperties = array();
 
-        if(!empty($this->_aCollectionConfig)) {
+        if(!empty($this->_collectionConfig)) {
             // iterates collection config
-            foreach($this->_aCollectionConfig as $sProperty => $aFieldConfig) {
+            foreach($this->_collectionConfig as $property => $fieldConfig) {
                 // get value of property or set to null, if property does not exists or is empty
-                $value = (isset($this->_aProperties[$sProperty])) ? $this->_aProperties[$sProperty] : null;
+                $value = (isset($this->_properties[$property])) ? $this->_properties[$property] : null;
                 // get prepared property value
-                $aPreparedProperties[$sProperty] = $this->_prepareProperty($sProperty, $value, $aFieldConfig);
+                $preparedProperties[$property] = $this->_prepareProperty($property, $value, $fieldConfig);
             }
         }
 
-        return $aPreparedProperties;
+        return $preparedProperties;
     }
 
     /**
      * Prepare a proptery for saving
      *
-     * @param string $sProperty
+     * @param string $property
      * @param mixed $value
-     * @param array $aFieldConfig
+     * @param array $fieldConfig
      * @return mixed
      */
 
-    protected function _prepareProperty($sProperty, $value, $aFieldConfig) {
-         if(!empty($aFieldConfig)) {
+    protected function _prepareProperty($property, $value, $fieldConfig) {
+         if(!empty($fieldConfig)) {
             // set Mongo type object
-            if(isset($aFieldConfig['mongoType'])) {
-                $value = $this->_setMongoValueType($aFieldConfig['mongoType'], $value);
+            if(isset($fieldConfig['mongoType'])) {
+                $value = $this->_setMongoValueType($fieldConfig['mongoType'], $value);
             }
 
             // set index
-            if(isset($aFieldConfig['index']['use']) && $aFieldConfig['index']['use'] === true) {
-                $this->_getCollection()->ensureIndex($sProperty);
+            if(isset($fieldConfig['index']['use']) && $fieldConfig['index']['use'] === true) {
+                $this->_getCollection()->ensureIndex($property);
             }
 
             // encrypt field data
-            if(isset($aFieldConfig['encrypt'])) {
-                $value = $this->_oApp['encryption']->encrypt($value, $this->_oConfig->getProperty('EncryptionKey'));
+            if(isset($fieldConfig['encrypt'])) {
+                $value = $this->_app['encryption']->encrypt($value, $this->_config->getProperty('EncryptionKey'));
             }
 
             // set php type
-            if(isset($aFieldConfig['phpType'])) {
-                $value = $this->_setPhpValueType($aFieldConfig['phpType'], $value);
+            if(isset($fieldConfig['phpType'])) {
+                $value = $this->_setPhpValueType($fieldConfig['phpType'], $value);
             }           
         }
 
@@ -180,13 +180,13 @@ class Document extends IterateableList {
     /**
      * Convert value to a Mongo type object
      *
-     * @param string $sType
+     * @param string $type
      * @param mixed $value
      * @return mixed
      */
 
-    protected function _setMongoValueType($sType, $value) {
-        switch($sType) {
+    protected function _setMongoValueType($type, $value) {
+        switch($type) {
             case 'id':
                 if(!$value instanceof \MongoId) {
                     return ($value !== null && !empty($value)) ? new \MongoId($value) : new \MongoId();
@@ -208,13 +208,13 @@ class Document extends IterateableList {
     /**
      * Type cast to given PHP type
      *
-     * @param string $sType
+     * @param string $type
      * @param mixed $value
      * @return mixed
      */
 
-    protected function _setPhpValueType($sType, $value) {
-        switch($sType) {
+    protected function _setPhpValueType($type, $value) {
+        switch($type) {
             case 'int':
                 return (int)$value;
             case 'float':
@@ -236,22 +236,22 @@ class Document extends IterateableList {
      */
 
     protected function _getCollection() {
-        if(!$this->_oCollection instanceof \MongoCollection) {
+        if(!$this->_collection instanceof \MongoCollection) {
             throw new \Exception('No collection selected!');
         }
 
-        return $this->_oCollection;
+        return $this->_collection;
     }
 
     /**
      * Override parent method to perpare certain values (f.e. MongoDate) to return their value
      *
-     * @param string $sKey
+     * @param string $property
      * @return mixed
      */
 
-    public function getProperty($sKey) {
-        $value = parent::getProperty($sKey);
+    public function getProperty($property) {
+        $value = parent::getProperty($property);
 
         // get timestamp of MongoDate object
         if($value instanceof \MongoDate) {
@@ -263,8 +263,8 @@ class Document extends IterateableList {
             $value = $value->{'$id'};
         }
 
-        if(isset($this->_aCollectionConfig[$sKey]['encrypt'])) {
-            $value = $this->_oApp['encryption']->decrypt($value, $this->_oConfig->getProperty('EncryptionKey'));
+        if(isset($this->_collectionConfig[$property]['encrypt'])) {
+            $value = $this->_app['encryption']->decrypt($value, $this->_config->getProperty('EncryptionKey'));
         }
 
         return $value;
@@ -278,7 +278,7 @@ class Document extends IterateableList {
 
     public function getId() {
         $this->_setId();
-        return $this->_aProperties['_id']->{'$id'};
+        return $this->_properties['_id']->{'$id'};
     }
 
     /**
@@ -286,25 +286,25 @@ class Document extends IterateableList {
      */
 
     protected function _setId() {
-        if(!isset($this->_aProperties['_id']) || !$this->_aProperties['_id'] instanceof \MongoId) {
-            $this->_aProperties['_id'] = new \MongoId();
+        if(!isset($this->_properties['_id']) || !$this->_properties['_id'] instanceof \MongoId) {
+            $this->_properties['_id'] = new \MongoId();
         }
     }
 
     /**
      * Load documend from given id
      *
-     * @param string $sId
+     * @param string $id
      */
 
-    public function load($sId) {
-        $aData = $this->_getCollection()->findOne(array('_id' => new \MongoId($sId)));
+    public function load($id) {
+        $data = $this->_getCollection()->findOne(array('_id' => new \MongoId($id)));
         
-        if($aData === null) {
-            throw new \Exception("Document id '{$sId}' does not exist!");
+        if($data === null) {
+            throw new \Exception("Document id '{$id}' does not exist!");
         }
 
-        $this->_aProperties = $aData;
+        $this->_properties = $data;
     }
 
     /**
@@ -313,8 +313,8 @@ class Document extends IterateableList {
 
     public function save() {
         $this->_setId();
-        $aPreparedProperties = $this->getPreparedProperties();
-        $this->_getCollection()->save($aPreparedProperties);
+        $preparedProperties = $this->getPreparedProperties();
+        $this->_getCollection()->save($preparedProperties);
     }
 
     /**
@@ -322,6 +322,6 @@ class Document extends IterateableList {
      */
 
     public function delete() {
-        $this->_getCollection()->remove(array('_id' => $this->_aProperties['_id']));
+        $this->_getCollection()->remove(array('_id' => $this->_properties['_id']));
     }
 }
