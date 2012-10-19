@@ -16,22 +16,22 @@ use MongoAppKit\Lists\IterateableList;
 
 class Config extends IterateableList {
 
-    public function addConfigFile($sFileName = null) {
-        if(empty($sFileName)) {
+    public function addConfigFile($fileName = null) {
+        if(empty($fileName)) {
             throw new \InvalidArgumentException("Empty config file name specified.");
         }
         
-        if(!is_readable($sFileName)) {
-            throw new \InvalidArgumentException("File {$sFileName} is not readable!");
+        if(!is_readable($fileName)) {
+            throw new \InvalidArgumentException("File {$fileName} is not readable!");
         }
 
-        $configFileJsonData = file_get_contents($sFileName);
+        $configFileJsonData = file_get_contents($fileName);
         $configData = json_decode($configFileJsonData, true);
         $this->updateProperties($configData);
     }
 
-    public function setBaseDir($sBaseDir) {
-        $this->setProperty('BaseDir', $sBaseDir);
+    public function setBaseDir($baseDir) {
+        $this->setProperty('BaseDir', $baseDir);
     }
 
     public function getBaseDir() {
@@ -48,12 +48,12 @@ class Config extends IterateableList {
         }
 
         if(is_array($data)) {
-            $aSanitizedData = array();
+            $sanitizedData = array();
             foreach($data as $key => $value) {
-                $aSanitizedData[$key] = $this->sanitize($value);
+                $sanitizedData[$key] = $this->sanitize($value);
             }
 
-            return $aSanitizedData;
+            return $sanitizedData;
         }
 
         $data = trim($data);
