@@ -17,42 +17,14 @@ use MongoAppKit\Config,
 
 use Silex\Application;
 
-class DocumentList extends IterateableList {
-
-    /**
-     * MongoDB object
-     * @var MongoDB
-     */
-
-    protected $_database = null;
-
-    /**
-     * Config object
-     * @var Config
-     */
-
-    protected $_config = null;
-
-    /**
-     * Collection name
-     * @var string
-     */
-
-    protected $_collectionName = null;
-
-    /**
-     * MongoCollection object
-     * @var MongoCollection
-     */
-
-    protected $_collection = null;
+class DocumentCollection extends IterateableList {
 
     /**
      * Document object
      * @var Document
      */
 
-    protected $_documentBaseObject = null;
+    protected $_defaultDocument = null;
 
     /**
      * Count of selected documents
@@ -88,49 +60,16 @@ class DocumentList extends IterateableList {
      * @param MongoDB $oDatabase
      */
 
-    public function __construct(Application $app) {
-        $this->setDatabase($app['storage']->getDatabase());
-        $this->setConfig($app['config']);
+    public function __construct(Document $defaultDocument) {
+        $this->_defaultDocument = $defaultDocument;
     }
-
-    /**
-     * Set MongoDB object
-     *
-     * @param MongoDB $database
-     */
-
-    public function setDatabase(\MongoDB $database) {
-        $this->_database = $database;
-
-        if($this->_collectionName !== null) {
-            $this->_collection = $this->_database->selectCollection($this->_collectionName);
-        }
-    }
-
-    /**
-     * Set Config object
-     *
-     * @param Config $config
-     */
-
-    public function setConfig(Config $config) {
-        $this->_config = $config;
-    }
-
-    /**
-     * Set custom sorting
-     *
-     * @param string $field
-     * @param string $direction
-     * @throws Exception
-     */
 
     public function setCustomSorting($field, $direction = 'asc') {
-        if(!$this->_documentBaseObject instanceof Document) {
+        if(!$this->_defaultDocument instanceof Document) {
             throw new \Exception("No document base object set");
         }
 
-        if(!$this->_documentBaseObject->fieldExists($field)) {
+        if(!$this->_defaultDocument->fieldExists($field)) {
             throw new \Exception("Field {$field} does not exist.");
         }
 
@@ -144,24 +83,6 @@ class DocumentList extends IterateableList {
 
         $this->_customSortField = $field;
         $this->_customSortOrder = $direction;
-    }
-
-    /**
-     * Set document base object for list
-     *
-     * @param Document $documentObject
-     */
-
-    public function setDocumentBaseObject(Document $documentObject) {
-        // check for valid document object
-        if(!$documentObject instanceof Document) {
-            throw new \InvalidArgumentException("Expecting instance of Document");
-        }
-
-        $documentObject->setDatabase($this->_database);
-        $documentObject->setConfig($this->_config);
-
-        $this->_documentBaseObject = $documentObject;
     }
 
     /**
@@ -227,6 +148,12 @@ class DocumentList extends IterateableList {
      */
 
     protected function _getDefaultCursor($where = null, $fields = null) {
+
+        // check for valid base document object
+        if(!$this->_defaultDocument instanceof Document) {
+            throw new \Exception("No document base object set");
+        }
+
         // no where clause if none given
         if($where === null) {
             $where = array();
@@ -238,7 +165,7 @@ class DocumentList extends IterateableList {
         }
 
         // get documents
-        $cursor = $this->_collection->find($where, $fields);
+        $cursor = $this->_defaultDocument->getCollection()->find($where, $fields);
 
         // sort
         $aSorting = $this->_getSorting();
@@ -289,14 +216,14 @@ class DocumentList extends IterateableList {
         }
 
         // check for valid base document object
-        if(!$this->_documentBaseObject instanceof Document) {
+        if(!$this->_defaultDocument instanceof Document) {
             throw new \Exception("No document base object set");
         }
 
         // iterate cursor
         foreach($cursor as $line) {
             // clone base object and fill with data from current cursor iteration
-            $document = clone $this->_documentBaseObject;
+            $document = clone $this->_defaultDocument;
             $document->updateProperties($line);
             $data[] = $document;
         }

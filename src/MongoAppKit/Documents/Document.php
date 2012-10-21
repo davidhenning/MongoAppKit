@@ -60,13 +60,18 @@ class Document extends IterateableList {
      * @param MongoDB $oDatabase
      */
 
-    public function __construct(Application $app) {
+    public function __construct(Application $app, $collectionName) {
         $this->_app = $app;
-        $this->setDatabase($app['storage']->getDatabase());
-        $this->setConfig($app['config']);
+        $this->_setDatabase($app['storage']->getDatabase());
+        $this->_setConfig($app['config']);
+        $this->_setCollection($collectionName);
     }
 
-    public function setDatabase(\MongoDB $database) {
+    public function getDatabase() {
+        return $this->_database;
+    }
+
+    protected function _setDatabase(\MongoDB $database) {
         $this->_database = $database;
     }
 
@@ -76,8 +81,12 @@ class Document extends IterateableList {
      * @param Config $config
      */
 
-    public function setConfig(Config $config) {
+    protected function _setConfig(Config $config) {
         $this->_config = $config;
+    }
+
+    public function getCollection() {
+        return $this->_collection;
     }
 
     /**
@@ -86,7 +95,7 @@ class Document extends IterateableList {
      * @param string $collectionName
      */
 
-    public function setCollectionName($collectionName) {
+    protected  function _setCollection($collectionName) {
         if(empty($collectionName)) {
             throw new \InvalidArgumentException('Collection name empty');
         }
