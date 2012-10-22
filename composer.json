@@ -4,6 +4,7 @@
     "description": "Object document mapper for MongoDB",
     "keywords": ["mongo","mongodb", "ODM"],
     "homepage": "https://github.com/MadCatme/mongoappkit",
+    "license": "MIT",
     "authors": [
         {
             "name": "David Henning",
