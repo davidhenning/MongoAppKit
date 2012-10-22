@@ -48,4 +48,25 @@ class DocumentTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($expectedDocument, $document);
     }
 
+    public function testGetDatabase() {
+        $app = $this->_app;
+
+        $document = new Document($app, 'test');
+
+        $this->assertTrue($document->getDatabase() instanceof \MongoDB);
+    }
+
+    public function testEmptyCollectionName() {
+        $app = $this->_app;
+        $exceptionThrown = false;
+
+        try {
+            $collection = new Document($app, null);
+            $collection->findAll();
+        } catch(\InvalidArgumentException $e) {
+            $exceptionThrown = true;
+        }
+
+        $this->assertTrue($exceptionThrown);
+    }
 }

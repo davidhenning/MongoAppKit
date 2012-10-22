@@ -12,8 +12,7 @@
 
 namespace MongoAppKit\Documents;
 
-use MongoAppKit\Config,
-    MongoAppKit\Lists\IterateableList;
+use MongoAppKit\Lists\IterateableList;
 
 use Silex\Application;
 
@@ -45,32 +44,28 @@ class DocumentCollection extends IterateableList {
      * @var string
      */
 
-    protected $_customSortField = null;
+    protected $_sort = null;
 
     /**
      * Direction of custom sorting (asc or desc)
      * @var string
      */
 
-    protected $_customSortOrder = null;
+    protected $_sortOrder = null;
 
     /**
      * Set MongoDB object
      *
-     * @param MongoDB $oDatabase
+     * @param Document $defaultDocument
      */
 
     public function __construct(Document $defaultDocument) {
         $this->_defaultDocument = $defaultDocument;
     }
 
-    public function setCustomSorting($field, $direction = 'asc') {
-        if(!$this->_defaultDocument instanceof Document) {
-            throw new \Exception("No document base object set");
-        }
-
+    public function sortBy($field, $direction = 'asc') {
         if(!$this->_defaultDocument->fieldExists($field)) {
-            throw new \Exception("Field {$field} does not exist.");
+            throw new \InvalidArgumentException("Field {$field} does not exist.");
         }
 
         if($direction === null) {
@@ -78,11 +73,11 @@ class DocumentCollection extends IterateableList {
         }
 
         if(!in_array($direction, array('asc', 'desc'))) {
-            throw new \Exception("Direction {$direction} is not supported.");
+            throw new \InvalidArgumentException("Direction {$direction} is not supported.");
         }
 
-        $this->_customSortField = $field;
-        $this->_customSortOrder = $direction;
+        $this->_sort = $field;
+        $this->_sortOrder = $direction;
     }
 
     /**
@@ -90,8 +85,8 @@ class DocumentCollection extends IterateableList {
      */
 
     public function findAll() {       
-        $cursor = $this->_getDefaultCursor();
-        $this->_setDocumentsFromCursor($cursor);
+        $cursor = $this->_getCursor();
+        $this->_setDocuments($cursor);
 
         return $this;
     }
@@ -99,14 +94,14 @@ class DocumentCollection extends IterateableList {
     /**
      * Load documents of selected MongoDB collection by given page
      *
-     * @param integer $iPage
-     * @param integer $iPerPage
-     * @param MongoCursor $cursorOverride
+     * @param integer $limit
+     * @param integer $skip
+     * @param array $where
      */
 
-    public function find($limit = 100, $skip = 0, $cursorOverride = null) {
+    public function find($limit = 100, $skip = 0, $where = null) {
         // set default cursor if no override is available
-        $cursor = ($cursorOverride !== null && $cursorOverride instanceof \MongoCursor) ? $cursorOverride : $this->_getDefaultCursor();
+        $cursor = ($where !== null && is_array($where) && !empty($where)) ? $this->_getCursor($where) : $this->_getCursor();
         // set limit for page
         $cursor->limit($limit);
 
@@ -114,7 +109,7 @@ class DocumentCollection extends IterateableList {
             $cursor->skip($skip);
         }
 
-        $this->_setDocumentsFromCursor($cursor);
+        $this->_setDocuments($cursor);
 
         return $this;
     }
@@ -143,16 +138,11 @@ class DocumentCollection extends IterateableList {
      * Get MongoCursor object with given fields for given where clause
      *
      * @param array $where
-     * @param arary $fields
-     * @return MongoCursor
+     * @param array $fields
+     * @return \MongoCursor
      */
 
-    protected function _getDefaultCursor($where = null, $fields = null) {
-
-        // check for valid base document object
-        if(!$this->_defaultDocument instanceof Document) {
-            throw new \Exception("No document base object set");
-        }
+    protected function _getCursor($where = null, $fields = null) {
 
         // no where clause if none given
         if($where === null) {
@@ -168,8 +158,8 @@ class DocumentCollection extends IterateableList {
         $cursor = $this->_defaultDocument->getCollection()->find($where, $fields);
 
         // sort
-        $aSorting = $this->_getSorting();
-        $cursor->sort($aSorting);
+        $sort = $this->_getSorting();
+        $cursor->sort($sort);
 
         return $cursor;
     }
@@ -177,14 +167,14 @@ class DocumentCollection extends IterateableList {
     protected function _getSorting() {
         $sorting = array();
 
-        if($this->_customSortField !== null) {
+        if($this->_sort !== null) {
             $sortOrder = 1;
 
             // set sorting direction
-            if($this->_customSortOrder !== null) {
-                if($this->_customSortOrder === 'asc') {
+            if($this->_sortOrder !== null) {
+                if($this->_sortOrder === 'asc') {
                     $sortOrder = 1;
-                } elseif($this->_customSortOrder === 'desc') {
+                } elseif($this->_sortOrder === 'desc') {
                     $sortOrder = -1;
                 } else {
                     $sortOrder = 1;
@@ -192,7 +182,7 @@ class DocumentCollection extends IterateableList {
             }   
 
             // order documents by custom sorting field
-            $sorting = array($this->_customSortField => $sortOrder);
+            $sorting = array($this->_sort => $sortOrder);
         } else {
             // default sorting by creation date
             $sorting = array('createdOn' => -1);
@@ -204,21 +194,11 @@ class DocumentCollection extends IterateableList {
     /**
      * Clone instances of the given document object for each document in the given MongoCursor object 
      *
-     * @param MongoCursor $cursor
+     * @param \MongoCursor $cursor
      */
 
-    protected function _setDocumentsFromCursor(\MongoCursor $cursor) {
+    protected function _setDocuments(\MongoCursor $cursor) {
         $data = array();
-        
-        // check for valid cursor
-        if($cursor === null) {
-            throw new \Exception("No cursor object set");
-        }
-
-        // check for valid base document object
-        if(!$this->_defaultDocument instanceof Document) {
-            throw new \Exception("No document base object set");
-        }
 
         // iterate cursor
         foreach($cursor as $line) {
