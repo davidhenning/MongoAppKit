@@ -323,6 +323,7 @@ class Document extends IterateableList {
     public function save() {
         $this->_setId();
         $preparedProperties = $this->getPreparedProperties();
+        $this->_properties = $preparedProperties;
         $this->_getCollection()->save($preparedProperties);
     }
 
