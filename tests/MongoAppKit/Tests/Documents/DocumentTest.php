@@ -31,7 +31,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function tearDown() {
-        $this->_app['storage']->getDatabase()->drop();
+        $this->_app['storage']->getDatabase()->test->drop();
     }
 
     public function testDocument() {
