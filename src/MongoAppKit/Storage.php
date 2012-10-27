@@ -18,14 +18,14 @@ class Storage {
 
     /**
      * Mongo object
-     * @var Mongo
+     * @var \Mongo
      */
 
     protected $_mongo = null;
 
     /**
      * MongoDB object
-     * @var MongoDB
+     * @var \MongoDB
      */
 
     protected $_database = null;
@@ -61,7 +61,7 @@ class Storage {
     /**
      * Returns MongoDB object of selected Database
      *
-     * @return MongoDB
+     * @return \MongoDB
      */
 
     public function getDatabase() {
