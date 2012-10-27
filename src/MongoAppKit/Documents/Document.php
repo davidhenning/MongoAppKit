@@ -168,12 +168,12 @@ class Document extends IterateableList {
             }
 
             // set index
-            if(isset($fieldConfig['index']['use']) && $fieldConfig['index']['use'] === true) {
+            if(isset($fieldConfig['index']) && $fieldConfig['index'] === true) {
                 $this->_getCollection()->ensureIndex($property);
             }
 
             // encrypt field data
-            if(isset($fieldConfig['encrypt'])) {
+            if(isset($fieldConfig['encrypt']) && $fieldConfig['encrypt'] === true) {
                 $value = $this->_app['encryption']->encrypt($value, $this->_config->getProperty('EncryptionKey'));
             }
 

@@ -22,9 +22,13 @@ class DocumentTest extends \PHPUnit_Framework_TestCase {
         $fields = array(
             'test' => array(
                 '_id' => array('mongoType' => 'id'),
-                'created_at' => array('mongoType' => 'date'),
+                'created_at' => array('mongoType' => 'date', 'index' => true),
                 'foo' => array(),
-                'bar' => array('encrypt' => true)
+                'bar' => array('encrypt' => true),
+                'typeInt' => array('phpType' => 'int'),
+                'typeFloat' => array('phpType' => 'float'),
+                'typeBool' => array('phpType' => 'bool'),
+                'typeString' => array('phpType' => 'string')
             )
         );
 
@@ -136,4 +140,60 @@ class DocumentTest extends \PHPUnit_Framework_TestCase {
         $this->assertTrue($exceptionThrown);
     }
 
+    public function testDocumentPhpTypeInt() {
+        $app = $this->_app;
+
+        $document = new Document($app, 'test');
+        $document->setProperty('typeInt', '5');
+        $document->save();
+
+        $this->assertEquals($document->getProperty('typeInt'), 5);
+    }
+
+    public function testDocumentPhpTypeFloat() {
+        $app = $this->_app;
+
+        $document = new Document($app, 'test');
+        $document->setProperty('typeFloat', '5.05');
+        $document->save();
+
+        $this->assertEquals($document->getProperty('typeFloat'), 5.05);
+    }
+
+    public function testDocumentPhpTypeBool() {
+        $app = $this->_app;
+
+        $document = new Document($app, 'test');
+        $document->setProperty('typeBool', 'true');
+        $document->save();
+
+        $this->assertEquals($document->getProperty('typeBool'), true);
+    }
+
+    public function testDocumentPhpTypeString() {
+        $app = $this->_app;
+
+        $document = new Document($app, 'test');
+        $document->setProperty('typeString', 'string');
+        $document->save();
+
+        $this->assertEquals($document->getProperty('typeString'), 'string');
+    }
+
+    public function testDelete() {
+        $app = $this->_app;
+        $exceptionThrown = false;
+
+        try {
+            $document = new Document($app, null);
+            $document->save();
+            $id = $document->getId();
+            $document->delete();
+            $document->load($id);
+        } catch(\Exception $e) {
+            $exceptionThrown = true;
+        }
+
+        $this->assertTrue($exceptionThrown);
+    }
 }
