@@ -310,7 +310,7 @@ class Document extends IterateableList {
         $data = $this->_getCollection()->findOne(array('_id' => new \MongoId($id)));
         
         if($data === null) {
-            throw new \Exception("Document id '{$id}' does not exist!");
+            throw new \Exception("Document id '{$id}' does not exist!", 404);
         }
 
         $this->_properties = $data;
