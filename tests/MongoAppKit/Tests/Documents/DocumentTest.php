@@ -4,7 +4,7 @@ namespace MongoAppKit\Tests;
 
 use MongoAppKit\Config,
     MongoAppKit\Application,
-    MongoAppKit\Documents\Document;
+    MongoAppKit\Document\Document;
 
 class DocumentTest extends \PHPUnit_Framework_TestCase {
 

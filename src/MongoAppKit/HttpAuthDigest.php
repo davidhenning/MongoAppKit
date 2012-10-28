@@ -13,7 +13,7 @@
 
 namespace MongoAppKit;
 
-use MongoAppKit\Exceptions\HttpException;
+use MongoAppKit\Exception\HttpException;
 
 use Symfony\Component\HttpFoundation\Request,
     Symfony\Component\HttpFoundation\Response;

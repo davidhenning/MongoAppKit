@@ -10,7 +10,7 @@
  * @package MongoAppKit
  */
 
-namespace MongoAppKit\Lists;
+namespace MongoAppKit;
 
 class IterateableList implements \Countable, \IteratorAggregate, \ArrayAccess {
 

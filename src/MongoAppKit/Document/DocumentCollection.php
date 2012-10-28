@@ -10,9 +10,9 @@
  * @package MongoAppKit
  */
 
-namespace MongoAppKit\Documents;
+namespace MongoAppKit\Document;
 
-use MongoAppKit\Lists\IterateableList;
+use MongoAppKit\IterateableList;
 
 use Silex\Application;
 

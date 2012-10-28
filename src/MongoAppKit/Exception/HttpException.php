@@ -1,6 +1,6 @@
 <?php
 
-namespace MongoAppKit\Exceptions;
+namespace MongoAppKit\Exception;
 
 use \Exception;
 

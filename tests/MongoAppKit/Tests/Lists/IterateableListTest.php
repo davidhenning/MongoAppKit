@@ -2,7 +2,7 @@
 
 namespace MongoAppKit\Tests;
 
-use MongoAppKit\Lists\IterateableList;
+use MongoAppKit\IterateableList;
 
 class IterateableListTest extends \PHPUnit_Framework_TestCase {
 

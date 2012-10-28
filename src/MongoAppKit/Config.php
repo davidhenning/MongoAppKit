@@ -12,7 +12,7 @@
 
 namespace MongoAppKit;
 
-use MongoAppKit\Lists\IterateableList;
+use MongoAppKit\IterateableList;
 
 class Config extends IterateableList {
 

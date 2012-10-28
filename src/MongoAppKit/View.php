@@ -68,7 +68,7 @@ class View {
     protected $_id = null;
 
     /**
-     * Documents per page
+     * Document per page
      * @var integer
      */
 
