@@ -1,10 +1,10 @@
 <?php
 
-namespace MongoAppKit\Tests;
+namespace MongoAppKit\Tests\Document;
 
 use MongoAppKit\Config,
     MongoAppKit\Application,
-    MongoAppKit\Document\Document,
+    MongoAppKit\Document\Document as MongoAppKitDocument,
     MongoAppKit\Document\DocumentCollection;
 
 class DocumentCollectionTest extends \PHPUnit_Framework_TestCase {
@@ -32,7 +32,7 @@ class DocumentCollectionTest extends \PHPUnit_Framework_TestCase {
         $this->_app = $app;
 
         for($i = 0; $i < 10; $i++) {
-            $document = new Document($app, 'test');
+            $document = new MongoAppKitDocument($app, 'test');
             $document->setProperty('foo', 'bar');
             $document->setProperty('sort', 10 - $i);
             $document->save();
@@ -46,7 +46,7 @@ class DocumentCollectionTest extends \PHPUnit_Framework_TestCase {
 
     public function testFindAll() {
         $app = $this->_app;
-        $collection = new DocumentCollection(new Document($app, 'test'));
+        $collection = new DocumentCollection(new MongoAppKitDocument($app, 'test'));
         $collection->findAll();
 
         $this->assertEquals(10, $collection->getFoundDocuments());
@@ -55,7 +55,7 @@ class DocumentCollectionTest extends \PHPUnit_Framework_TestCase {
 
     public function testFind() {
         $app = $this->_app;
-        $collection = new DocumentCollection(new Document($app, 'test'));
+        $collection = new DocumentCollection(new MongoAppKitDocument($app, 'test'));
         $collection->find(100, 0, array('sort' => 1));
 
         $this->assertEquals(1, $collection->getFoundDocuments());
@@ -64,7 +64,7 @@ class DocumentCollectionTest extends \PHPUnit_Framework_TestCase {
 
     public function testFindSkip() {
         $app = $this->_app;
-        $collection = new DocumentCollection(new Document($app, 'test'));
+        $collection = new DocumentCollection(new MongoAppKitDocument($app, 'test'));
         $collection->find(100, 9, array('foo' => 'bar'));
 
         $this->assertEquals(1, $collection->getFoundDocuments());
@@ -73,7 +73,7 @@ class DocumentCollectionTest extends \PHPUnit_Framework_TestCase {
 
     public function testSortByAsc() {
         $app = $this->_app;
-        $collection = new DocumentCollection(new Document($app, 'test'));
+        $collection = new DocumentCollection(new MongoAppKitDocument($app, 'test'));
         $collection->sortBy('sort', 'asc');
         $collection->findAll();
 
@@ -90,7 +90,7 @@ class DocumentCollectionTest extends \PHPUnit_Framework_TestCase {
 
     public function testSortByDesc() {
         $app = $this->_app;
-        $collection = new DocumentCollection(new Document($app, 'test'));
+        $collection = new DocumentCollection(new MongoAppKitDocument($app, 'test'));
         $collection->sortBy('sort', 'desc');
         $collection->findAll();
 
@@ -106,7 +106,7 @@ class DocumentCollectionTest extends \PHPUnit_Framework_TestCase {
     }
     public function testSortByNull() {
         $app = $this->_app;
-        $collection = new DocumentCollection(new Document($app, 'test'));
+        $collection = new DocumentCollection(new MongoAppKitDocument($app, 'test'));
         $collection->sortBy('sort', null);
         $collection->findAll();
 
@@ -126,7 +126,7 @@ class DocumentCollectionTest extends \PHPUnit_Framework_TestCase {
         $exceptionThrown = false;
 
         try {
-            $collection = new DocumentCollection(new Document($app, 'test'));
+            $collection = new DocumentCollection(new MongoAppKitDocument($app, 'test'));
             $collection->sortBy('sort', 'fgdgdg');
             $collection->findAll();
         } catch(\InvalidArgumentException $e) {
@@ -141,7 +141,7 @@ class DocumentCollectionTest extends \PHPUnit_Framework_TestCase {
         $exceptionThrown = false;
 
         try {
-            $collection = new DocumentCollection(new Document($app, 'test'));
+            $collection = new DocumentCollection(new MongoAppKitDocument($app, 'test'));
             $collection->sortBy('dfsafsfsf', 'fgdgdg');
             $collection->findAll();
         } catch(\InvalidArgumentException $e) {

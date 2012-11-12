@@ -10,9 +10,9 @@
  * @package MongoAppKit
  */
 
-namespace MongoAppKit;
+namespace MongoAppKit\Collection;
 
-class IterateableList implements \Countable, \IteratorAggregate, \ArrayAccess {
+class MutableList implements \Countable, \IteratorAggregate {
 
     /**
      * Stores properties
@@ -20,6 +20,42 @@ class IterateableList implements \Countable, \IteratorAggregate, \ArrayAccess {
      */
 
     protected $_properties = array();
+
+    /**
+     * Constructor
+     *
+     * Accepts any arguments and saves them as properties
+     *
+     * @param mixed [...]
+     */
+
+    public function __construct() {
+        $args = func_get_args();
+
+        if(!empty($args)) {
+            $this->_properties = $args;
+        }
+    }
+
+    public function __get($property) {
+        if($property === 'length') {
+            return $this->count();
+        }
+
+        return $this->getProperty($property);
+    }
+
+    public function __set($property, $value) {
+        $this->setProperty($property, $value);
+    }
+
+    public function __unset($property) {
+        $this->removeProperty($property);
+    }
+
+    public function __toString() {
+        return serialize($this->_properties);
+    }
 
     /**
      * Imports an array 
@@ -43,42 +79,6 @@ class IterateableList implements \Countable, \IteratorAggregate, \ArrayAccess {
                 $this->setProperty($property, $value);
             }
         }
-    }
-
-    /**
-     * Returns value of given property name or throws an exception if the property does not exist 
-     *
-     * @param string $property
-     * @return mixed
-     * @throws OutOfBoundsException
-     */
-
-    public function getProperty($property) {
-        if(array_key_exists($property, $this->_properties)) {
-            return $this->_properties[$property];
-        }
-        
-        throw new \OutOfBoundsException("Index '{$property}' does not exist");
-    }
-
-    /**
-     * Returns all properties as array
-     *
-     * @return array
-     */
-
-    public function getProperties() {
-        // get all property names
-        $properties = array_keys($this->_properties);
-        $values = array();
-
-        if(!empty($properties)) {
-            foreach($properties as $property) {
-                $values[$property] = $this->getProperty($property);
-            }
-        }
-
-        return $values;
     }
 
     /**
@@ -106,6 +106,42 @@ class IterateableList implements \Countable, \IteratorAggregate, \ArrayAccess {
         unset($this->_properties[$property]);
     }
 
+    /**
+     * Returns value of given property name or throws an exception if the property does not exist
+     *
+     * @param string $property
+     * @return mixed
+     * @throws \OutOfBoundsException
+     */
+
+    public function getProperty($property) {
+        if(array_key_exists($property, $this->_properties)) {
+            return $this->_properties[$property];
+        }
+
+        throw new \OutOfBoundsException("Index '{$property}' does not exist");
+    }
+
+    /**
+     * Returns all properties as array
+     *
+     * @return array
+     */
+
+    public function getProperties() {
+        // get all property names
+        $properties = array_keys($this->_properties);
+        $values = array();
+
+        if(!empty($properties)) {
+            foreach($properties as $property) {
+                $values[$property] = $this->getProperty($property);
+            }
+        }
+
+        return $values;
+    }
+
     /******************/
     /* SPL interfaces */
     /******************/
@@ -123,54 +159,10 @@ class IterateableList implements \Countable, \IteratorAggregate, \ArrayAccess {
     /**
      * Return ArrayIterator instance with list properties
      *
-     * @return ArrayIterator
+     * @return \ArrayIterator
      */
 
     public function getIterator() {
         return new \ArrayIterator($this->_properties);
     }
-
-    /**
-     * Sets a property and its value
-     *
-     * @param string $property
-     * @param mixed $value
-     */
-
-    public function offsetSet($property, $value) {
-        $this->setProperty($property, $value);
-    }
-
-    /**
-     * Checks if given property name exists
-     *
-     * @param string $property
-     * @return bool
-     */
-    
-    public function offsetExists($property) {
-        return isset($this->_properties[$property]);
-    }
-
-    /**
-     * Removes a property
-     *
-     * @param string $property
-     */
-    
-    public function offsetUnset($property) {
-        $this->removeProperty($property);
-    }
-
-    /**
-     * Returns value of given property name
-     *
-     * @param string $property
-     * @return mixed
-     */   
-
-    public function offsetGet($property) {
-        return $this->getProperty($property);
-    }
-    
 }

@@ -1,14 +1,27 @@
 <?php
 
-namespace MongoAppKit\Tests;
+namespace MongoAppKit\Tests\Collection;
 
-use MongoAppKit\IterateableList;
+use MongoAppKit\Collection\MutableList;
 
-class IterateableListTest extends \PHPUnit_Framework_TestCase {
+class MutableListTest extends \PHPUnit_Framework_TestCase {
+
+    public function testConstructor() {
+        $list = new MutableList('bubba', 'gump', 'shrimps');
+        $array = array('bubba', 'gump', 'shrimps');
+
+        $this->assertEquals($array, $list->getProperties());
+    }
+
+    public function testPropertyLength() {
+        $list = new MutableList('bubba', 'gump', 'shrimps');
+
+        $this->assertEquals(3, $list->length);
+    }
 
 	public function testAssign() {
 		$array = array('food' => 'shrimps', 'sauce' => 'cocktail');
-		$list = new IterateableList();
+		$list = new MutableList();
 		$list->assign($array);
 		
 		$this->assertEquals($array, $list->getProperties());
@@ -16,15 +29,23 @@ class IterateableListTest extends \PHPUnit_Framework_TestCase {
 
 	public function testProperty() {
 		$value = 'bar';
-		$list = new IterateableList();
+		$list = new MutableList();
 		$list->setProperty('foo', $value);
 
 		$this->assertEquals($value, $list->getProperty('foo'));
 	}
 
+    public function testMagicProperty() {
+        $value = 'bar';
+        $list = new MutableList();
+        $list->foo = $value;
+
+        $this->assertEquals($value, $list->foo);
+    }
+
 	public function testNonExistingProperty() {
 		try {
-			$list = new IterateableList();
+			$list = new MutableList();
 			$value = $list->getProperty('foo');
 		} catch(\OutOfBoundsException $e) {
 			return;
@@ -37,7 +58,7 @@ class IterateableListTest extends \PHPUnit_Framework_TestCase {
 		try {
 			$property = 'foo';
 			$value = 'bar';
-			$list = new IterateableList();
+			$list = new MutableList();
 			$list->setProperty($property, $value);
 			$list->removeProperty($property);
 			$value = $list->getProperty($property);
@@ -48,9 +69,24 @@ class IterateableListTest extends \PHPUnit_Framework_TestCase {
 		$this->fail('Expected OutOfBoundsException was not thrown.');
 	}
 
+    public function testMagicRemoveProperty() {
+        try {
+            $property = 'foo';
+            $value = 'bar';
+            $list = new MutableList();
+            $list->{$property} = $value;
+            unset($list->{$property});
+            $value = $list->{$property};
+        } catch(\OutOfBoundsException $e) {
+            return;
+        }
+
+        $this->fail('Expected OutOfBoundsException was not thrown.');
+    }
+
 	public function testRemoveNonExistingProperty() {
 		try {
-			$list = new IterateableList();
+			$list = new MutableList();
 			$list->removeProperty('foo');
 		} catch(\OutOfBoundsException $e) {
 			return;
@@ -60,7 +96,7 @@ class IterateableListTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCount() {
-		$list = new IterateableList();
+		$list = new MutableList();
 		$list->setProperty('foo', 'bar');
 
 		$this->assertEquals(1, count($list));
@@ -68,7 +104,7 @@ class IterateableListTest extends \PHPUnit_Framework_TestCase {
 
 	public function testIteration() {
 		$array = array('food' => 'shrimps', 'sauce' => 'cocktail');
-		$list = new IterateableList();
+		$list = new MutableList();
 		$list->assign($array);
 
 		$newArray = array();
@@ -80,36 +116,20 @@ class IterateableListTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals($array, $newArray);
 	}
 
-	public function testArrayAccess() {
-		$list = new IterateableList();
-		$property = 'foo';
-		$value = 'bar';
-		$array = array('foo' => 'bar');
-		$list[$property] = $value;
-
-		$this->assertEquals($array[$property], $list[$property]);
-	}
-
-	public function testArrayAccessExists() {
-		$list = new IterateableList();
-		$this->assertFalse(isset($list['foo']));
-	}
-
-	public function testArrayAccessUnset() {
-		$list = new IterateableList();
-		$list['foo'] = 'bar';
-		unset($list['foo']);
-
-		$this->assertFalse(isset($list['foo']));
-	}
-
 	public function testUpdateProperties() {
 		$values = array('foo' => 'bar');
-		$list = new IterateableList();
+		$list = new MutableList();
 		$list->assign($values);
 		$newValues = array('bar' => 'foo');
 		$list->updateProperties($newValues);
 		$expected = array_merge($values, $newValues);
 		$this->assertEquals($expected, $list->getProperties());
 	}
+
+    public function testToString() {
+        $list = new MutableList('bubba', 'gump', 'shrimps');
+        $array = array('bubba', 'gump', 'shrimps');
+
+        $this->assertEquals(serialize($array), (string)$list);
+    }
 }

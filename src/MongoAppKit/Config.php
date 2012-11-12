@@ -12,9 +12,9 @@
 
 namespace MongoAppKit;
 
-use MongoAppKit\IterateableList;
+use MongoAppKit\Collection\MutableList;
 
-class Config extends IterateableList {
+class Config extends MutableList {
 
     public function addConfigFile($fileName = null) {
         if(empty($fileName)) {

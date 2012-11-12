@@ -12,11 +12,11 @@
 
 namespace MongoAppKit\Document;
 
-use MongoAppKit\IterateableList;
+use MongoAppKit\Collection\MutableList;
 
 use Silex\Application;
 
-class DocumentCollection extends IterateableList {
+class DocumentCollection extends MutableList {
 
     /**
      * Document object
