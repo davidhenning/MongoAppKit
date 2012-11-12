@@ -325,6 +325,7 @@ class Document extends IterateableList {
         $preparedProperties = $this->getPreparedProperties();
         $this->_properties = $preparedProperties;
         $this->_getCollection()->save($preparedProperties);
+        usleep(10000);
     }
 
     /**
