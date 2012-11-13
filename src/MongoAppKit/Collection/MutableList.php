@@ -57,6 +57,42 @@ class MutableList implements \Countable, \IteratorAggregate {
         return serialize($this->_properties);
     }
 
+    public function reverse() {
+        $this->_properties = array_reverse($this->_properties);
+
+        return $this;
+    }
+
+    public function map($callback) {
+        if(!is_callable($callback)) {
+            throw new \InvalidArgumentException('Mapping function is not callable!');
+        }
+
+        $this->_properties = array_map($callback, $this->_properties);
+
+        return $this;
+    }
+
+    public function slice($offset, $limit) {
+        $properties = array_slice($this->_properties, $offset, $limit);
+        $list = new self();
+        $list->assign($properties);
+
+        return $list;
+    }
+
+    public function filter($callback) {
+        if(!is_callable($callback)) {
+            throw new \InvalidArgumentException('Filter is not callable!');
+        }
+
+        $properties = array_filter($this->_properties, $callback);
+        $list = new self();
+        $list->assign($properties);
+
+        return $list;
+    }
+
     /**
      * Imports an array 
      *

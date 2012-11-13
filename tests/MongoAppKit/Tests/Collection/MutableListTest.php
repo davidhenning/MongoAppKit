@@ -132,4 +132,58 @@ class MutableListTest extends \PHPUnit_Framework_TestCase {
 
         $this->assertEquals(serialize($array), (string)$list);
     }
+
+    public function testReverse() {
+        $expected = new MutableList('bar', 'foo');
+        $list = new MutableList('foo', 'bar');
+
+        $this->assertEquals($expected, $list->reverse());
+    }
+
+    public function testMap() {
+        $expected = new MutableList('FOO', 'BAR');
+        $list = new MutableList('foo', 'bar');
+
+        $list->map(function($value) {
+           return strtoupper($value);
+        });
+
+        $this->assertEquals($expected, $list);
+    }
+
+    public function testFilter() {
+        $expected = new MutableList('foo');
+        $list = new MutableList('foo', 'bar');
+
+        $filter = function($value) {
+            if($value === 'foo') {
+                return true;
+            }
+        };
+
+        $this->assertEquals($expected, $list->filter($filter));
+    }
+
+    public function testSlice() {
+        $expected = new MutableList('bar');
+        $list = new MutableList('foo', 'bar');
+
+        $this->assertEquals($expected, $list->slice(1, 1));
+    }
+
+    public function testChaining() {
+        $expected = new MutableList('FOO');
+        $list = new MutableList('foo', 'bar');
+        $filter = function($value) {
+            if(strtolower($value) == 'foo') {
+                return true;
+            }
+        };
+
+        $list->map(function($value) {
+            return strtoupper($value);
+        });
+
+        $this->assertEquals($expected->getProperties(), $list->filter($filter)->getProperties());
+    }
 }
