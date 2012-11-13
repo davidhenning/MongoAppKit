@@ -61,6 +61,14 @@ class MutableList implements \Countable, \IteratorAggregate {
         return serialize($this->_properties);
     }
 
+    public function head() {
+        return reset($this->_properties);
+    }
+
+    public function last() {
+        return end($this->_properties);
+    }
+
     public function reverse() {
         $this->_properties = array_reverse($this->_properties);
 
