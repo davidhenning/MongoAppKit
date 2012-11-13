@@ -49,6 +49,10 @@ class MutableList implements \Countable, \IteratorAggregate {
         $this->setProperty($property, $value);
     }
 
+    public function __isset($property) {
+        return isset($this->_properties[$property]);
+    }
+
     public function __unset($property) {
         $this->removeProperty($property);
     }
