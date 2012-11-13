@@ -188,7 +188,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase {
             $document = new MongoAppKitDocument($app, null);
             $document->save();
             $id = $document->getId();
-            $document->delete();
+            $document->remove();
             $document->load($id);
         } catch(\Exception $e) {
             $exceptionThrown = true;

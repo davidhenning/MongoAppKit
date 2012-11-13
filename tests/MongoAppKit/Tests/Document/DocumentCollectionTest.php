@@ -37,7 +37,6 @@ class DocumentCollectionTest extends \PHPUnit_Framework_TestCase {
             $document->setProperty('sort', 10 - $i);
             $document->save();
         }
-
     }
 
     public function tearDown() {
@@ -149,5 +148,25 @@ class DocumentCollectionTest extends \PHPUnit_Framework_TestCase {
         }
 
         $this->assertTrue($exceptionThrown);
+    }
+
+    public function testRemove() {
+        $app = $this->_app;
+
+        for($i = 0; $i < 10; $i++) {
+            $document = new MongoAppKitDocument($app, 'test');
+            $document->setProperty('foo', 'removeTest');
+            $document->save();
+        }
+
+        $collection = new DocumentCollection(new MongoAppKitDocument($app, 'test'));
+        $collection->find(100, 0, array('foo' => 'removeTest'));
+        $collection->foo = 'bar';
+        $this->assertEquals(11, $collection->length);
+
+        $collection->remove();
+
+        $this->assertEquals(1, $collection->length);
+        $this->assertEquals('bar', $collection->foo);
     }
 }
