@@ -212,4 +212,25 @@ class DocumentCollection extends MutableList {
         $this->_totalDocuments = $cursor->count();
         $this->_properties = $data;
     }
+
+    /*
+     * Remove found documents from collection object and MongoDB collection
+     *
+     * @return DocumentCollection
+     */
+
+    public function remove() {
+        if($this->length > 0) {
+            $properties = $this->filter(function($property) {
+                return $property instanceof Document;
+            });
+
+            foreach($properties as $property => $document) {
+                $document->remove();
+                $this->removeProperty($property);
+            }
+        }
+
+        return $this;
+    }
 }
