@@ -332,7 +332,8 @@ class Document extends MutableList {
      * Delete current document from the selected MongoDB collection
      */
 
-    public function delete() {
+    public function remove() {
         $this->_getCollection()->remove(array('_id' => $this->_properties['_id']));
+        usleep(10000);
     }
 }
