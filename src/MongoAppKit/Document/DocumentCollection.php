@@ -81,31 +81,23 @@ class DocumentCollection extends MutableList {
     }
 
     /**
-     * Load all documents of selected MongoDB collection
-     */
-
-    public function findAll() {       
-        $cursor = $this->_getCursor();
-        $this->_setDocuments($cursor);
-
-        return $this;
-    }
-
-    /**
-     * Load documents of selected MongoDB collection by given page
+     * Finds documents of selected MongoDB collection
      *
+     * @param array $where
      * @param integer $limit
      * @param integer $skip
-     * @param array $where
      */
 
-    public function find($limit = 100, $skip = 0, $where = null) {
+    public function find($where = null, $limit = null, $skip = null) {
         // set default cursor if no override is available
         $cursor = ($where !== null && is_array($where) && !empty($where)) ? $this->_getCursor($where) : $this->_getCursor();
-        // set limit for page
-        $cursor->limit($limit);
 
-        if($skip > 0) {
+        // set limit for page
+        if($limit !== null && (int)$limit > 0) {
+            $cursor->limit($limit);
+        }
+
+        if($skip !== null && (int)$skip > 0) {
             $cursor->skip($skip);
         }
 

@@ -46,7 +46,7 @@ class DocumentCollectionTest extends \PHPUnit_Framework_TestCase {
     public function testFindAll() {
         $app = $this->_app;
         $collection = new DocumentCollection(new MongoAppKitDocument($app, 'test'));
-        $collection->findAll();
+        $collection->find();
 
         $this->assertEquals(10, $collection->getFoundDocuments());
         $this->assertEquals(10, $collection->getTotalDocuments());
@@ -55,7 +55,7 @@ class DocumentCollectionTest extends \PHPUnit_Framework_TestCase {
     public function testFind() {
         $app = $this->_app;
         $collection = new DocumentCollection(new MongoAppKitDocument($app, 'test'));
-        $collection->find(100, 0, array('sort' => 1));
+        $collection->find(array('sort' => 1));
 
         $this->assertEquals(1, $collection->getFoundDocuments());
         $this->assertEquals(1, $collection->getTotalDocuments());
@@ -64,7 +64,7 @@ class DocumentCollectionTest extends \PHPUnit_Framework_TestCase {
     public function testFindSkip() {
         $app = $this->_app;
         $collection = new DocumentCollection(new MongoAppKitDocument($app, 'test'));
-        $collection->find(100, 9, array('foo' => 'bar'));
+        $collection->find(array('foo' => 'bar'), null, 9);
 
         $this->assertEquals(1, $collection->getFoundDocuments());
         $this->assertEquals(10, $collection->getTotalDocuments());
@@ -74,7 +74,7 @@ class DocumentCollectionTest extends \PHPUnit_Framework_TestCase {
         $app = $this->_app;
         $collection = new DocumentCollection(new MongoAppKitDocument($app, 'test'));
         $collection->sortBy('sort', 'asc');
-        $collection->findAll();
+        $collection->find();
 
         $i = 1;
 
@@ -91,7 +91,7 @@ class DocumentCollectionTest extends \PHPUnit_Framework_TestCase {
         $app = $this->_app;
         $collection = new DocumentCollection(new MongoAppKitDocument($app, 'test'));
         $collection->sortBy('sort', 'desc');
-        $collection->findAll();
+        $collection->find();
 
         $i = 10;
 
@@ -107,7 +107,7 @@ class DocumentCollectionTest extends \PHPUnit_Framework_TestCase {
         $app = $this->_app;
         $collection = new DocumentCollection(new MongoAppKitDocument($app, 'test'));
         $collection->sortBy('sort', null);
-        $collection->findAll();
+        $collection->find();
 
         $i = 1;
 
@@ -127,7 +127,7 @@ class DocumentCollectionTest extends \PHPUnit_Framework_TestCase {
         try {
             $collection = new DocumentCollection(new MongoAppKitDocument($app, 'test'));
             $collection->sortBy('sort', 'fgdgdg');
-            $collection->findAll();
+            $collection->find();
         } catch(\InvalidArgumentException $e) {
             $exceptionThrown = true;
         }
@@ -142,7 +142,7 @@ class DocumentCollectionTest extends \PHPUnit_Framework_TestCase {
         try {
             $collection = new DocumentCollection(new MongoAppKitDocument($app, 'test'));
             $collection->sortBy('dfsafsfsf', 'fgdgdg');
-            $collection->findAll();
+            $collection->find();
         } catch(\InvalidArgumentException $e) {
             $exceptionThrown = true;
         }
@@ -160,7 +160,7 @@ class DocumentCollectionTest extends \PHPUnit_Framework_TestCase {
         }
 
         $collection = new DocumentCollection(new MongoAppKitDocument($app, 'test'));
-        $collection->find(100, 0, array('foo' => 'removeTest'));
+        $collection->find(array('foo' => 'removeTest'));
         $collection->foo = 'bar';
         $this->assertEquals(11, $collection->length);
 
