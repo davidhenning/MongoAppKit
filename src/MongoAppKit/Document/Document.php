@@ -270,7 +270,7 @@ class Document extends MutableList
 
         // get timestamp of MongoDate object
         if ($value instanceof \MongoDate) {
-            $value = date('Y-m-d H:i:s', $value->sec);
+            $value = $value->sec;
         }
 
         // get id of MongoId object
