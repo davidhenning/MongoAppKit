@@ -1,15 +1,5 @@
 <?php
 
-/**
- * Class Document
- *
- * Small implementation of ActiveRecord pattern for MongoDB documents
- * 
- * @author David Henning <madcat.me@gmail.com>
- * 
- * @package MongoAppKit
- */
-
 namespace MongoAppKit\Document;
 
 use MongoAppKit\Config,
@@ -17,7 +7,8 @@ use MongoAppKit\Config,
 
 use Silex\Application;
 
-class Document extends MutableList {
+class Document extends MutableList
+{
 
     /**
      * MongoDB object
@@ -28,7 +19,7 @@ class Document extends MutableList {
 
     /**
      * MongoDB object
-     * @var MongoDB
+     * @var \MongoDB
      */
 
     protected $_database = null;
@@ -42,7 +33,7 @@ class Document extends MutableList {
 
     /**
      * MongoCollection object
-     * @var MongoCollection
+     * @var \MongoCollection
      */
 
     protected $_collection = null;
@@ -57,21 +48,24 @@ class Document extends MutableList {
     /**
      * Set MongoDB object
      *
-     * @param MongoDB $oDatabase
+     * @param \MongoDB $oDatabase
      */
 
-    public function __construct(Application $app, $collectionName) {
+    public function __construct(Application $app, $collectionName)
+    {
         $this->_app = $app;
         $this->_setDatabase($app['storage']->getDatabase());
         $this->_setConfig($app['config']);
         $this->_setCollection($collectionName);
     }
 
-    public function getDatabase() {
+    public function getDatabase()
+    {
         return $this->_database;
     }
 
-    protected function _setDatabase(\MongoDB $database) {
+    protected function _setDatabase(\MongoDB $database)
+    {
         $this->_database = $database;
     }
 
@@ -81,11 +75,13 @@ class Document extends MutableList {
      * @param Config $config
      */
 
-    protected function _setConfig(Config $config) {
+    protected function _setConfig(Config $config)
+    {
         $this->_config = $config;
     }
 
-    public function getCollection() {
+    public function getCollection()
+    {
         return $this->_collection;
     }
 
@@ -95,8 +91,9 @@ class Document extends MutableList {
      * @param string $collectionName
      */
 
-    protected  function _setCollection($collectionName) {
-        if(empty($collectionName)) {
+    protected function _setCollection($collectionName)
+    {
+        if (empty($collectionName)) {
             throw new \InvalidArgumentException('Collection name empty');
         }
 
@@ -110,10 +107,11 @@ class Document extends MutableList {
      * @param string $collectionName
      */
 
-    protected function _loadCollectionConfig($collectionName) {
+    protected function _loadCollectionConfig($collectionName)
+    {
         $propertyConfig = $this->_config->getProperty('Fields');
 
-        if(isset($propertyConfig[$collectionName]) && count($propertyConfig[$collectionName]) > 0) {
+        if (isset($propertyConfig[$collectionName]) && count($propertyConfig[$collectionName]) > 0) {
             $this->_collectionConfig = $propertyConfig[$collectionName];
         }
     }
@@ -125,7 +123,8 @@ class Document extends MutableList {
      * @return bool
      */
 
-    public function fieldExists($field) {
+    public function fieldExists($field)
+    {
         return in_array($field, array_keys($this->_collectionConfig));
     }
 
@@ -135,12 +134,13 @@ class Document extends MutableList {
      * @return array
      */
 
-    public function getPreparedProperties() {
+    public function getPreparedProperties()
+    {
         $preparedProperties = array();
 
-        if(!empty($this->_collectionConfig)) {
+        if (!empty($this->_collectionConfig)) {
             // iterates collection config
-            foreach($this->_collectionConfig as $property => $fieldConfig) {
+            foreach ($this->_collectionConfig as $property => $fieldConfig) {
                 // get value of property or set to null, if property does not exists or is empty
                 $value = (isset($this->_properties[$property])) ? $this->_properties[$property] : null;
                 // get prepared property value
@@ -152,7 +152,7 @@ class Document extends MutableList {
     }
 
     /**
-     * Prepare a proptery for saving
+     * Prepare a property for saving
      *
      * @param string $property
      * @param mixed $value
@@ -160,31 +160,32 @@ class Document extends MutableList {
      * @return mixed
      */
 
-    protected function _prepareProperty($property, $value, $fieldConfig) {
-         if(!empty($fieldConfig)) {
+    protected function _prepareProperty($property, $value, $fieldConfig)
+    {
+        if (!empty($fieldConfig)) {
             // set Mongo type object
-            if(isset($fieldConfig['mongoType'])) {
+            if (isset($fieldConfig['mongoType'])) {
                 $autoUpdate = (isset($fieldConfig['autoUpdate'])) ? $fieldConfig['autoUpdate'] : true;
                 $value = $this->_setMongoValueType($fieldConfig['mongoType'], $value, $autoUpdate);
             }
 
             // set index
-            if(isset($fieldConfig['index']) && $fieldConfig['index'] === true) {
+            if (isset($fieldConfig['index']) && $fieldConfig['index'] === true) {
                 $this->_getCollection()->ensureIndex($property);
             }
 
             // encrypt field data
-            if(isset($fieldConfig['encrypt']) && $fieldConfig['encrypt'] === true) {
+            if (isset($fieldConfig['encrypt']) && $fieldConfig['encrypt'] === true) {
                 $value = $this->_app['encryption']->encrypt($value, $this->_config->getProperty('EncryptionKey'));
             }
 
             // set php type
-            if(isset($fieldConfig['phpType'])) {
+            if (isset($fieldConfig['phpType'])) {
                 $value = $this->_setPhpValueType($fieldConfig['phpType'], $value);
-            }           
+            }
         }
 
-        return $value; 
+        return $value;
     }
 
     /**
@@ -195,20 +196,21 @@ class Document extends MutableList {
      * @return mixed
      */
 
-    protected function _setMongoValueType($type, $value, $autoUpdate = true) {
-        switch($type) {
+    protected function _setMongoValueType($type, $value, $autoUpdate = true)
+    {
+        switch ($type) {
             case 'id':
-                if(!$value instanceof \MongoId) {
+                if (!$value instanceof \MongoId) {
                     return ($value !== null && !empty($value)) ? new \MongoId($value) : new \MongoId();
-                }              
-                
+                }
+
                 break;
             case 'date':
-                if(!$value instanceof \MongoDate && $autoUpdate === true) {
+                if (!$value instanceof \MongoDate && $autoUpdate === true) {
                     $value = (!is_int($value)) ? strtotime($value) : $value;
                     return ($value !== null && !empty($value)) ? new \MongoDate($value) : new \MongoDate();
-                }              
-                
+                }
+
                 break;
         }
 
@@ -223,12 +225,13 @@ class Document extends MutableList {
      * @return mixed
      */
 
-    protected function _setPhpValueType($type, $value) {
-        switch($type) {
+    protected function _setPhpValueType($type, $value)
+    {
+        switch ($type) {
             case 'int':
                 return (int)$value;
             case 'float':
-                return (float)$value;                      
+                return (float)$value;
             case 'bool':
                 return (bool)$value;
             case 'string':
@@ -241,12 +244,13 @@ class Document extends MutableList {
     /**
      * Get MongoCollection object or throws an exception if it's not set
      *
-     * @throws Exception
-     * @return MongoCollection
+     * @throws \Exception
+     * @return \MongoCollection
      */
 
-    protected function _getCollection() {
-        if(!$this->_collection instanceof \MongoCollection) {
+    protected function _getCollection()
+    {
+        if (!$this->_collection instanceof \MongoCollection) {
             throw new \Exception('No collection selected!');
         }
 
@@ -254,26 +258,27 @@ class Document extends MutableList {
     }
 
     /**
-     * Override parent method to perpare certain values (f.e. MongoDate) to return their value
+     * Override parent method to prepare certain values (f.e. MongoDate) to return their value
      *
      * @param string $property
      * @return mixed
      */
 
-    public function getProperty($property) {
+    public function getProperty($property)
+    {
         $value = parent::getProperty($property);
 
         // get timestamp of MongoDate object
-        if($value instanceof \MongoDate) {
+        if ($value instanceof \MongoDate) {
             $value = date('Y-m-d H:i:s', $value->sec);
         }
 
         // get id of MongoId object
-        if($value instanceof \MongoId) {
+        if ($value instanceof \MongoId) {
             $value = $value->{'$id'};
         }
 
-        if(isset($this->_collectionConfig[$property]['encrypt'])) {
+        if (isset($this->_collectionConfig[$property]['encrypt'])) {
             $value = $this->_app['encryption']->decrypt($value, $this->_config->getProperty('EncryptionKey'));
         }
 
@@ -286,7 +291,8 @@ class Document extends MutableList {
      * @return string
      */
 
-    public function getId() {
+    public function getId()
+    {
         $this->_setId();
         return $this->_properties['_id']->{'$id'};
     }
@@ -295,22 +301,24 @@ class Document extends MutableList {
      * Set id of current document if none exists
      */
 
-    protected function _setId() {
-        if(!isset($this->_properties['_id']) || !$this->_properties['_id'] instanceof \MongoId) {
+    protected function _setId()
+    {
+        if (!isset($this->_properties['_id']) || !$this->_properties['_id'] instanceof \MongoId) {
             $this->_properties['_id'] = new \MongoId();
         }
     }
 
     /**
-     * Load documend from given id
+     * Load document from given id
      *
      * @param string $id
      */
 
-    public function load($id) {
+    public function load($id)
+    {
         $data = $this->_getCollection()->findOne(array('_id' => new \MongoId($id)));
-        
-        if($data === null) {
+
+        if ($data === null) {
             throw new \Exception("Document id '{$id}' does not exist!", 404);
         }
 
@@ -321,7 +329,8 @@ class Document extends MutableList {
      * Save document properties into the selected MongoDB collection
      */
 
-    public function save() {
+    public function save()
+    {
         $this->_setId();
         $preparedProperties = $this->getPreparedProperties();
         $this->_properties = $preparedProperties;
@@ -333,7 +342,8 @@ class Document extends MutableList {
      * Delete current document from the selected MongoDB collection
      */
 
-    public function remove() {
+    public function remove()
+    {
         $this->_getCollection()->remove(array('_id' => $this->_properties['_id']));
         usleep(10000);
     }

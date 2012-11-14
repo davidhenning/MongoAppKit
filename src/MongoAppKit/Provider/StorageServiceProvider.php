@@ -7,15 +7,18 @@ use Silex\Application,
 
 use MongoAppKit\Storage;
 
-class StorageServiceProvider implements ServiceProviderInterface {
+class StorageServiceProvider implements ServiceProviderInterface
+{
 
-    public function register(Application $app) {
+    public function register(Application $app)
+    {
         $app['storage'] = function () use ($app) {
             return new Storage($app['config']);
         };
     }
 
-    public function boot(Application $app) {
+    public function boot(Application $app)
+    {
 
     }
 }

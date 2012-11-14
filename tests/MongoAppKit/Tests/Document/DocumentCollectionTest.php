@@ -7,9 +7,11 @@ use MongoAppKit\Config,
     MongoAppKit\Document\Document as MongoAppKitDocument,
     MongoAppKit\Document\DocumentCollection;
 
-class DocumentCollectionTest extends \PHPUnit_Framework_TestCase {
+class DocumentCollectionTest extends \PHPUnit_Framework_TestCase
+{
 
-    public function setUp() {
+    public function setUp()
+    {
         $config = new Config();
         $config->setProperty('MongoServer', 'localhost');
         $config->setProperty('MongoPort', 27017);
@@ -31,7 +33,7 @@ class DocumentCollectionTest extends \PHPUnit_Framework_TestCase {
         $app = new Application($config);
         $this->_app = $app;
 
-        for($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 10; $i++) {
             $document = new MongoAppKitDocument($app, 'test');
             $document->setProperty('foo', 'bar');
             $document->setProperty('sort', 10 - $i);
@@ -39,11 +41,13 @@ class DocumentCollectionTest extends \PHPUnit_Framework_TestCase {
         }
     }
 
-    public function tearDown() {
+    public function tearDown()
+    {
         $this->_app['storage']->getDatabase()->test->drop();
     }
 
-    public function testFindAll() {
+    public function testFindAll()
+    {
         $app = $this->_app;
         $collection = new DocumentCollection(new MongoAppKitDocument($app, 'test'));
         $collection->find();
@@ -52,7 +56,8 @@ class DocumentCollectionTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals(10, $collection->getTotalDocuments());
     }
 
-    public function testFind() {
+    public function testFind()
+    {
         $app = $this->_app;
         $collection = new DocumentCollection(new MongoAppKitDocument($app, 'test'));
         $collection->find(array('sort' => 1));
@@ -61,7 +66,8 @@ class DocumentCollectionTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals(1, $collection->getTotalDocuments());
     }
 
-    public function testFindSkip() {
+    public function testFindSkip()
+    {
         $app = $this->_app;
         $collection = new DocumentCollection(new MongoAppKitDocument($app, 'test'));
         $collection->find(array('foo' => 'bar'), null, 9);
@@ -70,7 +76,8 @@ class DocumentCollectionTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals(10, $collection->getTotalDocuments());
     }
 
-    public function testSortByAsc() {
+    public function testSortByAsc()
+    {
         $app = $this->_app;
         $collection = new DocumentCollection(new MongoAppKitDocument($app, 'test'));
         $collection->sortBy('sort', 'asc');
@@ -78,7 +85,7 @@ class DocumentCollectionTest extends \PHPUnit_Framework_TestCase {
 
         $i = 1;
 
-        foreach($collection as $document) {
+        foreach ($collection as $document) {
             $this->assertEquals($i, $document->getProperty('sort'));
             $i++;
         }
@@ -87,7 +94,8 @@ class DocumentCollectionTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals(10, $collection->getTotalDocuments());
     }
 
-    public function testSortByDesc() {
+    public function testSortByDesc()
+    {
         $app = $this->_app;
         $collection = new DocumentCollection(new MongoAppKitDocument($app, 'test'));
         $collection->sortBy('sort', 'desc');
@@ -95,7 +103,7 @@ class DocumentCollectionTest extends \PHPUnit_Framework_TestCase {
 
         $i = 10;
 
-        foreach($collection as $document) {
+        foreach ($collection as $document) {
             $this->assertEquals($i, $document->getProperty('sort'));
             $i--;
         }
@@ -103,7 +111,9 @@ class DocumentCollectionTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals(10, $collection->getFoundDocuments());
         $this->assertEquals(10, $collection->getTotalDocuments());
     }
-    public function testSortByNull() {
+
+    public function testSortByNull()
+    {
         $app = $this->_app;
         $collection = new DocumentCollection(new MongoAppKitDocument($app, 'test'));
         $collection->sortBy('sort', null);
@@ -111,7 +121,7 @@ class DocumentCollectionTest extends \PHPUnit_Framework_TestCase {
 
         $i = 1;
 
-        foreach($collection as $document) {
+        foreach ($collection as $document) {
             $this->assertEquals($i, $document->getProperty('sort'));
             $i++;
         }
@@ -120,7 +130,8 @@ class DocumentCollectionTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals(10, $collection->getTotalDocuments());
     }
 
-    public function testSortByInvalidDirection() {
+    public function testSortByInvalidDirection()
+    {
         $app = $this->_app;
         $exceptionThrown = false;
 
@@ -128,14 +139,15 @@ class DocumentCollectionTest extends \PHPUnit_Framework_TestCase {
             $collection = new DocumentCollection(new MongoAppKitDocument($app, 'test'));
             $collection->sortBy('sort', 'fgdgdg');
             $collection->find();
-        } catch(\InvalidArgumentException $e) {
+        } catch (\InvalidArgumentException $e) {
             $exceptionThrown = true;
         }
 
         $this->assertTrue($exceptionThrown);
     }
 
-    public function testSortByInvalidField() {
+    public function testSortByInvalidField()
+    {
         $app = $this->_app;
         $exceptionThrown = false;
 
@@ -143,17 +155,18 @@ class DocumentCollectionTest extends \PHPUnit_Framework_TestCase {
             $collection = new DocumentCollection(new MongoAppKitDocument($app, 'test'));
             $collection->sortBy('dfsafsfsf', 'fgdgdg');
             $collection->find();
-        } catch(\InvalidArgumentException $e) {
+        } catch (\InvalidArgumentException $e) {
             $exceptionThrown = true;
         }
 
         $this->assertTrue($exceptionThrown);
     }
 
-    public function testRemove() {
+    public function testRemove()
+    {
         $app = $this->_app;
 
-        for($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 10; $i++) {
             $document = new MongoAppKitDocument($app, 'test');
             $document->setProperty('foo', 'removeTest');
             $document->save();

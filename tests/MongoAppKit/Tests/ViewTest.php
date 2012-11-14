@@ -4,186 +4,199 @@ namespace MongoAppKit\Tests;
 
 use MongoAppKit\Application,
     MongoAppKit\Config,
-	MongoAppKit\Storage,
-	MongoAppKit\View;
+    MongoAppKit\Storage,
+    MongoAppKit\View;
 
 use Symfony\Component\HttpFoundation\Request,
     Symfony\Component\HttpFoundation\Response;
 
-class ViewTest extends \PHPUnit_Framework_TestCase {
+class ViewTest extends \PHPUnit_Framework_TestCase
+{
 
-	public function setUp() {
-		$config = new Config();
-		$config->setProperty('MongoServer', 'localhost');
-		$config->setProperty('MongoPort', 27017);
-		$config->setProperty('MongoUser', null);
-		$config->setProperty('MongoPassword', null);
-		$config->setProperty('MongoDatabase', 'phpunit');
-		$config->setProperty('AppName', 'testcase');
+    public function setUp()
+    {
+        $config = new Config();
+        $config->setProperty('MongoServer', 'localhost');
+        $config->setProperty('MongoPort', 27017);
+        $config->setProperty('MongoUser', null);
+        $config->setProperty('MongoPassword', null);
+        $config->setProperty('MongoDatabase', 'phpunit');
+        $config->setProperty('AppName', 'testcase');
         $config->setProperty('BaseDir', '/');
         $config->setProperty('DebugMode', true);
 
-		$this->_app = new Application($config);;
-	}
+        $this->_app = new Application($config);
+        ;
+    }
 
-	public function testSetId() {
-		$app = $this->_app;
-		$request = Request::create('/');
-		$expectedValue = '123456';
+    public function testSetId()
+    {
+        $app = $this->_app;
+        $request = Request::create('/');
+        $expectedValue = '123456';
 
-		$app->get('/', function() use ($app, $expectedValue) {
-			$view = new View($app);		
-			$view->setId($expectedValue);
+        $app->get('/', function () use ($app, $expectedValue) {
+            $view = new View($app);
+            $view->setId($expectedValue);
 
-			return $view->getId();
-		});
+            return $view->getId();
+        });
 
-		$this->assertEquals($expectedValue, $app->handle($request)->getContent());
-	}
+        $this->assertEquals($expectedValue, $app->handle($request)->getContent());
+    }
 
-	public function testSetOutputFormat() {
-		$app = $this->_app;
-		$request = Request::create('/');
-		$expectedValue = 'json';
+    public function testSetOutputFormat()
+    {
+        $app = $this->_app;
+        $request = Request::create('/');
+        $expectedValue = 'json';
 
-		$app->get('/', function() use ($app, $expectedValue) {
-			$view = new View($app);		
-			$view->setOutputFormat($expectedValue);
+        $app->get('/', function () use ($app, $expectedValue) {
+            $view = new View($app);
+            $view->setOutputFormat($expectedValue);
 
-			return $view->getOutputFormat();
-		});
+            return $view->getOutputFormat();
+        });
 
-		$this->assertEquals($expectedValue, $app->handle($request)->getContent());
-	}
+        $this->assertEquals($expectedValue, $app->handle($request)->getContent());
+    }
 
-	public function testSetInvalidOutputFormat() {
-		$app = $this->_app;
-		$request = Request::create('/');
-		$expectedValue = 'xhtml';
+    public function testSetInvalidOutputFormat()
+    {
+        $app = $this->_app;
+        $request = Request::create('/');
+        $expectedValue = 'xhtml';
 
-		
-		$app->get('/', function() use ($app, $expectedValue) {
-			try {
-				$view = new View($app);		
-				$view->setOutputFormat($expectedValue);
 
-				return 'true';
-			} catch(\InvalidArgumentException $e) {
-				return '';
-			}
+        $app->get('/', function () use ($app, $expectedValue) {
+            try {
+                $view = new View($app);
+                $view->setOutputFormat($expectedValue);
 
-		});
+                return 'true';
+            } catch (\InvalidArgumentException $e) {
+                return '';
+            }
 
-		$this->assertEquals('', $app->handle($request)->getContent());
-	}
+        });
 
-	public function testSetTotalDocuments() {
-		$app = $this->_app;
-		$request = Request::create('/');
-		$expectedValue = 20;
+        $this->assertEquals('', $app->handle($request)->getContent());
+    }
 
-		$app->get('/', function() use ($app, $expectedValue) {
-			$view = new View($app);		
-			$view->setTotalDocuments($expectedValue);
+    public function testSetTotalDocuments()
+    {
+        $app = $this->_app;
+        $request = Request::create('/');
+        $expectedValue = 20;
 
-			return $view->getTotalDocuments();
-		});
+        $app->get('/', function () use ($app, $expectedValue) {
+            $view = new View($app);
+            $view->setTotalDocuments($expectedValue);
 
-		$this->assertEquals($expectedValue, $app->handle($request)->getContent());
-	}
+            return $view->getTotalDocuments();
+        });
 
-	public function testSetDocumentLimit() {
-		$app = $this->_app;
-		$request = Request::create('/');
-		$expectedValue = 10;
+        $this->assertEquals($expectedValue, $app->handle($request)->getContent());
+    }
 
-		$app->get('/', function() use ($app, $expectedValue) {
-			$view = new View($app);		
-			$view->setDocumentLimit($expectedValue);
+    public function testSetDocumentLimit()
+    {
+        $app = $this->_app;
+        $request = Request::create('/');
+        $expectedValue = 10;
 
-			return $view->getDocumentLimit();
-		});
+        $app->get('/', function () use ($app, $expectedValue) {
+            $view = new View($app);
+            $view->setDocumentLimit($expectedValue);
 
-		$this->assertEquals($expectedValue, $app->handle($request)->getContent());
-	}
+            return $view->getDocumentLimit();
+        });
 
-	public function testSetAppName() {
-		$app = $this->_app;
-		$request = Request::create('/');
-		$expectedValue = 'MongoAppKit';
+        $this->assertEquals($expectedValue, $app->handle($request)->getContent());
+    }
 
-		$app->get('/', function() use ($app, $expectedValue) {
-			$view = new View($app);		
-			$view->setAppName($expectedValue);
+    public function testSetAppName()
+    {
+        $app = $this->_app;
+        $request = Request::create('/');
+        $expectedValue = 'MongoAppKit';
 
-			return $view->getAppName();
-		});
+        $app->get('/', function () use ($app, $expectedValue) {
+            $view = new View($app);
+            $view->setAppName($expectedValue);
 
-		$this->assertEquals($expectedValue, $app->handle($request)->getContent());
-	}
-	
-	public function testSetSkippedDocuments() {
-		$app = $this->_app;
-		$request = Request::create('/');
-		$expectedValue = 10;
+            return $view->getAppName();
+        });
 
-		$app->get('/', function() use ($app, $expectedValue) {
-			$view = new View($app);		
-			$view->setSkippedDocuments($expectedValue);
+        $this->assertEquals($expectedValue, $app->handle($request)->getContent());
+    }
 
-			return $view->getSkippedDocuments();
-		});
+    public function testSetSkippedDocuments()
+    {
+        $app = $this->_app;
+        $request = Request::create('/');
+        $expectedValue = 10;
 
-		$this->assertEquals($expectedValue, $app->handle($request)->getContent());
-	}
+        $app->get('/', function () use ($app, $expectedValue) {
+            $view = new View($app);
+            $view->setSkippedDocuments($expectedValue);
 
-	public function testGutCurrentPage() {
-		$app = $this->_app;
-		$request = Request::create('/');
-		$expectedValue = 2;
+            return $view->getSkippedDocuments();
+        });
 
-		$app->get('/', function() use ($app, $expectedValue) {
-			$view = new View($app);	
+        $this->assertEquals($expectedValue, $app->handle($request)->getContent());
+    }
 
-			$view->setSkippedDocuments(101);
-			$view->setDocumentLimit(100);
+    public function testGutCurrentPage()
+    {
+        $app = $this->_app;
+        $request = Request::create('/');
+        $expectedValue = 2;
 
-			return $view->getCurrentPage();
-		});
+        $app->get('/', function () use ($app, $expectedValue) {
+            $view = new View($app);
 
-		$this->assertEquals($expectedValue, (int)$app->handle($request)->getContent());
-	}
+            $view->setSkippedDocuments(101);
+            $view->setDocumentLimit(100);
 
-	public function testAddAdditionalUrlParameter() {
-		$app = $this->_app;
-		$request = Request::create('/');
-		$expectedValue = serialize(array('foo' => 'bar'));
+            return $view->getCurrentPage();
+        });
 
-		$app->get('/', function() use ($app, $expectedValue) {
-			$view = new View($app);		
-			$view->addAdditionalUrlParameter('foo', 'bar');
+        $this->assertEquals($expectedValue, (int)$app->handle($request)->getContent());
+    }
 
-			return serialize($view->getAdditionalUrlParameters());
-		});
+    public function testAddAdditionalUrlParameter()
+    {
+        $app = $this->_app;
+        $request = Request::create('/');
+        $expectedValue = serialize(array('foo' => 'bar'));
 
-		$this->assertEquals($expectedValue, $app->handle($request)->getContent());
-	}
+        $app->get('/', function () use ($app, $expectedValue) {
+            $view = new View($app);
+            $view->addAdditionalUrlParameter('foo', 'bar');
 
-	public function testGetPages() {
-		$app = $this->_app;
-		$request = Request::create('/');
-		$expectedValue = serialize(array(
+            return serialize($view->getAdditionalUrlParameters());
+        });
+
+        $this->assertEquals($expectedValue, $app->handle($request)->getContent());
+    }
+
+    public function testGetPages()
+    {
+        $app = $this->_app;
+        $request = Request::create('/');
+        $expectedValue = serialize(array(
             'pages' => array(
-            	array(
+                array(
                     'nr' => 1,
                     'url' => '.html?skip=0&limit=100',
                     'active' => true
-            	),
-            	array(
+                ),
+                array(
                     'nr' => 2,
                     'url' => '.html?skip=100&limit=100',
                     'active' => false
-            	)            	
+                )
             ),
             'currentPage' => 1,
             'documentsPerPage' => 100,
@@ -192,34 +205,35 @@ class ViewTest extends \PHPUnit_Framework_TestCase {
             'firstPageUrl' => false,
             'nextPageUrl' => '.html?skip=100&limit=100',
             'lastPageUrl' => '.html?skip=100&limit=100'
-		));
+        ));
 
-		$app->get('/', function() use ($app, $expectedValue) {
-			$view = new View($app);
-			$view->setDocumentLimit(100);
-			$view->setTotalDocuments(101);	
+        $app->get('/', function () use ($app, $expectedValue) {
+            $view = new View($app);
+            $view->setDocumentLimit(100);
+            $view->setTotalDocuments(101);
 
-			return serialize($view->getPagination());
-		});
+            return serialize($view->getPagination());
+        });
 
-		$this->assertEquals($expectedValue, $app->handle($request)->getContent());
-	}
+        $this->assertEquals($expectedValue, $app->handle($request)->getContent());
+    }
 
-	public function testGetPagesOnPage2() {
-		$app = $this->_app;
-		$request = Request::create('/');
-		$expectedValue = serialize(array(
+    public function testGetPagesOnPage2()
+    {
+        $app = $this->_app;
+        $request = Request::create('/');
+        $expectedValue = serialize(array(
             'pages' => array(
-            	array(
+                array(
                     'nr' => 1,
                     'url' => '.html?skip=0&limit=100',
                     'active' => false
-            	),
-            	array(
+                ),
+                array(
                     'nr' => 2,
                     'url' => '.html?skip=100&limit=100',
                     'active' => true
-            	)            	
+                )
             ),
             'currentPage' => 2,
             'documentsPerPage' => 100,
@@ -228,17 +242,17 @@ class ViewTest extends \PHPUnit_Framework_TestCase {
             'firstPageUrl' => '.html?skip=0&limit=100',
             'nextPageUrl' => false,
             'lastPageUrl' => false
-		));
+        ));
 
-		$app->get('/', function() use ($app, $expectedValue) {
-			$view = new View($app);
-			$view->setDocumentLimit(100);
-			$view->setSkippedDocuments(100);
-			$view->setTotalDocuments(101);	
+        $app->get('/', function () use ($app, $expectedValue) {
+            $view = new View($app);
+            $view->setDocumentLimit(100);
+            $view->setSkippedDocuments(100);
+            $view->setTotalDocuments(101);
 
-			return serialize($view->getPagination());
-		});
+            return serialize($view->getPagination());
+        });
 
-		$this->assertEquals($expectedValue, $app->handle($request)->getContent());
-	}
+        $this->assertEquals($expectedValue, $app->handle($request)->getContent());
+    }
 }

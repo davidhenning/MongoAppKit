@@ -2,7 +2,8 @@
 
 namespace MongoAppKit\Collection;
 
-class ArrayList extends MutableList implements \ArrayAccess {
+class ArrayList extends MutableList implements \ArrayAccess
+{
 
     /**
      * Sets a property and its value
@@ -11,7 +12,8 @@ class ArrayList extends MutableList implements \ArrayAccess {
      * @param mixed $value
      */
 
-    public function offsetSet($property, $value) {
+    public function offsetSet($property, $value)
+    {
         $this->setProperty($property, $value);
     }
 
@@ -22,7 +24,8 @@ class ArrayList extends MutableList implements \ArrayAccess {
      * @return bool
      */
 
-    public function offsetExists($property) {
+    public function offsetExists($property)
+    {
         return isset($this->_properties[$property]);
     }
 
@@ -32,7 +35,8 @@ class ArrayList extends MutableList implements \ArrayAccess {
      * @param string $property
      */
 
-    public function offsetUnset($property) {
+    public function offsetUnset($property)
+    {
         $this->removeProperty($property);
     }
 
@@ -43,7 +47,8 @@ class ArrayList extends MutableList implements \ArrayAccess {
      * @return mixed
      */
 
-    public function offsetGet($property) {
+    public function offsetGet($property)
+    {
         return $this->getProperty($property);
     }
 }

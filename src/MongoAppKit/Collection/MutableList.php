@@ -1,18 +1,9 @@
 <?php
 
-/**
- * Class IterateableList
- *
- * Implements the SPL interfaces Countable, Iterator and ArrayAccess to emulate the full capabilities of an PHP array
- * 
- * @author David Henning <madcat.me@gmail.com>
- * 
- * @package MongoAppKit
- */
-
 namespace MongoAppKit\Collection;
 
-class MutableList implements \Countable, \IteratorAggregate {
+class MutableList implements \Countable, \IteratorAggregate
+{
 
     /**
      * Stores properties
@@ -29,10 +20,11 @@ class MutableList implements \Countable, \IteratorAggregate {
      * @param mixed [...]
      */
 
-    public function __construct() {
+    public function __construct()
+    {
         $args = func_get_args();
 
-        if(!empty($args)) {
+        if (!empty($args)) {
             $this->_properties = $args;
         }
     }
@@ -46,8 +38,9 @@ class MutableList implements \Countable, \IteratorAggregate {
      * @return mixed
      */
 
-    public function __get($property) {
-        if($property === 'length') {
+    public function __get($property)
+    {
+        if ($property === 'length') {
             return $this->count();
         }
 
@@ -63,7 +56,8 @@ class MutableList implements \Countable, \IteratorAggregate {
      * @param mixed $value property value
      */
 
-    public function __set($property, $value) {
+    public function __set($property, $value)
+    {
         $this->setProperty($property, $value);
     }
 
@@ -76,7 +70,8 @@ class MutableList implements \Countable, \IteratorAggregate {
      * @return bool
      */
 
-    public function __isset($property) {
+    public function __isset($property)
+    {
         return isset($this->_properties[$property]);
     }
 
@@ -88,7 +83,8 @@ class MutableList implements \Countable, \IteratorAggregate {
      * @param string $property
      */
 
-    public function __unset($property) {
+    public function __unset($property)
+    {
         $this->removeProperty($property);
     }
 
@@ -100,7 +96,8 @@ class MutableList implements \Countable, \IteratorAggregate {
      * @return string
      */
 
-    public function __toString() {
+    public function __toString()
+    {
         return serialize($this->_properties);
     }
 
@@ -110,7 +107,8 @@ class MutableList implements \Countable, \IteratorAggregate {
      * @return mixed
      */
 
-    public function head() {
+    public function head()
+    {
         return reset($this->_properties);
     }
 
@@ -120,7 +118,8 @@ class MutableList implements \Countable, \IteratorAggregate {
      * @return mixed
      */
 
-    public function last() {
+    public function last()
+    {
         return end($this->_properties);
     }
 
@@ -130,7 +129,8 @@ class MutableList implements \Countable, \IteratorAggregate {
      * @return MutableList
      */
 
-    public function reverse() {
+    public function reverse()
+    {
         $this->_properties = array_reverse($this->_properties);
 
         return $this;
@@ -144,7 +144,8 @@ class MutableList implements \Countable, \IteratorAggregate {
      * @throws \InvalidArgumentException
      */
 
-    public function each($callback) {
+    public function each($callback)
+    {
         return $this->map($callback);
     }
 
@@ -156,8 +157,9 @@ class MutableList implements \Countable, \IteratorAggregate {
      * @throws \InvalidArgumentException
      */
 
-    public function map($callback) {
-        if(!is_callable($callback)) {
+    public function map($callback)
+    {
+        if (!is_callable($callback)) {
             throw new \InvalidArgumentException('Mapping function is not callable!');
         }
 
@@ -174,7 +176,8 @@ class MutableList implements \Countable, \IteratorAggregate {
      * @return MutableList
      */
 
-    public function slice($offset, $limit) {
+    public function slice($offset, $limit)
+    {
         $properties = array_slice($this->_properties, $offset, $limit);
         $list = new self();
         $list->assign($properties);
@@ -190,8 +193,9 @@ class MutableList implements \Countable, \IteratorAggregate {
      * @throws \InvalidArgumentException
      */
 
-    public function filter($callback) {
-        if(!is_callable($callback)) {
+    public function filter($callback)
+    {
+        if (!is_callable($callback)) {
             throw new \InvalidArgumentException('Filter is not callable!');
         }
 
@@ -203,13 +207,14 @@ class MutableList implements \Countable, \IteratorAggregate {
     }
 
     /**
-     * Imports an array 
+     * Imports an array
      *
      * @param array $properties
      * @return MutableList
      */
 
-    public function assign(array $properties) {
+    public function assign(array $properties)
+    {
         $this->_properties = $properties;
 
         return $this;
@@ -222,9 +227,10 @@ class MutableList implements \Countable, \IteratorAggregate {
      * @return MutableList
      */
 
-    public function updateProperties($properties) {
-        if(!empty($properties)) {
-            foreach($properties as $property => $value) {
+    public function updateProperties($properties)
+    {
+        if (!empty($properties)) {
+            foreach ($properties as $property => $value) {
                 $this->setProperty($property, $value);
             }
         }
@@ -240,8 +246,9 @@ class MutableList implements \Countable, \IteratorAggregate {
      * @throws \OutOfBoundsException
      */
 
-    public function getProperty($property) {
-        if(array_key_exists($property, $this->_properties)) {
+    public function getProperty($property)
+    {
+        if (array_key_exists($property, $this->_properties)) {
             return $this->_properties[$property];
         }
 
@@ -256,7 +263,8 @@ class MutableList implements \Countable, \IteratorAggregate {
      * @return MutableList
      */
 
-    public function setProperty($property, $value) {
+    public function setProperty($property, $value)
+    {
         $this->_properties[$property] = $value;
 
         return $this;
@@ -269,8 +277,9 @@ class MutableList implements \Countable, \IteratorAggregate {
      * @return MutableList
      */
 
-    public function removeProperty($property) {
-        if(!array_key_exists($property, $this->_properties)) {
+    public function removeProperty($property)
+    {
+        if (!array_key_exists($property, $this->_properties)) {
             throw new \OutOfBoundsException("Index '{$property}' does not exist");
         }
 
@@ -285,13 +294,14 @@ class MutableList implements \Countable, \IteratorAggregate {
      * @return array
      */
 
-    public function getProperties() {
+    public function getProperties()
+    {
         // get all property names
         $properties = array_keys($this->_properties);
         $values = array();
 
-        if(!empty($properties)) {
-            foreach($properties as $property) {
+        if (!empty($properties)) {
+            foreach ($properties as $property) {
                 $values[$property] = $this->getProperty($property);
             }
         }
@@ -309,7 +319,8 @@ class MutableList implements \Countable, \IteratorAggregate {
      * @return int
      */
 
-    public function count() {
+    public function count()
+    {
         return count($this->_properties);
     }
 
@@ -319,7 +330,8 @@ class MutableList implements \Countable, \IteratorAggregate {
      * @return \ArrayIterator
      */
 
-    public function getIterator() {
+    public function getIterator()
+    {
         return new \ArrayIterator($this->_properties);
     }
 }

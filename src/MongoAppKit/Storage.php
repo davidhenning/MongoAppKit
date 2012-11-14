@@ -1,20 +1,11 @@
 <?php
 
-/**
- * Class Storage
- *
- * Manages connection to MongoDB
- * 
- * @author David Henning <madcat.me@gmail.com>
- * 
- * @package MongoAppKit
- */
-
 namespace MongoAppKit;
 
 use MongoAppKit\Config;
 
-class Storage {
+class Storage
+{
 
     /**
      * Mongo object
@@ -36,7 +27,8 @@ class Storage {
      * @param Config
      */
 
-    public function __construct(Config $config) {
+    public function __construct(Config $config)
+    {
         $mongoServer = $config->getProperty('MongoServer');
         $mongoPort = $config->getProperty('MongoPort');
         $mongoUser = $config->getProperty('MongoUser');
@@ -54,7 +46,8 @@ class Storage {
      * Closes MongoDB connection if the object is destroyed
      */
 
-    public function __destruct() {
+    public function __destruct()
+    {
         $this->_mongo->close();
     }
 
@@ -64,7 +57,8 @@ class Storage {
      * @return \MongoDB
      */
 
-    public function getDatabase() {
+    public function getDatabase()
+    {
         return $this->_database;
     }
 }

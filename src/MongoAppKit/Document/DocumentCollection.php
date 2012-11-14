@@ -1,22 +1,13 @@
 <?php
 
-/**
- * Class DocumentList
- *
- * Collects a list of documents
- * 
- * @author David Henning <madcat.me@gmail.com>
- * 
- * @package MongoAppKit
- */
-
 namespace MongoAppKit\Document;
 
 use MongoAppKit\Collection\MutableList;
 
 use Silex\Application;
 
-class DocumentCollection extends MutableList {
+class DocumentCollection extends MutableList
+{
 
     /**
      * Document object
@@ -59,20 +50,22 @@ class DocumentCollection extends MutableList {
      * @param Document $defaultDocument
      */
 
-    public function __construct(Document $defaultDocument) {
+    public function __construct(Document $defaultDocument)
+    {
         $this->_defaultDocument = $defaultDocument;
     }
 
-    public function sortBy($field, $direction = 'asc') {
-        if(!$this->_defaultDocument->fieldExists($field)) {
+    public function sortBy($field, $direction = 'asc')
+    {
+        if (!$this->_defaultDocument->fieldExists($field)) {
             throw new \InvalidArgumentException("Field {$field} does not exist.");
         }
 
-        if($direction === null) {
+        if ($direction === null) {
             $direction = 'asc';
         }
 
-        if(!in_array($direction, array('asc', 'desc'))) {
+        if (!in_array($direction, array('asc', 'desc'))) {
             throw new \InvalidArgumentException("Direction {$direction} is not supported.");
         }
 
@@ -88,16 +81,17 @@ class DocumentCollection extends MutableList {
      * @param integer $skip
      */
 
-    public function find($where = null, $limit = null, $skip = null) {
+    public function find($where = null, $limit = null, $skip = null)
+    {
         // set default cursor if no override is available
         $cursor = ($where !== null && is_array($where) && !empty($where)) ? $this->_getCursor($where) : $this->_getCursor();
 
         // set limit for page
-        if($limit !== null && (int)$limit > 0) {
+        if ($limit !== null && (int)$limit > 0) {
             $cursor->limit($limit);
         }
 
-        if($skip !== null && (int)$skip > 0) {
+        if ($skip !== null && (int)$skip > 0) {
             $cursor->skip($skip);
         }
 
@@ -112,7 +106,8 @@ class DocumentCollection extends MutableList {
      * @return integer
      */
 
-    public function getTotalDocuments() {
+    public function getTotalDocuments()
+    {
         return $this->_totalDocuments;
     }
 
@@ -122,7 +117,8 @@ class DocumentCollection extends MutableList {
      * @return integer
      */
 
-    public function getFoundDocuments() {
+    public function getFoundDocuments()
+    {
         return $this->_foundDocuments;
     }
 
@@ -134,15 +130,15 @@ class DocumentCollection extends MutableList {
      * @return \MongoCursor
      */
 
-    protected function _getCursor($where = null, $fields = null) {
-
+    protected function _getCursor($where = null, $fields = null)
+    {
         // no where clause if none given
-        if($where === null) {
+        if ($where === null) {
             $where = array();
         }
 
         // select all fields if none given
-        if($fields === null) {
+        if ($fields === null) {
             $fields = array();
         }
 
@@ -156,22 +152,23 @@ class DocumentCollection extends MutableList {
         return $cursor;
     }
 
-    protected function _getSorting() {
+    protected function _getSorting()
+    {
         $sorting = array();
 
-        if($this->_sort !== null) {
+        if ($this->_sort !== null) {
             $sortOrder = 1;
 
             // set sorting direction
-            if($this->_sortOrder !== null) {
-                if($this->_sortOrder === 'asc') {
+            if ($this->_sortOrder !== null) {
+                if ($this->_sortOrder === 'asc') {
                     $sortOrder = 1;
-                } elseif($this->_sortOrder === 'desc') {
+                } elseif ($this->_sortOrder === 'desc') {
                     $sortOrder = -1;
                 } else {
                     $sortOrder = 1;
                 }
-            }   
+            }
 
             // order documents by custom sorting field
             $sorting = array($this->_sort => $sortOrder);
@@ -184,16 +181,17 @@ class DocumentCollection extends MutableList {
     }
 
     /**
-     * Clone instances of the given document object for each document in the given MongoCursor object 
+     * Clone instances of the given document object for each document in the given MongoCursor object
      *
      * @param \MongoCursor $cursor
      */
 
-    protected function _setDocuments(\MongoCursor $cursor) {
+    protected function _setDocuments(\MongoCursor $cursor)
+    {
         $data = array();
 
         // iterate cursor
-        foreach($cursor as $line) {
+        foreach ($cursor as $line) {
             // clone base object and fill with data from current cursor iteration
             $document = clone $this->_defaultDocument;
             $document->updateProperties($line);
@@ -211,13 +209,14 @@ class DocumentCollection extends MutableList {
      * @return DocumentCollection
      */
 
-    public function remove() {
-        if($this->length > 0) {
-            $properties = $this->filter(function($property) {
+    public function remove()
+    {
+        if ($this->length > 0) {
+            $properties = $this->filter(function ($property) {
                 return $property instanceof Document;
             });
 
-            foreach($properties as $property => $document) {
+            foreach ($properties as $property => $document) {
                 $document->remove();
                 $this->removeProperty($property);
             }

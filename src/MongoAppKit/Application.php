@@ -9,9 +9,11 @@ use MongoAppKit\Config,
     MongoAppKit\Provider\StorageServiceProvider,
     MongoAppKit\Provider\EncryptionServiceProvider;
 
-class Application extends SilexApplication {
+class Application extends SilexApplication
+{
 
-    public function __construct(Config $config) {
+    public function __construct(Config $config)
+    {
         parent::__construct();
 
         $this['config'] = $config;
@@ -21,7 +23,7 @@ class Application extends SilexApplication {
         $this->register(new TwigServiceProvider(), array(
             'twig.path' => $baseDir . "/views",
             'twig.options' => array(
-                'cache' => $baseDir .'/tmp',
+                'cache' => $baseDir . '/tmp',
                 'auto_reload' => $config->getProperty('DebugMode')
             )
         ));

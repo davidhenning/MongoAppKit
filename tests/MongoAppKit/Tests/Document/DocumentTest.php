@@ -6,9 +6,11 @@ use MongoAppKit\Config,
     MongoAppKit\Application,
     MongoAppKit\Document\Document as MongoAppKitDocument;
 
-class DocumentTest extends \PHPUnit_Framework_TestCase {
+class DocumentTest extends \PHPUnit_Framework_TestCase
+{
 
-    public function setUp() {
+    public function setUp()
+    {
         $config = new Config();
         $config->setProperty('MongoServer', 'localhost');
         $config->setProperty('MongoPort', 27017);
@@ -34,14 +36,17 @@ class DocumentTest extends \PHPUnit_Framework_TestCase {
 
         $config->setProperty('Fields', $fields);
 
-        $this->_app = new Application($config);;
+        $this->_app = new Application($config);
+        ;
     }
 
-    public function tearDown() {
+    public function tearDown()
+    {
         $this->_app['storage']->getDatabase()->test->drop();
     }
 
-    public function testDocument() {
+    public function testDocument()
+    {
         $app = $this->_app;
 
         $expectedDocument = new MongoAppKitDocument($app, 'test');
@@ -56,7 +61,8 @@ class DocumentTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($expectedDocument, $document);
     }
 
-    public function testGetDatabase() {
+    public function testGetDatabase()
+    {
         $app = $this->_app;
 
         $document = new MongoAppKitDocument($app, 'test');
@@ -64,21 +70,23 @@ class DocumentTest extends \PHPUnit_Framework_TestCase {
         $this->assertTrue($document->getDatabase() instanceof \MongoDB);
     }
 
-    public function testEmptyCollectionName() {
+    public function testEmptyCollectionName()
+    {
         $app = $this->_app;
         $exceptionThrown = false;
 
         try {
             $document = new MongoAppKitDocument($app, null);
             $document->findAll();
-        } catch(\InvalidArgumentException $e) {
+        } catch (\InvalidArgumentException $e) {
             $exceptionThrown = true;
         }
 
         $this->assertTrue($exceptionThrown);
     }
 
-    public function testFieldEncryption() {
+    public function testFieldEncryption()
+    {
         $app = $this->_app;
 
         $expectedDocument = new MongoAppKitDocument($app, 'test');
@@ -93,7 +101,8 @@ class DocumentTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals('foo', $document->getProperty('bar'));
     }
 
-    public function testFieldTypeDate() {
+    public function testFieldTypeDate()
+    {
         $app = $this->_app;
 
         $formattedTime = date('Y-m-d H:i:s');
@@ -111,7 +120,8 @@ class DocumentTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($formattedTime, $document->getProperty('created_at'));
     }
 
-    public function testDocumentGetId() {
+    public function testDocumentGetId()
+    {
         $app = $this->_app;
 
         $expectedDocument = new MongoAppKitDocument($app, 'test');
@@ -126,21 +136,23 @@ class DocumentTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($expectedDocument, $document);
     }
 
-    public function testLoadWithInvalidId() {
+    public function testLoadWithInvalidId()
+    {
         $app = $this->_app;
         $exceptionThrown = false;
 
         try {
             $document = new MongoAppKitDocument($app, null);
             $document->load('dfdsfdsffsdf');
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             $exceptionThrown = true;
         }
 
         $this->assertTrue($exceptionThrown);
     }
 
-    public function testDocumentPhpTypeInt() {
+    public function testDocumentPhpTypeInt()
+    {
         $app = $this->_app;
 
         $document = new MongoAppKitDocument($app, 'test');
@@ -150,7 +162,8 @@ class DocumentTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($document->getProperty('typeInt'), 5);
     }
 
-    public function testDocumentPhpTypeFloat() {
+    public function testDocumentPhpTypeFloat()
+    {
         $app = $this->_app;
 
         $document = new MongoAppKitDocument($app, 'test');
@@ -160,7 +173,8 @@ class DocumentTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($document->getProperty('typeFloat'), 5.05);
     }
 
-    public function testDocumentPhpTypeBool() {
+    public function testDocumentPhpTypeBool()
+    {
         $app = $this->_app;
 
         $document = new MongoAppKitDocument($app, 'test');
@@ -170,7 +184,8 @@ class DocumentTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($document->getProperty('typeBool'), true);
     }
 
-    public function testDocumentPhpTypeString() {
+    public function testDocumentPhpTypeString()
+    {
         $app = $this->_app;
 
         $document = new MongoAppKitDocument($app, 'test');
@@ -180,7 +195,8 @@ class DocumentTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($document->getProperty('typeString'), 'string');
     }
 
-    public function testDelete() {
+    public function testDelete()
+    {
         $app = $this->_app;
         $exceptionThrown = false;
 
@@ -190,7 +206,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase {
             $id = $document->getId();
             $document->remove();
             $document->load($id);
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             $exceptionThrown = true;
         }
 

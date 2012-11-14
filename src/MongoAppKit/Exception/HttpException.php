@@ -4,15 +4,18 @@ namespace MongoAppKit\Exception;
 
 use \Exception;
 
-class HttpException extends Exception {
+class HttpException extends Exception
+{
 
-	protected $_oCallingObject = null;
+    protected $_oCallingObject = null;
 
-	public function getCallingObject() {
-		return $this->_oCallingObject;
-	}
+    public function getCallingObject()
+    {
+        return $this->_oCallingObject;
+    }
 
-	public function setCallingObject($object) {
-		$this->_oCallingObject = $object;
-	}
+    public function setCallingObject($object)
+    {
+        $this->_oCallingObject = $object;
+    }
 }

@@ -1,28 +1,19 @@
 <?php
 
-/**
- * Class View
- *
- * Basic view functions
- * 
- * @author David Henning <madcat.me@gmail.com>
- * 
- * @package MongoAppKit
- */
-
 namespace MongoAppKit;
 
 use Silex\Application as SilexApplication;
 
 use Symfony\Component\HttpFoundation\Request;
 
-class View {
+class View
+{
 
     /**
      * Name of the App built with MongoAppKit (used template path)
      * @var string
      */
-    
+
     protected $_appName = '';
 
     /**
@@ -45,7 +36,7 @@ class View {
      */
 
     protected $_app = null;
- 
+
     /**
      * Name of the template to render
      * @var string
@@ -143,12 +134,13 @@ class View {
      * @param string $id
      */
 
-    public function __construct(SilexApplication $app, $id = null) {
+    public function __construct(SilexApplication $app, $id = null)
+    {
         $this->_config = $app['config'];
         $this->_request = $app['request'];
         $this->_app = $app;
 
-        if($id !== null) {
+        if ($id !== null) {
             $this->setId($id);
         }
     }
@@ -159,7 +151,8 @@ class View {
      * @return string
      */
 
-    public function getAppName() {
+    public function getAppName()
+    {
         return $this->_appName;
     }
 
@@ -167,9 +160,10 @@ class View {
      * Set app name
      */
 
-    public function setAppName($appName) {
+    public function setAppName($appName)
+    {
         $this->_appName = $appName;
-    }    
+    }
 
     /**
      * Get document id
@@ -177,7 +171,8 @@ class View {
      * @return string
      */
 
-    public function getId() {
+    public function getId()
+    {
         return $this->_id;
     }
 
@@ -187,7 +182,8 @@ class View {
      * @param string $id
      */
 
-    public function setId($id) {
+    public function setId($id)
+    {
         $this->_id = $id;
     }
 
@@ -197,7 +193,8 @@ class View {
      * @return string
      */
 
-    public function getOutputFormat() {
+    public function getOutputFormat()
+    {
         return $this->_outputFormat;
     }
 
@@ -207,8 +204,9 @@ class View {
      * @param string $outputFormat
      */
 
-    public function setOutputFormat($outputFormat) {
-        if(!in_array($outputFormat, $this->_allowedOutputFormats)) {
+    public function setOutputFormat($outputFormat)
+    {
+        if (!in_array($outputFormat, $this->_allowedOutputFormats)) {
             throw new \InvalidArgumentException("Output format '{$outputFormat}' is unkown.");
         }
 
@@ -221,7 +219,8 @@ class View {
      * @return integer
      */
 
-    public function getDocumentLimit() {
+    public function getDocumentLimit()
+    {
         return ($this->_documentLimit !== null) ? $this->_documentLimit : 100;
     }
 
@@ -231,7 +230,8 @@ class View {
      * @param integer $documentLimit
      */
 
-    public function setDocumentLimit($documentLimit) {
+    public function setDocumentLimit($documentLimit)
+    {
         $this->_documentLimit = $documentLimit;
     }
 
@@ -241,7 +241,8 @@ class View {
      * @return integer
      */
 
-    public function getTotalDocuments() {
+    public function getTotalDocuments()
+    {
         return $this->_totalDocuments;
     }
 
@@ -251,7 +252,8 @@ class View {
      * @param integer $documents
      */
 
-    public function setTotalDocuments($documents) {
+    public function setTotalDocuments($documents)
+    {
         $this->_totalDocuments = $documents;
     }
 
@@ -262,7 +264,8 @@ class View {
      * @return integer
      */
 
-    public function getSkippedDocuments() {
+    public function getSkippedDocuments()
+    {
         return $this->_skippedDocuments;
     }
 
@@ -272,7 +275,8 @@ class View {
      * @param integer $skippedDocuments
      */
 
-    public function setSkippedDocuments($skippedDocuments) {
+    public function setSkippedDocuments($skippedDocuments)
+    {
         $this->_skippedDocuments = $skippedDocuments;
     }
 
@@ -282,7 +286,8 @@ class View {
      * @return integer
      */
 
-    public function getCurrentPage() {
+    public function getCurrentPage()
+    {
         return (int)$this->_skippedDocuments / $this->getDocumentLimit() + 1;
     }
 
@@ -292,7 +297,8 @@ class View {
      * @return array
      */
 
-    public function getAdditionalUrlParameters() {
+    public function getAdditionalUrlParameters()
+    {
         return $this->_additionalUrlParameters;
     }
 
@@ -303,7 +309,8 @@ class View {
      * @param string $value
      */
 
-    public function addAdditionalUrlParameter($name, $value) {
+    public function addAdditionalUrlParameter($name, $value)
+    {
         $this->_additionalUrlParameters[$name] = $value;
     }
 
@@ -313,14 +320,15 @@ class View {
      * @return array
      */
 
-    public function getPagination() {
-        if($this->_pagination === null) {
+    public function getPagination()
+    {
+        if ($this->_pagination === null) {
             // compute total pages
             $documentLimit = $this->getDocumentLimit();
             $currentPage = $this->getCurrentPage();
             $pageCount = (int)ceil($this->_totalDocuments / $documentLimit);
-            
-            if($pageCount > 1) {
+
+            if ($pageCount > 1) {
                 // init array of the pagination
                 $pages = array(
                     'pages' => array(),
@@ -330,7 +338,7 @@ class View {
                 );
 
                 // set URL to previous page and first page
-                if($this->getCurrentPage() > 1) {
+                if ($this->getCurrentPage() > 1) {
                     $pages['prevPageUrl'] = $this->_createPageUrl($currentPage - 1, $documentLimit);
                     $pages['firstPageUrl'] = $this->_createPageUrl(1, $documentLimit);
                 } else {
@@ -339,7 +347,7 @@ class View {
                 }
 
                 // set URL to next page and last page
-                if($this->getCurrentPage() < $pageCount) {
+                if ($this->getCurrentPage() < $pageCount) {
                     $pages['nextPageUrl'] = $this->_createPageUrl($currentPage + 1, $documentLimit);
                     $pages['lastPageUrl'] = $this->_createPageUrl($pageCount, $documentLimit);
                 } else {
@@ -365,22 +373,23 @@ class View {
      * @return array
      */
 
-    protected function _getPages($pages, $documentLimit, $currentPage) {
+    protected function _getPages($pages, $documentLimit, $currentPage)
+    {
         $aPages = array();
 
-        if($pages > 0) {
-            
+        if ($pages > 0) {
+
             // set pages with number, url and active state
-            for($i = 1; $i <= $pages; $i++) {
+            for ($i = 1; $i <= $pages; $i++) {
                 $page = array(
                     'nr' => $i,
                     'url' => $this->_createPageUrl($i, $documentLimit),
                     'active' => false
                 );
 
-                if($i === $currentPage) {
+                if ($i === $currentPage) {
                     $page['active'] = true;
-                } 
+                }
 
                 $aPages[] = $page;
             }
@@ -397,13 +406,14 @@ class View {
      * @return string
      */
 
-    protected function _createUrl($params, $baseUrl = null) {
+    protected function _createUrl($params, $baseUrl = null)
+    {
         $baseUrl = (!empty($baseUrl)) ? $baseUrl : $this->_baseUrl;
         $sUrl = "{$baseUrl}.{$this->_outputFormat}";
         $params = array_merge($this->_additionalUrlParameters, $params);
 
-        if(!empty($params)) {
-            $sUrl .= '?'.http_build_query($params);
+        if (!empty($params)) {
+            $sUrl .= '?' . http_build_query($params);
         }
 
         return $sUrl;
@@ -417,7 +427,8 @@ class View {
      * @return string
      */
 
-    protected function _createPageUrl($page, $limit) {
+    protected function _createPageUrl($page, $limit)
+    {
         $params = array(
             'skip' => (($page - 1) * $limit),
             'limit' => $limit
@@ -430,12 +441,13 @@ class View {
      * Begin rendering the page in selected output format (HTML/TWIG, JSON, XML)
      */
 
-    public function render(SilexApplication $app) {
-        if($this->_outputFormat == 'html') {
+    public function render(SilexApplication $app)
+    {
+        if ($this->_outputFormat == 'html') {
             return $this->_renderTwig($app);
-        } elseif($this->_outputFormat == 'json') {
+        } elseif ($this->_outputFormat == 'json') {
             return $this->_renderJSON($app);
-        } elseif($this->_outputFormat == 'xml') {
+        } elseif ($this->_outputFormat == 'xml') {
             header('Content-type: text/xml');
             return $this->_renderXML();
         } else {
@@ -447,7 +459,8 @@ class View {
      * Load Twig Template Engine and render selected template with set data
      */
 
-    protected function _renderTwig(SilexApplication $app) {
+    protected function _renderTwig(SilexApplication $app)
+    {
         return $app['twig']->render($this->_templateName, $this->_templateData);
     }
 
@@ -455,7 +468,8 @@ class View {
      * Render JSON output
      */
 
-    protected function _renderJSON(SilexApplication $app) {
+    protected function _renderJSON(SilexApplication $app)
+    {
         return $app->json($this->_templateData);
     }
 
@@ -463,7 +477,8 @@ class View {
      * Render XML output
      */
 
-    protected function _renderXML() {
+    protected function _renderXML()
+    {
         $document = new \SimpleXMLElement('<kickipedia></kickipedia>');
         $header = $document->addChild('header');
         $header->addChild('status', 200);

@@ -4,9 +4,11 @@ namespace MongoAppKit\Tests\Collection;
 
 use MongoAppKit\Collection\ArrayList;
 
-class ArrayListTest extends \PHPUnit_Framework_TestCase {
+class ArrayListTest extends \PHPUnit_Framework_TestCase
+{
 
-    public function testArrayAccess() {
+    public function testArrayAccess()
+    {
         $list = new ArrayList();
         $property = 'foo';
         $value = 'bar';
@@ -16,12 +18,14 @@ class ArrayListTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($array[$property], $list[$property]);
     }
 
-    public function testArrayAccessExists() {
+    public function testArrayAccessExists()
+    {
         $list = new ArrayList();
         $this->assertFalse(isset($list['foo']));
     }
 
-    public function testArrayAccessUnset() {
+    public function testArrayAccessUnset()
+    {
         $list = new ArrayList();
         $list['foo'] = 'bar';
         unset($list['foo']);

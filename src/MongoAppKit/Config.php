@@ -1,27 +1,19 @@
 <?php
 
-/**
- * Class Config
- *
- * Reads and stores data from a the config file and provides object access via Singleton pattern
- * 
- * @author David Henning <madcat.me@gmail.com>
- * 
- * @package MongoAppKit
- */
-
 namespace MongoAppKit;
 
 use MongoAppKit\Collection\MutableList;
 
-class Config extends MutableList {
+class Config extends MutableList
+{
 
-    public function addConfigFile($fileName = null) {
-        if(empty($fileName)) {
+    public function addConfigFile($fileName = null)
+    {
+        if (empty($fileName)) {
             throw new \InvalidArgumentException("Empty config file name specified.");
         }
-        
-        if(!is_readable($fileName)) {
+
+        if (!is_readable($fileName)) {
             throw new \InvalidArgumentException("File {$fileName} is not readable!");
         }
 
@@ -30,26 +22,30 @@ class Config extends MutableList {
         $this->updateProperties($configData);
     }
 
-    public function setBaseDir($baseDir) {
+    public function setBaseDir($baseDir)
+    {
         $this->setProperty('BaseDir', $baseDir);
     }
 
-    public function getBaseDir() {
+    public function getBaseDir()
+    {
         return $this->getProperty('BaseDir');
     }
 
-    public function getConfDir() {
+    public function getConfDir()
+    {
         return realpath($this->getBaseDir() . '/conf/');
     }
 
-    public function sanitize($data) {
-        if($data === null) {
+    public function sanitize($data)
+    {
+        if ($data === null) {
             return null;
         }
 
-        if(is_array($data)) {
+        if (is_array($data)) {
             $sanitizedData = array();
-            foreach($data as $key => $value) {
+            foreach ($data as $key => $value) {
                 $sanitizedData[$key] = $this->sanitize($value);
             }
 
@@ -57,7 +53,7 @@ class Config extends MutableList {
         }
 
         $data = trim($data);
-        $data = rawurldecode($data);     
+        $data = rawurldecode($data);
         $data = htmlspecialchars($data);
         $data = strip_tags($data);
 
