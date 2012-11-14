@@ -105,7 +105,8 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
     {
         $app = $this->_app;
 
-        $formattedTime = date('Y-m-d H:i:s');
+        $time = time();
+        $formattedTime = date('Y-m-d H:i:s', $time);
 
         $expectedDocument = new MongoAppKitDocument($app, 'test');
         $expectedDocument->setProperty('created_at', $formattedTime);
@@ -117,7 +118,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
         $document = new MongoAppKitDocument($app, 'test');
         $document->load($id);
 
-        $this->assertEquals($formattedTime, $document->getProperty('created_at'));
+        $this->assertEquals($time, $document->getProperty('created_at'));
     }
 
     public function testDocumentGetId()
