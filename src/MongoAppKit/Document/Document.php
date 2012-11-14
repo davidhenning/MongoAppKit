@@ -164,7 +164,8 @@ class Document extends MutableList {
          if(!empty($fieldConfig)) {
             // set Mongo type object
             if(isset($fieldConfig['mongoType'])) {
-                $value = $this->_setMongoValueType($fieldConfig['mongoType'], $value);
+                $autoUpdate = (isset($fieldConfig['autoUpdate'])) ? $fieldConfig['autoUpdate'] : true;
+                $value = $this->_setMongoValueType($fieldConfig['mongoType'], $value, $autoUpdate);
             }
 
             // set index
@@ -194,7 +195,7 @@ class Document extends MutableList {
      * @return mixed
      */
 
-    protected function _setMongoValueType($type, $value) {
+    protected function _setMongoValueType($type, $value, $autoUpdate = true) {
         switch($type) {
             case 'id':
                 if(!$value instanceof \MongoId) {
@@ -203,7 +204,7 @@ class Document extends MutableList {
                 
                 break;
             case 'date':
-                if(!$value instanceof \MongoDate) {
+                if(!$value instanceof \MongoDate && $autoUpdate === true) {
                     $value = (!is_int($value)) ? strtotime($value) : $value;
                     return ($value !== null && !empty($value)) ? new \MongoDate($value) : new \MongoDate();
                 }              
