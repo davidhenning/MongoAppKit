@@ -137,7 +137,19 @@ class MutableList implements \Countable, \IteratorAggregate {
     }
 
     /**
-     * Executes given mapping function on property array
+     * Executes given callback function on every property array item
+     *
+     * @param callable $callback
+     * @return MutableList
+     * @throws \InvalidArgumentException
+     */
+
+    public function each($callback) {
+        return $this->map($callback);
+    }
+
+    /**
+     * Executes given mapping function on every property array item
      *
      * @param callable $callback
      * @return MutableList
