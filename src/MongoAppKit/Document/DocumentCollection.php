@@ -71,6 +71,8 @@ class DocumentCollection extends MutableList
 
         $this->_sort = $field;
         $this->_sortOrder = $direction;
+
+        return $this;
     }
 
     /**
