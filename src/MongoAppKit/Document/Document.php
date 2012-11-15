@@ -276,7 +276,7 @@ class Document extends MutableMap
      * @return mixed
      */
 
-    public function getProperty($property)
+    public function getProperty($property, $arrayAsMap = true)
     {
         $value = parent::getProperty($property);
 
@@ -288,6 +288,11 @@ class Document extends MutableMap
         // get id of MongoId object
         if ($value instanceof \MongoId) {
             $value = $value->{'$id'};
+        }
+
+        if ($arrayAsMap === true && is_array($value)) {
+            $list = new MutableMap();
+            $value = $list->assign($value);
         }
 
         if (isset($this->_collectionConfig[$property]['encrypt'])) {

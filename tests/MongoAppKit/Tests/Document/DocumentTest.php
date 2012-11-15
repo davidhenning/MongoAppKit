@@ -4,7 +4,8 @@ namespace MongoAppKit\Tests\Document;
 
 use MongoAppKit\Config,
     MongoAppKit\Application,
-    MongoAppKit\Document\Document as MongoAppKitDocument;
+    MongoAppKit\Document\Document as MongoAppKitDocument,
+    MongoAppKit\Collection\MutableMap;
 
 class DocumentTest extends \PHPUnit_Framework_TestCase
 {
@@ -59,6 +60,17 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
         $document->load($id);
 
         $this->assertEquals($expectedDocument, $document);
+    }
+
+    public function testDocumentArrayToMapValue()
+    {
+        $app = $this->_app;
+
+        $list = new MutableMap('foo', 'bar');
+        $document = new MongoAppKitDocument($app, 'test');
+        $document->setProperty('foo', array('foo', 'bar'));
+
+        $this->assertEquals($list, $document->getProperty('foo'));
     }
 
     public function testGetDatabase()
