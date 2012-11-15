@@ -2,7 +2,7 @@
 
 namespace MongoAppKit\Collection;
 
-class MutableList implements \Countable, \IteratorAggregate
+class MutableMap implements \Countable, \IteratorAggregate
 {
 
     /**
@@ -126,7 +126,7 @@ class MutableList implements \Countable, \IteratorAggregate
     /**
      * Reverses the property array
      *
-     * @return MutableList
+     * @return MutableMap
      */
 
     public function reverse()
@@ -140,7 +140,7 @@ class MutableList implements \Countable, \IteratorAggregate
      * Executes given callback function on every property array item
      *
      * @param callable $callback
-     * @return MutableList
+     * @return MutableMap
      * @throws \InvalidArgumentException
      */
 
@@ -153,7 +153,7 @@ class MutableList implements \Countable, \IteratorAggregate
      * Executes given mapping function on every property array item
      *
      * @param callable $callback
-     * @return MutableList
+     * @return MutableMap
      * @throws \InvalidArgumentException
      */
 
@@ -173,7 +173,7 @@ class MutableList implements \Countable, \IteratorAggregate
      *
      * @param int $offset
      * @param int $limit
-     * @return MutableList
+     * @return MutableMap
      */
 
     public function slice($offset, $limit)
@@ -189,7 +189,7 @@ class MutableList implements \Countable, \IteratorAggregate
      * Returns new MutableList with filtered values from property array
      *
      * @param callable $callback
-     * @return MutableList
+     * @return MutableMap
      * @throws \InvalidArgumentException
      */
 
@@ -210,7 +210,7 @@ class MutableList implements \Countable, \IteratorAggregate
      * Imports an array
      *
      * @param array $properties
-     * @return MutableList
+     * @return MutableMap
      */
 
     public function assign(array $properties)
@@ -224,7 +224,7 @@ class MutableList implements \Countable, \IteratorAggregate
      * Update properties with from given array
      *
      * @param array $properties
-     * @return MutableList
+     * @return MutableMap
      */
 
     public function updateProperties($properties)
@@ -260,7 +260,7 @@ class MutableList implements \Countable, \IteratorAggregate
      *
      * @param string $property
      * @param mixed $value
-     * @return MutableList
+     * @return MutableMap
      */
 
     public function setProperty($property, $value)
@@ -274,7 +274,7 @@ class MutableList implements \Countable, \IteratorAggregate
      * Removes a property
      *
      * @param string $property
-     * @return MutableList
+     * @return MutableMap
      */
 
     public function removeProperty($property)

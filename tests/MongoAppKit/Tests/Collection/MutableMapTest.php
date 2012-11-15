@@ -2,14 +2,14 @@
 
 namespace MongoAppKit\Tests\Collection;
 
-use MongoAppKit\Collection\MutableList;
+use MongoAppKit\Collection\MutableMap;
 
-class MutableListTest extends \PHPUnit_Framework_TestCase
+class MutableMapTest extends \PHPUnit_Framework_TestCase
 {
 
     public function testConstructor()
     {
-        $list = new MutableList('bubba', 'gump', 'shrimps');
+        $list = new MutableMap('bubba', 'gump', 'shrimps');
         $array = array('bubba', 'gump', 'shrimps');
 
         $this->assertEquals($array, $list->getProperties());
@@ -17,7 +17,7 @@ class MutableListTest extends \PHPUnit_Framework_TestCase
 
     public function testPropertyLength()
     {
-        $list = new MutableList('bubba', 'gump', 'shrimps');
+        $list = new MutableMap('bubba', 'gump', 'shrimps');
 
         $this->assertEquals(3, $list->length);
     }
@@ -25,7 +25,7 @@ class MutableListTest extends \PHPUnit_Framework_TestCase
     public function testAssign()
     {
         $array = array('food' => 'shrimps', 'sauce' => 'cocktail');
-        $list = new MutableList();
+        $list = new MutableMap();
         $list->assign($array);
 
         $this->assertEquals($array, $list->getProperties());
@@ -34,7 +34,7 @@ class MutableListTest extends \PHPUnit_Framework_TestCase
     public function testProperty()
     {
         $value = 'bar';
-        $list = new MutableList();
+        $list = new MutableMap();
         $list->setProperty('foo', $value);
 
         $this->assertEquals($value, $list->getProperty('foo'));
@@ -43,7 +43,7 @@ class MutableListTest extends \PHPUnit_Framework_TestCase
     public function testMagicProperty()
     {
         $value = 'bar';
-        $list = new MutableList();
+        $list = new MutableMap();
         $list->foo = $value;
 
         $this->assertEquals($value, $list->foo);
@@ -52,7 +52,7 @@ class MutableListTest extends \PHPUnit_Framework_TestCase
     public function testNonExistingProperty()
     {
         try {
-            $list = new MutableList();
+            $list = new MutableMap();
             $value = $list->getProperty('foo');
         } catch (\OutOfBoundsException $e) {
             return;
@@ -66,7 +66,7 @@ class MutableListTest extends \PHPUnit_Framework_TestCase
         try {
             $property = 'foo';
             $value = 'bar';
-            $list = new MutableList();
+            $list = new MutableMap();
             $list->setProperty($property, $value);
             $list->removeProperty($property);
             $value = $list->getProperty($property);
@@ -82,7 +82,7 @@ class MutableListTest extends \PHPUnit_Framework_TestCase
         try {
             $property = 'foo';
             $value = 'bar';
-            $list = new MutableList();
+            $list = new MutableMap();
             $list->{$property} = $value;
             unset($list->{$property});
             $value = $list->{$property};
@@ -96,7 +96,7 @@ class MutableListTest extends \PHPUnit_Framework_TestCase
     public function testRemoveNonExistingProperty()
     {
         try {
-            $list = new MutableList();
+            $list = new MutableMap();
             $list->removeProperty('foo');
         } catch (\OutOfBoundsException $e) {
             return;
@@ -107,7 +107,7 @@ class MutableListTest extends \PHPUnit_Framework_TestCase
 
     public function testCount()
     {
-        $list = new MutableList();
+        $list = new MutableMap();
         $list->setProperty('foo', 'bar');
 
         $this->assertEquals(1, count($list));
@@ -116,7 +116,7 @@ class MutableListTest extends \PHPUnit_Framework_TestCase
     public function testIteration()
     {
         $array = array('food' => 'shrimps', 'sauce' => 'cocktail');
-        $list = new MutableList();
+        $list = new MutableMap();
         $list->assign($array);
 
         $newArray = array();
@@ -131,7 +131,7 @@ class MutableListTest extends \PHPUnit_Framework_TestCase
     public function testUpdateProperties()
     {
         $values = array('foo' => 'bar');
-        $list = new MutableList();
+        $list = new MutableMap();
         $list->assign($values);
         $newValues = array('bar' => 'foo');
         $list->updateProperties($newValues);
@@ -141,7 +141,7 @@ class MutableListTest extends \PHPUnit_Framework_TestCase
 
     public function testToString()
     {
-        $list = new MutableList('bubba', 'gump', 'shrimps');
+        $list = new MutableMap('bubba', 'gump', 'shrimps');
         $array = array('bubba', 'gump', 'shrimps');
 
         $this->assertEquals(serialize($array), (string)$list);
@@ -149,16 +149,16 @@ class MutableListTest extends \PHPUnit_Framework_TestCase
 
     public function testReverse()
     {
-        $expected = new MutableList('bar', 'foo');
-        $list = new MutableList('foo', 'bar');
+        $expected = new MutableMap('bar', 'foo');
+        $list = new MutableMap('foo', 'bar');
 
         $this->assertEquals($expected, $list->reverse());
     }
 
     public function testMap()
     {
-        $expected = new MutableList('FOO', 'BAR');
-        $list = new MutableList('foo', 'bar');
+        $expected = new MutableMap('FOO', 'BAR');
+        $list = new MutableMap('foo', 'bar');
 
         $list->map(function ($value) {
             return strtoupper($value);
@@ -169,8 +169,8 @@ class MutableListTest extends \PHPUnit_Framework_TestCase
 
     public function testFilter()
     {
-        $expected = new MutableList('foo');
-        $list = new MutableList('foo', 'bar');
+        $expected = new MutableMap('foo');
+        $list = new MutableMap('foo', 'bar');
 
         $filter = function ($value) {
             if ($value === 'foo') {
@@ -183,16 +183,16 @@ class MutableListTest extends \PHPUnit_Framework_TestCase
 
     public function testSlice()
     {
-        $expected = new MutableList('bar');
-        $list = new MutableList('foo', 'bar');
+        $expected = new MutableMap('bar');
+        $list = new MutableMap('foo', 'bar');
 
         $this->assertEquals($expected, $list->slice(1, 1));
     }
 
     public function testChaining()
     {
-        $expected = new MutableList('FOO');
-        $list = new MutableList('foo', 'bar');
+        $expected = new MutableMap('FOO');
+        $list = new MutableMap('foo', 'bar');
         $filter = function ($value) {
             if (strtolower($value) == 'foo') {
                 return true;

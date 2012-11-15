@@ -2,9 +2,9 @@
 
 namespace MongoAppKit;
 
-use MongoAppKit\Collection\MutableList;
+use MongoAppKit\Collection\MutableMap;
 
-class Config extends MutableList
+class Config extends MutableMap
 {
 
     public function addConfigFile($fileName = null)

@@ -2,11 +2,11 @@
 
 namespace MongoAppKit\Document;
 
-use MongoAppKit\Collection\MutableList;
+use MongoAppKit\Collection\MutableMap;
 
 use Silex\Application;
 
-class DocumentCollection extends MutableList
+class DocumentCollection extends MutableMap
 {
 
     /**

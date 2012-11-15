@@ -3,11 +3,11 @@
 namespace MongoAppKit\Document;
 
 use MongoAppKit\Config,
-    MongoAppKit\Collection\MutableList;
+    MongoAppKit\Collection\MutableMap;
 
 use Silex\Application;
 
-class Document extends MutableList
+class Document extends MutableMap
 {
 
     /**
@@ -148,7 +148,19 @@ class Document extends MutableList
             }
         }
 
-        return $preparedProperties;
+        return $this->_prepareStore($preparedProperties);
+    }
+
+    /**
+     * Hook method to alter properties before storing them into the database
+     *
+     * @param array $properties
+     * @return array
+     */
+
+    protected function _prepareStore(array $properties)
+    {
+        return $properties;
     }
 
     /**
@@ -329,7 +341,7 @@ class Document extends MutableList
      * Save document properties into the selected MongoDB collection
      */
 
-    public function save()
+    public function store()
     {
         $this->_setId();
         $preparedProperties = $this->getPreparedProperties();

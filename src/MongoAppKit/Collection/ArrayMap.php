@@ -2,7 +2,7 @@
 
 namespace MongoAppKit\Collection;
 
-class ArrayList extends MutableList implements \ArrayAccess
+class ArrayMap extends MutableMap implements \ArrayAccess
 {
 
     /**

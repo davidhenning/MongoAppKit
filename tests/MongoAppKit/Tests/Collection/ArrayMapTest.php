@@ -2,14 +2,14 @@
 
 namespace MongoAppKit\Tests\Collection;
 
-use MongoAppKit\Collection\ArrayList;
+use MongoAppKit\Collection\ArrayMap;
 
-class ArrayListTest extends \PHPUnit_Framework_TestCase
+class ArrayMapTest extends \PHPUnit_Framework_TestCase
 {
 
     public function testArrayAccess()
     {
-        $list = new ArrayList();
+        $list = new ArrayMap();
         $property = 'foo';
         $value = 'bar';
         $array = array('foo' => 'bar');
@@ -20,13 +20,13 @@ class ArrayListTest extends \PHPUnit_Framework_TestCase
 
     public function testArrayAccessExists()
     {
-        $list = new ArrayList();
+        $list = new ArrayMap();
         $this->assertFalse(isset($list['foo']));
     }
 
     public function testArrayAccessUnset()
     {
-        $list = new ArrayList();
+        $list = new ArrayMap();
         $list['foo'] = 'bar';
         unset($list['foo']);
 

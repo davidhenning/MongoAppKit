@@ -2,7 +2,7 @@
 
 namespace MongoAppKit\Collection;
 
-class ImmutableList extends MutableList
+class ImmutableMap extends MutableMap
 {
 
     /**

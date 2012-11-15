@@ -2,14 +2,14 @@
 
 namespace MongoAppKit\Tests\Collection;
 
-use MongoAppKit\Collection\ImmutableList;
+use MongoAppKit\Collection\ImmutableMap;
 
-class ImmutableListTest extends \PHPUnit_Framework_TestCase
+class ImmutableMapTest extends \PHPUnit_Framework_TestCase
 {
 
     public function testAssign()
     {
-        $list = new ImmutableList();
+        $list = new ImmutableMap();
         $exceptionThrown = false;
 
         try {
@@ -23,7 +23,7 @@ class ImmutableListTest extends \PHPUnit_Framework_TestCase
 
     public function testUpdateProperties()
     {
-        $list = new ImmutableList();
+        $list = new ImmutableMap();
         $exceptionThrown = false;
 
         try {
@@ -37,7 +37,7 @@ class ImmutableListTest extends \PHPUnit_Framework_TestCase
 
     public function testSetProperty()
     {
-        $list = new ImmutableList();
+        $list = new ImmutableMap();
         $exceptionThrown = false;
 
         try {
@@ -51,7 +51,7 @@ class ImmutableListTest extends \PHPUnit_Framework_TestCase
 
     public function testRemoveProperty()
     {
-        $list = new ImmutableList();
+        $list = new ImmutableMap();
         $exceptionThrown = false;
 
         try {

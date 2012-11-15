@@ -37,7 +37,7 @@ class DocumentCollectionTest extends \PHPUnit_Framework_TestCase
             $document = new MongoAppKitDocument($app, 'test');
             $document->setProperty('foo', 'bar');
             $document->setProperty('sort', 10 - $i);
-            $document->save();
+            $document->store();
         }
     }
 
@@ -169,7 +169,7 @@ class DocumentCollectionTest extends \PHPUnit_Framework_TestCase
         for ($i = 0; $i < 10; $i++) {
             $document = new MongoAppKitDocument($app, 'test');
             $document->setProperty('foo', 'removeTest');
-            $document->save();
+            $document->store();
         }
 
         $collection = new DocumentCollection(new MongoAppKitDocument($app, 'test'));

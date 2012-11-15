@@ -52,7 +52,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
         $expectedDocument = new MongoAppKitDocument($app, 'test');
         $expectedDocument->setProperty('foo', 'bar');
         $expectedDocument->setProperty('bar', 'foo');
-        $expectedDocument->save();
+        $expectedDocument->store();
         $id = $expectedDocument->getProperty('_id');
 
         $document = new MongoAppKitDocument($app, 'test');
@@ -92,7 +92,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
         $expectedDocument = new MongoAppKitDocument($app, 'test');
         $expectedDocument->setProperty('foo', 'bar');
         $expectedDocument->setProperty('bar', 'foo');
-        $expectedDocument->save();
+        $expectedDocument->store();
         $id = $expectedDocument->getProperty('_id');
 
         $document = new MongoAppKitDocument($app, 'test');
@@ -112,7 +112,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
         $expectedDocument->setProperty('created_at', $formattedTime);
         $expectedDocument->setProperty('foo', 'bar');
         $expectedDocument->setProperty('bar', 'foo');
-        $expectedDocument->save();
+        $expectedDocument->store();
         $id = $expectedDocument->getProperty('_id');
 
         $document = new MongoAppKitDocument($app, 'test');
@@ -128,7 +128,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
         $expectedDocument = new MongoAppKitDocument($app, 'test');
         $expectedDocument->setProperty('foo', 'bar');
         $expectedDocument->setProperty('bar', 'foo');
-        $expectedDocument->save();
+        $expectedDocument->store();
         $id = $expectedDocument->getId();
 
         $document = new MongoAppKitDocument($app, 'test');
@@ -158,7 +158,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
 
         $document = new MongoAppKitDocument($app, 'test');
         $document->setProperty('typeInt', '5');
-        $document->save();
+        $document->store();
 
         $this->assertEquals($document->getProperty('typeInt'), 5);
     }
@@ -169,7 +169,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
 
         $document = new MongoAppKitDocument($app, 'test');
         $document->setProperty('typeFloat', '5.05');
-        $document->save();
+        $document->store();
 
         $this->assertEquals($document->getProperty('typeFloat'), 5.05);
     }
@@ -180,7 +180,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
 
         $document = new MongoAppKitDocument($app, 'test');
         $document->setProperty('typeBool', 'true');
-        $document->save();
+        $document->store();
 
         $this->assertEquals($document->getProperty('typeBool'), true);
     }
@@ -191,7 +191,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
 
         $document = new MongoAppKitDocument($app, 'test');
         $document->setProperty('typeString', 'string');
-        $document->save();
+        $document->store();
 
         $this->assertEquals($document->getProperty('typeString'), 'string');
     }
@@ -203,7 +203,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
 
         try {
             $document = new MongoAppKitDocument($app, null);
-            $document->save();
+            $document->store();
             $id = $document->getId();
             $document->remove();
             $document->load($id);
