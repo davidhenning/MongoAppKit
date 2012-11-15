@@ -26,7 +26,6 @@ class ViewTest extends \PHPUnit_Framework_TestCase
         $config->setProperty('DebugMode', true);
 
         $this->_app = new Application($config);
-        ;
     }
 
     public function testSetId()
