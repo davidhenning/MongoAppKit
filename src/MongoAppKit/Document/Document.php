@@ -177,8 +177,7 @@ class Document extends MutableMap
         if (!empty($fieldConfig)) {
             // set Mongo type object
             if (isset($fieldConfig['mongoType'])) {
-                $autoUpdate = (isset($fieldConfig['autoUpdate'])) ? $fieldConfig['autoUpdate'] : true;
-                $value = $this->_setMongoValueType($fieldConfig['mongoType'], $value, $autoUpdate);
+                $value = $this->_setMongoValueType($fieldConfig['mongoType'], $value);
             }
 
             // set index
@@ -208,7 +207,7 @@ class Document extends MutableMap
      * @return mixed
      */
 
-    protected function _setMongoValueType($type, $value, $autoUpdate = true)
+    protected function _setMongoValueType($type, $value)
     {
         switch ($type) {
             case 'id':
@@ -218,7 +217,7 @@ class Document extends MutableMap
 
                 break;
             case 'date':
-                if (!$value instanceof \MongoDate && $autoUpdate === true) {
+                if (!$value instanceof \MongoDate) {
                     $value = (!is_int($value)) ? strtotime($value) : $value;
                     return ($value !== null && !empty($value)) ? new \MongoDate($value) : new \MongoDate();
                 }
