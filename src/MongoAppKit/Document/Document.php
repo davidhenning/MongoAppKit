@@ -109,7 +109,7 @@ class Document extends MutableMap
 
     protected function _loadCollectionConfig($collectionName)
     {
-        $propertyConfig = $this->_config->getProperty('Fields');
+        $propertyConfig = $this->_config->getProperty('Fields', false);
 
         if (isset($propertyConfig[$collectionName]) && count($propertyConfig[$collectionName]) > 0) {
             $this->_collectionConfig = $propertyConfig[$collectionName];
@@ -125,7 +125,7 @@ class Document extends MutableMap
 
     public function fieldExists($field)
     {
-        return in_array($field, array_keys($this->_collectionConfig));
+        return isset($this->_collectionConfig[$field]);
     }
 
     /**
@@ -278,7 +278,7 @@ class Document extends MutableMap
 
     public function getProperty($property, $arrayAsMap = true)
     {
-        $value = parent::getProperty($property);
+        $value = parent::getProperty($property, $arrayAsMap);
 
         // get timestamp of MongoDate object
         if ($value instanceof \MongoDate) {
@@ -288,11 +288,6 @@ class Document extends MutableMap
         // get id of MongoId object
         if ($value instanceof \MongoId) {
             $value = $value->{'$id'};
-        }
-
-        if ($arrayAsMap === true && is_array($value)) {
-            $list = new MutableMap();
-            $value = $list->assign($value);
         }
 
         if (isset($this->_collectionConfig[$property]['encrypt'])) {
@@ -329,6 +324,7 @@ class Document extends MutableMap
      * Load document from given id
      *
      * @param string $id
+     * @return Document
      */
 
     public function load($id)
@@ -336,10 +332,12 @@ class Document extends MutableMap
         $data = $this->_getCollection()->findOne(array('_id' => new \MongoId($id)));
 
         if ($data === null) {
-            throw new \Exception("Document id '{$id}' does not exist!", 404);
+            throw new \InvalidArgumentException("Document id '{$id}' does not exist!", 404);
         }
 
         $this->_properties = $data;
+
+        return $this;
     }
 
     /**
@@ -353,6 +351,8 @@ class Document extends MutableMap
         $this->_properties = $preparedProperties;
         $this->_getCollection()->save($preparedProperties);
         usleep(10000);
+
+        return $this;
     }
 
     /**
@@ -363,5 +363,7 @@ class Document extends MutableMap
     {
         $this->_getCollection()->remove(array('_id' => $this->_properties['_id']));
         usleep(10000);
+
+        return $this;
     }
 }

@@ -252,10 +252,17 @@ class MutableMap implements \Countable, \IteratorAggregate
      * @throws \OutOfBoundsException
      */
 
-    public function getProperty($property)
+    public function getProperty($property, $arrayAsMap = true)
     {
         if (array_key_exists($property, $this->_properties)) {
-            return $this->_properties[$property];
+            $value = $this->_properties[$property];
+
+            if ($arrayAsMap === true && is_array($value)) {
+                $list = new MutableMap();
+                $value = $list->assign($value);
+            }
+
+            return $value;
         }
 
         throw new \OutOfBoundsException("Index '{$property}' does not exist");
@@ -304,11 +311,32 @@ class MutableMap implements \Countable, \IteratorAggregate
     {
         // get all property names
         $properties = array_keys($this->_properties);
+        $list = new MutableMap();
+
+        if (!empty($properties)) {
+            foreach ($properties as $property) {
+                $list->setProperty($property, $this->getProperty($property));
+            }
+        }
+
+        return $list;
+    }
+
+    /**
+     * Returns all properties as new MutableList
+     *
+     * @return array
+     */
+
+    public function getArray()
+    {
+        // get all property names
+        $properties = array_keys($this->_properties);
         $values = array();
 
         if (!empty($properties)) {
             foreach ($properties as $property) {
-                $values[$property] = $this->getProperty($property);
+                $values[$property] = $this->getProperty($property, false);
             }
         }
 
