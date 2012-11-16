@@ -12,7 +12,7 @@ class MutableMapTest extends \PHPUnit_Framework_TestCase
         $list = new MutableMap('bubba', 'gump', 'shrimps');
         $array = array('bubba', 'gump', 'shrimps');
 
-        $this->assertEquals($array, $list->getProperties());
+        $this->assertEquals($array, $list->getArray());
     }
 
     public function testPropertyLength()
@@ -28,7 +28,7 @@ class MutableMapTest extends \PHPUnit_Framework_TestCase
         $list = new MutableMap();
         $list->assign($array);
 
-        $this->assertEquals($array, $list->getProperties());
+        $this->assertEquals($array, $list->getArray());
     }
 
     public function testProperty()
@@ -49,60 +49,52 @@ class MutableMapTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($value, $list->foo);
     }
 
+    /**
+     * @expectedException \OutOfBoundsException
+     */
+
     public function testNonExistingProperty()
     {
-        try {
-            $list = new MutableMap();
-            $value = $list->getProperty('foo');
-        } catch (\OutOfBoundsException $e) {
-            return;
-        }
-
-        $this->fail('Expected OutOfBoundsException was not thrown.');
+        $list = new MutableMap();
+        $value = $list->getProperty('foo');
     }
+
+    /**
+     * @expectedException \OutOfBoundsException
+     */
 
     public function testRemoveProperty()
     {
-        try {
-            $property = 'foo';
-            $value = 'bar';
-            $list = new MutableMap();
-            $list->setProperty($property, $value);
-            $list->removeProperty($property);
-            $value = $list->getProperty($property);
-        } catch (\OutOfBoundsException $e) {
-            return;
-        }
-
-        $this->fail('Expected OutOfBoundsException was not thrown.');
+        $property = 'foo';
+        $value = 'bar';
+        $list = new MutableMap();
+        $list->setProperty($property, $value);
+        $list->removeProperty($property);
+        $value = $list->getProperty($property);
     }
+
+    /**
+     * @expectedException \OutOfBoundsException
+     */
 
     public function testMagicRemoveProperty()
     {
-        try {
-            $property = 'foo';
-            $value = 'bar';
-            $list = new MutableMap();
-            $list->{$property} = $value;
-            unset($list->{$property});
-            $value = $list->{$property};
-        } catch (\OutOfBoundsException $e) {
-            return;
-        }
-
-        $this->fail('Expected OutOfBoundsException was not thrown.');
+        $property = 'foo';
+        $value = 'bar';
+        $list = new MutableMap();
+        $list->{$property} = $value;
+        unset($list->{$property});
+        $value = $list->{$property};
     }
+
+    /**
+     * @expectedException \OutOfBoundsException
+     */
 
     public function testRemoveNonExistingProperty()
     {
-        try {
-            $list = new MutableMap();
-            $list->removeProperty('foo');
-        } catch (\OutOfBoundsException $e) {
-            return;
-        }
-
-        $this->fail('Expected OutOfBoundsException was not thrown.');
+        $list = new MutableMap();
+        $list->removeProperty('foo');
     }
 
     public function testCount()
@@ -136,7 +128,7 @@ class MutableMapTest extends \PHPUnit_Framework_TestCase
         $newValues = array('bar' => 'foo');
         $list->updateProperties($newValues);
         $expected = array_merge($values, $newValues);
-        $this->assertEquals($expected, $list->getProperties());
+        $this->assertEquals($expected, $list->getArray());
     }
 
     public function testToString()

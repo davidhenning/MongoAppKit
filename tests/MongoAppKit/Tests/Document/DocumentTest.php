@@ -82,19 +82,14 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($document->getDatabase() instanceof \MongoDB);
     }
 
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+
     public function testEmptyCollectionName()
     {
         $app = $this->_app;
-        $exceptionThrown = false;
-
-        try {
-            $document = new MongoAppKitDocument($app, null);
-            $document->findAll();
-        } catch (\InvalidArgumentException $e) {
-            $exceptionThrown = true;
-        }
-
-        $this->assertTrue($exceptionThrown);
+        $document = new MongoAppKitDocument($app, null);
     }
 
     public function testFieldEncryption()
@@ -149,19 +144,15 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedDocument, $document);
     }
 
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+
     public function testLoadWithInvalidId()
     {
         $app = $this->_app;
-        $exceptionThrown = false;
-
-        try {
-            $document = new MongoAppKitDocument($app, null);
-            $document->load('dfdsfdsffsdf');
-        } catch (\Exception $e) {
-            $exceptionThrown = true;
-        }
-
-        $this->assertTrue($exceptionThrown);
+        $document = new MongoAppKitDocument($app, null);
+        $document->load('dfdsfdsffsdf');
     }
 
     public function testDocumentPhpTypeInt()
@@ -208,21 +199,17 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($document->getProperty('typeString'), 'string');
     }
 
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+
     public function testDelete()
     {
         $app = $this->_app;
-        $exceptionThrown = false;
-
-        try {
-            $document = new MongoAppKitDocument($app, null);
-            $document->store();
-            $id = $document->getId();
-            $document->remove();
-            $document->load($id);
-        } catch (\Exception $e) {
-            $exceptionThrown = true;
-        }
-
-        $this->assertTrue($exceptionThrown);
+        $document = new MongoAppKitDocument($app, null);
+        $document->store();
+        $id = $document->getId();
+        $document->remove();
+        $document->load($id);
     }
 }

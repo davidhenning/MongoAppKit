@@ -88,7 +88,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
         $config->addConfigFile($fileName);
         unlink($fileName);
 
-        $this->assertEquals($values, $config->getProperties());
+        $this->assertEquals($values, $config->getArray());
     }
 
     public function testAddConfigFileWithEmptyFileName()

@@ -130,36 +130,28 @@ class DocumentCollectionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(10, $collection->getTotalDocuments());
     }
 
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+
     public function testSortByInvalidDirection()
     {
         $app = $this->_app;
-        $exceptionThrown = false;
-
-        try {
-            $collection = new DocumentCollection(new MongoAppKitDocument($app, 'test'));
-            $collection->sortBy('sort', 'fgdgdg');
-            $collection->find();
-        } catch (\InvalidArgumentException $e) {
-            $exceptionThrown = true;
-        }
-
-        $this->assertTrue($exceptionThrown);
+        $collection = new DocumentCollection(new MongoAppKitDocument($app, 'test'));
+        $collection->sortBy('sort', 'fgdgdg');
+        $collection->find();
     }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
 
     public function testSortByInvalidField()
     {
         $app = $this->_app;
-        $exceptionThrown = false;
-
-        try {
-            $collection = new DocumentCollection(new MongoAppKitDocument($app, 'test'));
-            $collection->sortBy('dfsafsfsf', 'fgdgdg');
-            $collection->find();
-        } catch (\InvalidArgumentException $e) {
-            $exceptionThrown = true;
-        }
-
-        $this->assertTrue($exceptionThrown);
+        $collection = new DocumentCollection(new MongoAppKitDocument($app, 'test'));
+        $collection->sortBy('dfsafsfsf', 'fgdgdg');
+        $collection->find();
     }
 
     public function testRemove()

@@ -35,19 +35,14 @@ class DigestAuthTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($auth);
     }
 
+    /**
+     * @expectedException \MongoAppKit\Exception\HttpException
+     */
+
     public function testWrongAuthentication()
     {
         $digest = $this->_getDigest();
-        $auth = false;
-
-        try {
-            $digest->authenticate('fgdfgdfg');
-            $auth = true;
-        } catch (HttpException $e) {
-            $auth = false;
-        }
-
-        $this->assertFalse($auth);
+        $digest->authenticate('fgdfgdfg');
     }
 
     public function testgetUserName()
