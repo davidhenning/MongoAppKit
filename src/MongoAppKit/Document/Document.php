@@ -43,7 +43,7 @@ class Document extends MutableMap
      * @var array
      */
 
-    protected $_collectionConfig = array();
+    protected $_fields = array();
 
     /**
      * Set MongoDB object
@@ -97,23 +97,29 @@ class Document extends MutableMap
             throw new \InvalidArgumentException('Collection name empty');
         }
 
-        $this->_collection = $this->_database->selectCollection($collectionName);
-        $this->_loadCollectionConfig($collectionName);
+        $this->_collection = $this->getDatabase()->selectCollection($collectionName);
     }
 
     /**
-     * Load collection config from config object and stores it interally
+     * Gets field configuration
      *
-     * @param string $collectionName
+     * @return array
      */
 
-    protected function _loadCollectionConfig($collectionName)
+    public function getFields()
     {
-        $propertyConfig = $this->_config->getProperty('Fields', false);
+        return $this->_fields;
+    }
 
-        if (isset($propertyConfig[$collectionName]) && count($propertyConfig[$collectionName]) > 0) {
-            $this->_collectionConfig = $propertyConfig[$collectionName];
-        }
+    /**
+     * Sets field configuration
+     *
+     * @param array $fields
+     */
+
+    public function setFields(array $fields)
+    {
+        $this->_fields = $fields;
     }
 
     /**
@@ -125,7 +131,7 @@ class Document extends MutableMap
 
     public function fieldExists($field)
     {
-        return isset($this->_collectionConfig[$field]);
+        return isset($this->_fields[$field]);
     }
 
     /**
@@ -136,16 +142,18 @@ class Document extends MutableMap
 
     public function getPreparedProperties()
     {
+        if (empty($this->_fields)) {
+            throw new \Exception('No field config!');
+        }
+
         $preparedProperties = array();
 
-        if (!empty($this->_collectionConfig)) {
-            // iterates collection config
-            foreach ($this->_collectionConfig as $property => $fieldConfig) {
-                // get value of property or set to null, if property does not exists or is empty
-                $value = (isset($this->_properties[$property])) ? $this->_properties[$property] : null;
-                // get prepared property value
-                $preparedProperties[$property] = $this->_prepareProperty($property, $value, $fieldConfig);
-            }
+        // iterates collection config
+        foreach ($this->_fields as $property => $field) {
+            // get value of property or set to null, if property does not exists or is empty
+            $value = (isset($this->_properties[$property])) ? $this->_properties[$property] : null;
+            // get prepared property value
+            $preparedProperties[$property] = $this->_prepareProperty($property, $value, $field);
         }
 
         return $this->_prepareStore($preparedProperties);
@@ -168,31 +176,31 @@ class Document extends MutableMap
      *
      * @param string $property
      * @param mixed $value
-     * @param array $fieldConfig
+     * @param array $field
      * @return mixed
      */
 
-    protected function _prepareProperty($property, $value, $fieldConfig)
+    protected function _prepareProperty($property, $value, $field)
     {
-        if (!empty($fieldConfig)) {
+        if (!empty($field)) {
             // set Mongo type object
-            if (isset($fieldConfig['mongoType'])) {
-                $value = $this->_setMongoValueType($fieldConfig['mongoType'], $value);
+            if (isset($field['mongoType'])) {
+                $value = $this->_setMongoValueType($field['mongoType'], $value);
             }
 
             // set index
-            if (isset($fieldConfig['index']) && $fieldConfig['index'] === true) {
+            if (isset($field['index']) && $field['index'] === true) {
                 $this->_getCollection()->ensureIndex($property);
             }
 
             // encrypt field data
-            if (isset($fieldConfig['encrypt']) && $fieldConfig['encrypt'] === true) {
+            if (isset($field['encrypt']) && $field['encrypt'] === true) {
                 $value = $this->_app['encryption']->encrypt($value, $this->_config->getProperty('EncryptionKey'));
             }
 
             // set php type
-            if (isset($fieldConfig['phpType'])) {
-                $value = $this->_setPhpValueType($fieldConfig['phpType'], $value);
+            if (isset($field['phpType'])) {
+                $value = $this->_setPhpValueType($field['phpType'], $value);
             }
         }
 
@@ -289,7 +297,7 @@ class Document extends MutableMap
             $value = $value->{'$id'};
         }
 
-        if (isset($this->_collectionConfig[$property]['encrypt'])) {
+        if (isset($this->_fields[$property]['encrypt'])) {
             $value = $this->_app['encryption']->decrypt($value, $this->_config->getProperty('EncryptionKey'));
         }
 

@@ -22,23 +22,25 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
         $config->setProperty('BaseDir', '/');
         $config->setProperty('DebugMode', true);
         $config->setProperty('EncryptionKey', 'muh');
-        $fields = array(
-            'test' => array(
-                '_id' => array('mongoType' => 'id'),
-                'created_at' => array('mongoType' => 'date', 'index' => true),
-                'foo' => array(),
-                'bar' => array('encrypt' => true),
-                'typeInt' => array('phpType' => 'int'),
-                'typeFloat' => array('phpType' => 'float'),
-                'typeBool' => array('phpType' => 'bool'),
-                'typeString' => array('phpType' => 'string')
-            )
-        );
-
-        $config->setProperty('Fields', $fields);
 
         $this->_app = new Application($config);
-        ;
+    }
+
+    public function getDocument(Application $app)
+    {
+        $document = new MongoAppKitDocument($app, 'test');
+        $document->setFields(array(
+            '_id' => array('mongoType' => 'id'),
+            'created_at' => array('mongoType' => 'date', 'index' => true),
+            'foo' => array(),
+            'bar' => array('encrypt' => true),
+            'typeInt' => array('phpType' => 'int'),
+            'typeFloat' => array('phpType' => 'float'),
+            'typeBool' => array('phpType' => 'bool'),
+            'typeString' => array('phpType' => 'string')
+        ));
+
+        return $document;
     }
 
     public function tearDown()
@@ -50,13 +52,13 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
     {
         $app = $this->_app;
 
-        $expectedDocument = new MongoAppKitDocument($app, 'test');
+        $expectedDocument = $this->getDocument($app);
         $expectedDocument->setProperty('foo', 'bar');
         $expectedDocument->setProperty('bar', 'foo');
         $expectedDocument->store();
         $id = $expectedDocument->getProperty('_id');
 
-        $document = new MongoAppKitDocument($app, 'test');
+        $document = $this->getDocument($app);
         $document->load($id);
 
         $this->assertEquals($expectedDocument, $document);
@@ -67,7 +69,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
         $app = $this->_app;
 
         $list = new MutableMap('foo', 'bar');
-        $document = new MongoAppKitDocument($app, 'test');
+        $document = $this->getDocument($app);
         $document->setProperty('foo', array('foo', 'bar'));
 
         $this->assertEquals($list, $document->getProperty('foo'));
@@ -77,7 +79,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
     {
         $app = $this->_app;
 
-        $document = new MongoAppKitDocument($app, 'test');
+        $document = $this->getDocument($app);
 
         $this->assertTrue($document->getDatabase() instanceof \MongoDB);
     }
@@ -96,13 +98,13 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
     {
         $app = $this->_app;
 
-        $expectedDocument = new MongoAppKitDocument($app, 'test');
+        $expectedDocument = $this->getDocument($app);
         $expectedDocument->setProperty('foo', 'bar');
         $expectedDocument->setProperty('bar', 'foo');
         $expectedDocument->store();
         $id = $expectedDocument->getProperty('_id');
 
-        $document = new MongoAppKitDocument($app, 'test');
+        $document = $this->getDocument($app);
         $document->load($id);
 
         $this->assertEquals('foo', $document->getProperty('bar'));
@@ -115,14 +117,14 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
         $time = time();
         $formattedTime = date('Y-m-d H:i:s', $time);
 
-        $expectedDocument = new MongoAppKitDocument($app, 'test');
+        $expectedDocument = $this->getDocument($app);
         $expectedDocument->setProperty('created_at', $formattedTime);
         $expectedDocument->setProperty('foo', 'bar');
         $expectedDocument->setProperty('bar', 'foo');
         $expectedDocument->store();
         $id = $expectedDocument->getProperty('_id');
 
-        $document = new MongoAppKitDocument($app, 'test');
+        $document = $this->getDocument($app);
         $document->load($id);
 
         $this->assertEquals($time, $document->getProperty('created_at'));
@@ -132,13 +134,13 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
     {
         $app = $this->_app;
 
-        $expectedDocument = new MongoAppKitDocument($app, 'test');
+        $expectedDocument = $this->getDocument($app);
         $expectedDocument->setProperty('foo', 'bar');
         $expectedDocument->setProperty('bar', 'foo');
         $expectedDocument->store();
         $id = $expectedDocument->getId();
 
-        $document = new MongoAppKitDocument($app, 'test');
+        $document = $this->getDocument($app);
         $document->load($id);
 
         $this->assertEquals($expectedDocument, $document);
@@ -159,7 +161,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
     {
         $app = $this->_app;
 
-        $document = new MongoAppKitDocument($app, 'test');
+        $document = $this->getDocument($app);
         $document->setProperty('typeInt', '5');
         $document->store();
 
@@ -170,7 +172,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
     {
         $app = $this->_app;
 
-        $document = new MongoAppKitDocument($app, 'test');
+        $document = $this->getDocument($app);
         $document->setProperty('typeFloat', '5.05');
         $document->store();
 
@@ -181,7 +183,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
     {
         $app = $this->_app;
 
-        $document = new MongoAppKitDocument($app, 'test');
+        $document = $this->getDocument($app);
         $document->setProperty('typeBool', 'true');
         $document->store();
 
@@ -192,7 +194,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
     {
         $app = $this->_app;
 
-        $document = new MongoAppKitDocument($app, 'test');
+        $document = $this->getDocument($app);
         $document->setProperty('typeString', 'string');
         $document->store();
 

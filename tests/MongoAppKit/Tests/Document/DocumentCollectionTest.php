@@ -21,24 +21,27 @@ class DocumentCollectionTest extends \PHPUnit_Framework_TestCase
         $config->setProperty('AppName', 'testcase');
         $config->setProperty('BaseDir', '/');
         $config->setProperty('DebugMode', true);
-        $fields = array(
-            'test' => array(
-                '_id' => array('mongoType' => 'id'),
-                'foo' => array(),
-                'sort' => array()
-            )
-        );
-
-        $config->setProperty('Fields', $fields);
         $app = new Application($config);
         $this->_app = $app;
 
         for ($i = 0; $i < 10; $i++) {
-            $document = new MongoAppKitDocument($app, 'test');
+            $document = $this->getDocument($app);
             $document->setProperty('foo', 'bar');
             $document->setProperty('sort', 10 - $i);
             $document->store();
         }
+    }
+
+    public function getDocument(Application $app)
+    {
+        $document = new MongoAppKitDocument($app, 'test');
+        $document->setFields(array(
+            '_id' => array('mongoType' => 'id'),
+            'foo' => array(),
+            'sort' => array()
+        ));
+
+        return $document;
     }
 
     public function tearDown()
@@ -49,7 +52,7 @@ class DocumentCollectionTest extends \PHPUnit_Framework_TestCase
     public function testFindAll()
     {
         $app = $this->_app;
-        $collection = new DocumentCollection(new MongoAppKitDocument($app, 'test'));
+        $collection = new DocumentCollection($this->getDocument($app));
         $collection->find();
 
         $this->assertEquals(10, $collection->getFoundDocuments());
@@ -59,7 +62,7 @@ class DocumentCollectionTest extends \PHPUnit_Framework_TestCase
     public function testFind()
     {
         $app = $this->_app;
-        $collection = new DocumentCollection(new MongoAppKitDocument($app, 'test'));
+        $collection = new DocumentCollection($this->getDocument($app));
         $collection->find(array('sort' => 1));
 
         $this->assertEquals(1, $collection->getFoundDocuments());
@@ -69,7 +72,7 @@ class DocumentCollectionTest extends \PHPUnit_Framework_TestCase
     public function testFindSkip()
     {
         $app = $this->_app;
-        $collection = new DocumentCollection(new MongoAppKitDocument($app, 'test'));
+        $collection = new DocumentCollection($this->getDocument($app));
         $collection->find(array('foo' => 'bar'), null, 9);
 
         $this->assertEquals(1, $collection->getFoundDocuments());
@@ -79,7 +82,7 @@ class DocumentCollectionTest extends \PHPUnit_Framework_TestCase
     public function testSortByAsc()
     {
         $app = $this->_app;
-        $collection = new DocumentCollection(new MongoAppKitDocument($app, 'test'));
+        $collection = new DocumentCollection($this->getDocument($app));
         $collection->sortBy('sort', 'asc');
         $collection->find();
 
@@ -97,7 +100,7 @@ class DocumentCollectionTest extends \PHPUnit_Framework_TestCase
     public function testSortByDesc()
     {
         $app = $this->_app;
-        $collection = new DocumentCollection(new MongoAppKitDocument($app, 'test'));
+        $collection = new DocumentCollection($this->getDocument($app));
         $collection->sortBy('sort', 'desc');
         $collection->find();
 
@@ -115,7 +118,7 @@ class DocumentCollectionTest extends \PHPUnit_Framework_TestCase
     public function testSortByNull()
     {
         $app = $this->_app;
-        $collection = new DocumentCollection(new MongoAppKitDocument($app, 'test'));
+        $collection = new DocumentCollection($this->getDocument($app));
         $collection->sortBy('sort', null);
         $collection->find();
 
@@ -137,7 +140,7 @@ class DocumentCollectionTest extends \PHPUnit_Framework_TestCase
     public function testSortByInvalidDirection()
     {
         $app = $this->_app;
-        $collection = new DocumentCollection(new MongoAppKitDocument($app, 'test'));
+        $collection = new DocumentCollection($this->getDocument($app));
         $collection->sortBy('sort', 'fgdgdg');
         $collection->find();
     }
@@ -149,7 +152,7 @@ class DocumentCollectionTest extends \PHPUnit_Framework_TestCase
     public function testSortByInvalidField()
     {
         $app = $this->_app;
-        $collection = new DocumentCollection(new MongoAppKitDocument($app, 'test'));
+        $collection = new DocumentCollection($this->getDocument($app));
         $collection->sortBy('dfsafsfsf', 'fgdgdg');
         $collection->find();
     }
@@ -159,12 +162,12 @@ class DocumentCollectionTest extends \PHPUnit_Framework_TestCase
         $app = $this->_app;
 
         for ($i = 0; $i < 10; $i++) {
-            $document = new MongoAppKitDocument($app, 'test');
+            $document = $this->getDocument($app);
             $document->setProperty('foo', 'removeTest');
             $document->store();
         }
 
-        $collection = new DocumentCollection(new MongoAppKitDocument($app, 'test'));
+        $collection = new DocumentCollection($this->getDocument($app));
         $collection->find(array('foo' => 'removeTest'));
         $collection->foo = 'bar';
         $this->assertEquals(11, $collection->length);
