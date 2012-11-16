@@ -315,7 +315,7 @@ class Document extends MutableMap
 
     protected function _setId()
     {
-        if (!isset($this->_properties['_id']) || !$this->_properties['_id'] instanceof \MongoId) {
+        if (!isset($this->_properties['_id'])) {
             $this->_properties['_id'] = new \MongoId();
         }
     }
