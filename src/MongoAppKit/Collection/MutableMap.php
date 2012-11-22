@@ -25,7 +25,11 @@ class MutableMap implements \Countable, \IteratorAggregate
         $args = func_get_args();
 
         if (!empty($args)) {
-            $this->_properties = $args;
+            if (is_array($args[0])) {
+                $this->assign($args[0]);
+            } else {
+                $this->_properties = $args;
+            }
         }
     }
 
