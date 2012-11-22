@@ -217,6 +217,19 @@ class MutableMap implements \Countable, \IteratorAggregate
     }
 
     /**
+     * Eliminates duplicate values
+     *
+     * @return MutableMap
+     */
+
+    public function unique()
+    {
+        $this->_properties = array_unique($this->_properties);
+
+        return $this;
+    }
+
+    /**
      * Imports an array
      *
      * @param array $properties
