@@ -356,8 +356,7 @@ class Document extends MutableMap
         $this->_setId();
         $preparedProperties = $this->getPreparedProperties();
         $this->_properties = $preparedProperties;
-        $this->_getCollection()->save($preparedProperties);
-        usleep(10000);
+        $this->_getCollection()->save($preparedProperties, array('safe' => true));
 
         return $this;
     }
@@ -368,8 +367,7 @@ class Document extends MutableMap
 
     public function remove()
     {
-        $this->_getCollection()->remove(array('_id' => $this->_properties['_id']));
-        usleep(10000);
+        $this->_getCollection()->remove(array('_id' => $this->_properties['_id']), array('safe' => true));
 
         return $this;
     }
