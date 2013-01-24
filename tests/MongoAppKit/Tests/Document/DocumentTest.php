@@ -4,8 +4,9 @@ namespace MongoAppKit\Tests\Document;
 
 use MongoAppKit\Config,
     MongoAppKit\Application,
-    MongoAppKit\Document\Document as MongoAppKitDocument,
-    MongoAppKit\Collection\MutableMap;
+    MongoAppKit\Document\Document as MongoAppKitDocument;
+
+use Collection\MutableMap;
 
 class DocumentTest extends \PHPUnit_Framework_TestCase
 {

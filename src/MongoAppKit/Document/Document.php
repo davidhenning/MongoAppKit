@@ -2,8 +2,9 @@
 
 namespace MongoAppKit\Document;
 
-use MongoAppKit\Config,
-    MongoAppKit\Collection\MutableMap;
+use MongoAppKit\Config;
+
+use Collection\MutableMap;
 
 use Silex\Application;
 

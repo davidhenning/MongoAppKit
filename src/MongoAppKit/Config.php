@@ -2,7 +2,7 @@
 
 namespace MongoAppKit;
 
-use MongoAppKit\Collection\MutableMap;
+use Collection\MutableMap;
 
 class Config extends MutableMap
 {

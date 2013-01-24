@@ -17,7 +17,8 @@
         "php": ">=5.3.0",
         "silex/silex": "1.*",
         "twig/twig": "1.9.*",
-        "phpseclib/phpseclib": "*"
+        "phpseclib/phpseclib": "*",
+        "madcatme/collection": "*"
     },
     "autoload": {
         "psr-0": {
