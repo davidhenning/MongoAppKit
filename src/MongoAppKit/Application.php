@@ -23,7 +23,7 @@ class Application extends SilexApplication
         $this->register(new TwigServiceProvider(), array(
             'twig.path' => $baseDir . "/views",
             'twig.options' => array(
-                'cache' => $baseDir . '/tmp',
+                'cache' => $baseDir . '/tmp/twig',
                 'auto_reload' => $config->getProperty('DebugMode')
             )
         ));
