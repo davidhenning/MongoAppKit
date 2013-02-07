@@ -1,5 +1,5 @@
 {
-    "hash": "f08e705cc7f889d09ecf444c019aecf4",
+    "hash": "89d5ca005e77c6675a61a251e62654b9",
     "packages": [
         {
             "name": "madcatme/collection",
@@ -7,18 +7,18 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/MadCatme/Collection.git",
-                "reference": "bfabc4d9fb41113f74822c2a951bfc5e9a6c1035"
+                "reference": "16fea3f5e2fcee1a5687eb36dc6c1b2980a5b265"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/MadCatme/Collection/archive/bfabc4d9fb41113f74822c2a951bfc5e9a6c1035.zip",
-                "reference": "bfabc4d9fb41113f74822c2a951bfc5e9a6c1035",
+                "url": "https://api.github.com/repos/MadCatme/Collection/zipball/16fea3f5e2fcee1a5687eb36dc6c1b2980a5b265",
+                "reference": "16fea3f5e2fcee1a5687eb36dc6c1b2980a5b265",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0"
             },
-            "time": "2013-01-24 22:07:18",
+            "time": "2013-02-02 17:56:02",
             "type": "library",
             "autoload": {
                 "psr-0": {
@@ -50,23 +50,23 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpseclib/phpseclib",
-                "reference": "45976002c70cf6b532f21d65b2876ee724de3095"
+                "reference": "93f9922410a0900bed818d4c0870adc74043af77"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/phpseclib/phpseclib/archive/45976002c70cf6b532f21d65b2876ee724de3095.zip",
-                "reference": "45976002c70cf6b532f21d65b2876ee724de3095",
+                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/93f9922410a0900bed818d4c0870adc74043af77",
+                "reference": "93f9922410a0900bed818d4c0870adc74043af77",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.0.0"
             },
             "suggest": {
-                "ext-mcrypt": "Install the Mcrypt extension in order to speed up a wide variety of cryptographic operations.",
                 "ext-gmp": "Install the GMP (GNU Multiple Precision) extension in order to speed up arbitrary precision integer arithmetic operations.",
+                "ext-mcrypt": "Install the Mcrypt extension in order to speed up a wide variety of cryptographic operations.",
                 "pear-pear/PHP_Compat": "Install PHP_Compat to get phpseclib working on PHP >= 4.3.3."
             },
-            "time": "2013-01-21 06:57:43",
+            "time": "2013-02-06 17:45:03",
             "type": "library",
             "autoload": {
                 "psr-0": {
@@ -93,21 +93,21 @@
             "description": "PHP Secure Communications Library - Pure-PHP implementations of RSA, AES, SSH2, SFTP, X.509 etc.",
             "homepage": "http://phpseclib.sourceforge.net",
             "keywords": [
-                "security",
-                "cryptography",
-                "ssh",
-                "encryption",
+                "BigInteger",
+                "aes",
+                "asn.1",
+                "asn1",
                 "crypto",
+                "cryptography",
+                "encryption",
+                "rsa",
+                "security",
+                "sftp",
                 "signature",
                 "signing",
-                "rsa",
-                "aes",
-                "sftp",
-                "x509",
+                "ssh",
                 "x.509",
-                "asn1",
-                "asn.1",
-                "BigInteger"
+                "x509"
             ]
         },
         {
@@ -116,18 +116,18 @@
             "source": {
                 "type": "git",
                 "url": "git://github.com/fabpot/Pimple.git",
-                "reference": "d58cec632dfdd3305d6b4f2563a5cf2a75b4d978"
+                "reference": "94a46d638debccc5fe88ea293b39462f1a30e2c2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/fabpot/Pimple/archive/d58cec632dfdd3305d6b4f2563a5cf2a75b4d978.zip",
-                "reference": "d58cec632dfdd3305d6b4f2563a5cf2a75b4d978",
+                "url": "https://api.github.com/repos/fabpot/Pimple/zipball/94a46d638debccc5fe88ea293b39462f1a30e2c2",
+                "reference": "94a46d638debccc5fe88ea293b39462f1a30e2c2",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0"
             },
-            "time": "2013-01-07 10:39:26",
+            "time": "2013-02-05 08:06:03",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -152,8 +152,8 @@
             "description": "Pimple is a simple Dependency Injection Container for PHP 5.3",
             "homepage": "http://pimple.sensiolabs.org",
             "keywords": [
-                "dependency injection",
-                "container"
+                "container",
+                "dependency injection"
             ]
         },
         {
@@ -200,12 +200,12 @@
             "source": {
                 "type": "git",
                 "url": "git://github.com/fabpot/Silex.git",
-                "reference": "f7a8956f96e991f86a5fc4811876bef76e3a4e25"
+                "reference": "e69e9f002c89a381d88f5a756d9a5f0dd76bea6d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/fabpot/Silex/archive/f7a8956f96e991f86a5fc4811876bef76e3a4e25.zip",
-                "reference": "f7a8956f96e991f86a5fc4811876bef76e3a4e25",
+                "url": "https://api.github.com/repos/fabpot/Silex/zipball/e69e9f002c89a381d88f5a756d9a5f0dd76bea6d",
+                "reference": "e69e9f002c89a381d88f5a756d9a5f0dd76bea6d",
                 "shasum": ""
             },
             "require": {
@@ -217,31 +217,31 @@
                 "symfony/routing": ">=2.1,<2.3-dev"
             },
             "require-dev": {
-                "twig/twig": ">=1.8.0,<2.0-dev",
-                "swiftmailer/swiftmailer": "4.2.*",
                 "doctrine/dbal": ">=2.2.0,<2.4.0-dev",
-                "symfony/security": ">=2.1,<2.3-dev",
-                "symfony/config": ">=2.1,<2.3-dev",
-                "symfony/locale": ">=2.1,<2.3-dev",
-                "symfony/form": ">=2.1,<2.3-dev",
+                "swiftmailer/swiftmailer": "4.2.*",
                 "symfony/browser-kit": ">=2.1,<2.3-dev",
+                "symfony/config": ">=2.1,<2.3-dev",
                 "symfony/css-selector": ">=2.1,<2.3-dev",
+                "symfony/dom-crawler": ">=2.1,<2.3-dev",
                 "symfony/finder": ">=2.1,<2.3-dev",
+                "symfony/form": ">=2.1,<2.3-dev",
+                "symfony/locale": ">=2.1,<2.3-dev",
                 "symfony/monolog-bridge": ">=2.1,<2.3-dev",
+                "symfony/options-resolver": ">=2.1,<2.3-dev",
                 "symfony/process": ">=2.1,<2.3-dev",
+                "symfony/security": ">=2.1,<2.3-dev",
+                "symfony/serializer": ">=2.1,<2.3-dev",
                 "symfony/translation": ">=2.1,<2.3-dev",
                 "symfony/twig-bridge": ">=2.1,<2.3-dev",
                 "symfony/validator": ">=2.1,<2.3-dev",
-                "symfony/serializer": ">=2.1,<2.3-dev",
-                "symfony/dom-crawler": ">=2.1,<2.3-dev",
-                "symfony/options-resolver": ">=2.1,<2.3-dev"
+                "twig/twig": ">=1.8.0,<2.0-dev"
             },
             "suggest": {
                 "symfony/browser-kit": ">=2.1,<2.3-dev",
                 "symfony/css-selector": ">=2.1,<2.3-dev",
                 "symfony/dom-crawler": ">=2.1,<2.3-dev"
             },
-            "time": "2013-01-24 12:18:41",
+            "time": "2013-02-07 15:54:50",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -281,12 +281,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/EventDispatcher",
-                "reference": "v2.2.0-BETA2"
+                "reference": "b07286109b0dd00dfbdedc943a5e133a2609d958"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/symfony/EventDispatcher/archive/v2.2.0-BETA2.zip",
-                "reference": "v2.2.0-BETA2",
+                "url": "https://api.github.com/repos/symfony/EventDispatcher/zipball/b07286109b0dd00dfbdedc943a5e133a2609d958",
+                "reference": "b07286109b0dd00dfbdedc943a5e133a2609d958",
                 "shasum": ""
             },
             "require": {
@@ -299,11 +299,11 @@
                 "symfony/dependency-injection": "2.2.*",
                 "symfony/http-kernel": "2.2.*"
             },
-            "time": "2013-01-17 15:25:59",
+            "time": "2013-01-31 21:39:01",
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.2-dev"
+                    "dev-master": "2.3-dev"
                 }
             },
             "autoload": {
@@ -335,22 +335,22 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/HttpFoundation",
-                "reference": "v2.2.0-BETA2"
+                "reference": "d60ca41ca09d22f3e59f02cb6cde9a8810a9e0f7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/symfony/HttpFoundation/archive/v2.2.0-BETA2.zip",
-                "reference": "v2.2.0-BETA2",
+                "url": "https://api.github.com/repos/symfony/HttpFoundation/zipball/d60ca41ca09d22f3e59f02cb6cde9a8810a9e0f7",
+                "reference": "d60ca41ca09d22f3e59f02cb6cde9a8810a9e0f7",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3"
             },
-            "time": "2013-01-21 16:56:55",
+            "time": "2013-02-04 12:42:02",
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.2-dev"
+                    "dev-master": "2.3-dev"
                 }
             },
             "autoload": {
@@ -385,19 +385,19 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/HttpKernel",
-                "reference": "82fce0a7efbb692166ef98381646929cbed4ab73"
+                "reference": "164dd884b88382dd8e37caa43a534553a4887b98"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/symfony/HttpKernel/archive/82fce0a7efbb692166ef98381646929cbed4ab73.zip",
-                "reference": "82fce0a7efbb692166ef98381646929cbed4ab73",
+                "url": "https://api.github.com/repos/symfony/HttpKernel/zipball/164dd884b88382dd8e37caa43a534553a4887b98",
+                "reference": "164dd884b88382dd8e37caa43a534553a4887b98",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3",
+                "psr/log": ">=1.0,<2.0",
                 "symfony/event-dispatcher": "2.2.*",
-                "symfony/http-foundation": "2.2.*",
-                "psr/log": ">=1.0,<2.0"
+                "symfony/http-foundation": "2.2.*"
             },
             "require-dev": {
                 "symfony/browser-kit": "2.2.*",
@@ -418,11 +418,11 @@
                 "symfony/dependency-injection": "2.2.*",
                 "symfony/finder": "2.2.*"
             },
-            "time": "2013-01-24 08:14:41",
+            "time": "2013-02-05 09:58:14",
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.2-dev"
+                    "dev-master": "2.3-dev"
                 }
             },
             "autoload": {
@@ -454,34 +454,34 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Routing",
-                "reference": "v2.2.0-BETA2"
+                "reference": "03137c0e22eb19acc7b4fc3799ba09f7e9f2fef8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/symfony/Routing/archive/v2.2.0-BETA2.zip",
-                "reference": "v2.2.0-BETA2",
+                "url": "https://api.github.com/repos/symfony/Routing/zipball/03137c0e22eb19acc7b4fc3799ba09f7e9f2fef8",
+                "reference": "03137c0e22eb19acc7b4fc3799ba09f7e9f2fef8",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3"
             },
             "require-dev": {
-                "doctrine/common": ">=2.2,<2.4-dev",
+                "doctrine/common": ">=2.2,<3.0",
+                "psr/log": ">=1.0,<2.0",
                 "symfony/config": "2.2.*",
-                "symfony/yaml": "2.2.*",
                 "symfony/http-kernel": "2.2.*",
-                "psr/log": ">=1.0,<2.0"
+                "symfony/yaml": "2.2.*"
             },
             "suggest": {
-                "doctrine/common": ">=2.2,<2.4-dev",
+                "doctrine/common": "~2.2",
                 "symfony/config": "2.2.*",
                 "symfony/yaml": "2.2.*"
             },
-            "time": "2013-01-21 16:57:32",
+            "time": "2013-02-04 12:42:02",
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.2-dev"
+                    "dev-master": "2.3-dev"
                 }
             },
             "autoload": {
@@ -508,26 +508,26 @@
         },
         {
             "name": "twig/twig",
-            "version": "v1.9.2",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "git://github.com/fabpot/Twig.git",
-                "reference": "v1.9.2"
+                "reference": "c6445fb5cd6823f7bd65108a717064957b6eafd5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/fabpot/Twig/zipball/v1.9.2",
-                "reference": "v1.9.2",
+                "url": "https://api.github.com/repos/fabpot/Twig/zipball/c6445fb5cd6823f7bd65108a717064957b6eafd5",
+                "reference": "c6445fb5cd6823f7bd65108a717064957b6eafd5",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.2.4"
             },
-            "time": "2012-08-25 10:32:57",
+            "time": "2013-02-01 09:44:45",
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.9-dev"
+                    "dev-master": "1.12-dev"
                 }
             },
             "autoload": {
@@ -535,6 +535,7 @@
                     "Twig_": "lib/"
                 }
             },
+            "notification-url": "http://packagist.org/downloads/",
             "license": [
                 "BSD-3"
             ],
@@ -560,7 +561,7 @@
 
     ],
     "minimum-stability": "dev",
-    "stability-flags": [
-
-    ]
+    "stability-flags": {
+        "twig/twig": 20
+    }
 }
