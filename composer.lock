@@ -1,5 +1,5 @@
 {
-    "hash": "5376f0c733115b18152169abbe7878f1",
+    "hash": "6f49f1606feb83edf1d763ddd22859f3",
     "packages": [
         {
             "name": "madcatme/collection",
@@ -116,18 +116,18 @@
             "source": {
                 "type": "git",
                 "url": "git://github.com/fabpot/Pimple.git",
-                "reference": "94a46d638debccc5fe88ea293b39462f1a30e2c2"
+                "reference": "5a8936d9d31eb613f1a33753e5f22bffebe0bbc3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fabpot/Pimple/zipball/94a46d638debccc5fe88ea293b39462f1a30e2c2",
-                "reference": "94a46d638debccc5fe88ea293b39462f1a30e2c2",
+                "url": "https://api.github.com/repos/fabpot/Pimple/zipball/5a8936d9d31eb613f1a33753e5f22bffebe0bbc3",
+                "reference": "5a8936d9d31eb613f1a33753e5f22bffebe0bbc3",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0"
             },
-            "time": "2013-02-05 08:06:03",
+            "time": "2013-02-09 15:33:26",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -507,23 +507,70 @@
             "homepage": "http://symfony.com"
         },
         {
+            "name": "symfony/yaml",
+            "version": "2.2.x-dev",
+            "target-dir": "Symfony/Component/Yaml",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/Yaml",
+                "reference": "v2.2.0-RC1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/Yaml/zipball/v2.2.0-RC1",
+                "reference": "v2.2.0-RC1",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "time": "2013-01-27 16:49:19",
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.2-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Symfony\\Component\\Yaml\\": ""
+                }
+            },
+            "notification-url": "http://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "http://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony Yaml Component",
+            "homepage": "http://symfony.com"
+        },
+        {
             "name": "twig/twig",
             "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "git://github.com/fabpot/Twig.git",
-                "reference": "8b569e49a193abcc28689dfc68058da9d80d4121"
+                "reference": "01bf732b8b52e0bfaf1c645638bfcdd4e2f13492"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fabpot/Twig/zipball/8b569e49a193abcc28689dfc68058da9d80d4121",
-                "reference": "8b569e49a193abcc28689dfc68058da9d80d4121",
+                "url": "https://api.github.com/repos/fabpot/Twig/zipball/01bf732b8b52e0bfaf1c645638bfcdd4e2f13492",
+                "reference": "01bf732b8b52e0bfaf1c645638bfcdd4e2f13492",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.2.4"
             },
-            "time": "2013-02-08 18:58:08",
+            "time": "2013-02-08 21:03:10",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -563,6 +610,7 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "silex/silex": 20,
-        "twig/twig": 20
+        "twig/twig": 20,
+        "symfony/yaml": 20
     }
 }

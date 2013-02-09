@@ -1,9 +1,0 @@
-{
-    "MongoServer": "server",
-    "MongoPort": "port",
-    "MongoUser": "db",
-    "MongoPassword": "user",
-    "MongoDatabase": "password",
-    "EncryptionKey": "key",
-    "TemplateDebugMode": false
-}

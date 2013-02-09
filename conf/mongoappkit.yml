@@ -1,0 +1,7 @@
+MongoServer: localhost
+MongoPort: 27017
+MongoUser: null
+MongoPassword: null
+MongoDatabase: mongoappkit
+EncryptionKey: 123abc
+TemplateDebugMode: true

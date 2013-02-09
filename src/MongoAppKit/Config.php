@@ -4,22 +4,24 @@ namespace MongoAppKit;
 
 use Collection\MutableMap;
 
+use Symfony\Component\Yaml\Yaml;
+
 class Config extends MutableMap
 {
 
-    public function addConfigFile($fileName = null)
+    public function addConfigFile($resource = null)
     {
-        if (empty($fileName)) {
-            throw new \InvalidArgumentException("Empty config file name specified.");
+        if (!is_file($resource)) {
+            throw new \InvalidArgumentException('YAML resource "' . $resource . '" does not exist.');
         }
 
-        if (!is_readable($fileName)) {
-            throw new \InvalidArgumentException("File {$fileName} is not readable!");
+        $data = Yaml::parse($resource, true);
+
+        if (!is_array($data)) {
+            throw new \InvalidArgumentException('YAML resource "' . $resource . '" is not a collection of values.');
         }
 
-        $configFileJsonData = file_get_contents($fileName);
-        $configData = json_decode($configFileJsonData, true);
-        $this->updateProperties($configData);
+        $this->updateProperties($data);
     }
 
     public function setBaseDir($baseDir)

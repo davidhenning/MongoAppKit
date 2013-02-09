@@ -4,6 +4,8 @@ namespace MongoAppKit\Tests;
 
 use MongoAppKit\Config;
 
+use Symfony\Component\Yaml\Exception\ParseException;
+
 class ConfigTest extends \PHPUnit_Framework_TestCase
 {
 
@@ -80,38 +82,29 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
         $config = new Config();
         $basePath = realpath(__DIR__ . '/../../../');
         $config->setBaseDir($basePath);
-        $values = array('foo' => 'bar', 'BaseDir' => $basePath);
-        $fileName = $config->getConfDir() . '/test.json';
-        file_put_contents($fileName, json_encode($values));
-
-
+        $fileName = $config->getConfDir() . '/mongoappkit.yml';
         $config->addConfigFile($fileName);
-        unlink($fileName);
 
-        $this->assertEquals($values, $config->getArray());
+        $this->assertGreaterThan(1, $config->length);
     }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
 
     public function testAddConfigFileWithEmptyFileName()
     {
-        try {
-            $config = new Config();
-            $config->addConfigFile(null);
-        } catch (\InvalidArgumentException $e) {
-            return;
-        }
-
-        $this->fail('Expected InvalidArgumentException was not thrown.');
+        $config = new Config();
+        $config->addConfigFile(null);
     }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
 
     public function testAddConfigFileWithWrongFileName()
     {
-        try {
-            $config = new Config();
-            $config->addConfigFile('dfgkhdufhdjhfjk');
-        } catch (\InvalidArgumentException $e) {
-            return;
-        }
-
-        $this->fail('Expected InvalidArgumentException was not thrown.');
+        $config = new Config();
+        $config->addConfigFile('dfgkhdufhdjhfjk');
     }
 }
